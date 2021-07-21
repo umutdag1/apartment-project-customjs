@@ -1,0 +1,98 @@
+<template>
+    <li class="nav-item dropdown user-menu" ref="dropdown">
+        <button
+            @click="toggleDropdown"
+            class="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+        >
+            <img
+                src="assets/img/default-profile.png"
+                class="user-image img-circle elevation-2"
+                alt="User Image"
+            />
+        </button>
+        <ul
+            class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+            :class="{show: isDropdownOpened}"
+        >
+            <!-- User image -->
+            <li class="user-header bg-primary">
+                <img
+                    src="assets/img/default-profile.png"
+                    class="img-circle elevation-2"
+                    alt="User Image"
+                />
+
+                <p>
+                    Alexander Pierce - Web Developer
+                    <small>Member since Nov. 2012</small>
+                </p>
+            </li>
+            <!-- Menu Body -->
+            <li class="user-body">
+                <div class="row">
+                    <div class="col-4 text-center">
+                        <a href="#">Followers</a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <a href="#">Sales</a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <a href="#">Friends</a>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+                <router-link
+                    to="/profile"
+                    class="btn btn-default btn-flat"
+                    @click="isDropdownOpened = false"
+                >
+                    Profile
+                </router-link>
+                <button
+                    @click="logout"
+                    class="btn btn-default btn-flat float-right"
+                >
+                    Sign out
+                </button>
+            </li>
+        </ul>
+    </li>
+</template>
+<script>
+import {defineComponent} from 'vue';
+export default defineComponent({
+    methods: {
+        toggleDropdown() {
+            this.isDropdownOpened = !this.isDropdownOpened;
+        },
+        documentClick(event) {
+            const el = this.$refs.dropdown;
+            const target = event.target;
+            if (el !== target && !el.contains(target)) {
+                this.isDropdownOpened = false;
+            }
+        },
+        logout() {
+            this.$router.push('/login');
+        }
+    },
+    data() {
+        return {
+            isDropdownOpened: false
+        };
+    },
+    mounted() {
+        document.addEventListener('click', this.documentClick);
+    },
+    unmounted() {
+        document.removeEventListener('click', this.documentClick);
+    }
+});
+</script>
+<style>
+    
+</style>

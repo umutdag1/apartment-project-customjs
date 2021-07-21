@@ -1,0 +1,108 @@
+<template>
+  <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+
+        <form action="../../index3.html" method="post">
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input type="checkbox" id="remember" />
+                <label for="remember"> Remember Me </label>
+              </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                @click="login"
+              >
+                Sign In
+              </button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        <div class="social-auth-links text-center mt-2 mb-3">
+          <button @click="loginByFacebook" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+          </button>
+          <button @click="loginByGoogle" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          </button>
+        </div>
+        <!-- /.social-auth-links -->
+
+        <p class="mb-1">
+          <router-link to="/forgot-password">
+            I forgot my password
+          </router-link>
+        </p>
+        <p class="mb-0">
+          <router-link to="/register" class="text-center">
+            Register a new membership
+          </router-link>
+        </p>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</template>
+<script>
+import { defineComponent } from "vue";
+export default defineComponent({
+  data() {
+    return {
+      appElement: null,
+    };
+  },
+  mounted() {
+    this.appElement = document.getElementById("app");
+    this.appElement.classList.add("login-page");
+  },
+  unmounted() {
+    this.appElement.classList.remove("login-page");
+  },
+  methods: {
+    login() {
+      this.$router.push("/");
+    },
+    loginByFacebook() {
+      this.$router.push("/");
+    },
+    loginByGoogle() {
+      this.$router.push("/");
+    },
+  },
+});
+</script>
+<style>
+</style>

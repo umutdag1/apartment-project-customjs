@@ -32,7 +32,7 @@
           <!-- Custom Tabs -->
           <div class="card">
             <div class="card-header d-flex p-0">
-              <h3 class="card-title p-3">Yeni Veri Kaydı</h3>
+              <h3 class="card-title p-3"></h3>
               <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item">
                   <a
@@ -60,51 +60,47 @@
                 <div class="tab-pane active" id="tab_1">
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Grup Adı"
-                            aria-label="Grup Adı"
-                            aria-describedby="basic-addon2"
-                          />
-                          <div class="input-group-append">
-                            <button
-                              class="btn btn-outline-primary"
-                              type="button"
-                            >
-                              Ekle
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12 my-3">
+                      <div class="col-12 mb-3">
                         <p class="h3">Grup Oluştur</p>
                       </div>
-                      <div class="col-md-12">
-                        <div class="card">
-                          <div class="card-body">
-                            <label>
-                              <input
-                                type="file"
-                                id="file"
-                                ref="file"
-                                accept=".xls,.xlsx"
-                                v-on:change="onChangeFileUpload()"
-                              />
-                            </label>
-                            <button class="btn btn-primary mx-2 my-2" @click="submitForm">Yükle</button>
-                            <button class="btn btn-danger mx-2 my-2" @click="resetForm">Sil</button>
-                          </div>
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Grup Seç</label>
+                          <select class="form-control">
+                            <option>Group 1</option>
+                            <option>Group 2</option>
+                            <option>Group 3</option>
+                            <option>Group 4</option>
+                            <option>Group 5</option>
+                          </select>
                         </div>
+                      </div>
+                      <div class="col-12">
+                        <label>
+                          <input
+                            type="file"
+                            id="file"
+                            accept=".xls,.xlsx"
+                            ref="file"
+                            @change="onChangeFileUpload"
+                            :disabled="isFileLoaded"
+                          />
+                        </label>
+                        <button
+                          class="btn btn-primary mx-2 my-2"
+                          ref="uploadBtn"
+                          @click="submitForm"
+                          :disabled="isUploadBtnDisabled"
+                        >
+                          Yükle
+                        </button>
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <template v-if="isFileLoaded">
+                      <template v-if="isUploadBtnDisabled">
                         <div
                           class="
-                            col-md-12
+                            col-12
                             d-flex
                             justify-content-center
                             align-items-center
@@ -115,7 +111,10 @@
                           <button class="btn btn-block btn-primary my-2">
                             Devam Et
                           </button>
-                          <button class="btn btn-block btn-danger my-2">
+                          <button
+                            class="btn btn-block btn-danger my-2"
+                            @click="resetForm"
+                          >
                             İptal Et
                           </button>
                         </div>
@@ -252,6 +251,7 @@ export default defineComponent({
     return {
       file: "",
       isFileLoaded: false,
+      isUploadBtnDisabled: false,
     };
   },
   methods: {
@@ -275,16 +275,16 @@ export default defineComponent({
           }
         });
     },
-    resetForm(){
+    resetForm() {
       this.isFileLoaded = false;
-      this.$refs.file.disabled = false;
+      this.isUploadBtnDisabled = false;
       document.querySelector("#file").value = "";
     },
     submitForm() {
-      const formData = new FormData();
-      formData.append("bytes", this.file);
-
-      /*this.axios.post("https://localhost:44313/api/app/file/save", formData, {
+      if (!this.isUploadBtnDisabled) {
+        const formData = new FormData();
+        formData.append("bytes", this.file);
+        /*this.axios.post("https://localhost:44313/api/app/file/save", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -296,22 +296,24 @@ export default defineComponent({
           console.log("FAILURE!!");
         });*/
 
-      this.axios
-        .get("https://jsonplaceholder.typicode.com/posts")
-        .then((response) => {
-          if (response.status === 200) {
-            this.$toast.open({
-              message: "Dosya Başarıyla Yüklendi.",
-              position: "top-right",
-              type: "success",
-            });
-            this.isFileLoaded = true;
-          }
-        });
+        this.axios
+          .get("https://jsonplaceholder.typicode.com/posts")
+          .then((response) => {
+            if (response.status === 200) {
+              this.$toast.open({
+                message: "Dosya Başarıyla Yüklendi.",
+                position: "top-right",
+                type: "success",
+              });
+              this.isUploadBtnDisabled = true;
+              this.isFileLoaded = true;
+            }
+          });
+      }
     },
     onChangeFileUpload() {
       this.file = this.$refs.file[0];
-      this.$refs.file.disabled = true;
+      this.isFileLoaded = true;
     },
   },
   mounted() {

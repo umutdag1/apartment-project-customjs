@@ -6,6 +6,7 @@ import Register from '@/modules/register/register.vue';
 
 import Dashboard from '@/pages/dashboard/dashboard.vue';
 import EditorTemplate from '@/pages/editorTemplate/editorTemplate.vue';
+import DataTable from "@/pages/dataTable/dataTable.vue";
 import Profile from '@/pages/profile/profile.vue';
 import ForgotPassword from '@/modules/forgot-password/forgot-password.vue';
 
@@ -29,6 +30,11 @@ const routes = [
                 path: 'editorTemplate',
                 name: 'EditorTemplate',
                 component : EditorTemplate
+            },
+            {
+                path: 'dataTable',
+                name: 'dataTable',
+                component : DataTable
             }
         ]
     },

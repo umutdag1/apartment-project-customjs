@@ -31,66 +31,53 @@
         <div class="col-12 text-center" id="contentButtons">
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addNameToEditorContent"
+            @click="addContentToEditorData($event)"
           >
-            Yasal Ad Ekle
+            Ad Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addSurnameToEditorContent"
+            @click="addContentToEditorData($event)"
           >
-            Yasal Soyad Ekle
+            Soyad Ekle
           </button>
-          <button
+          <!--<button
             class="btn btn-outline-secondary mx-2 my-2"
             @click="addGroupToEditorContent"
           >
             Yasal Grup Ekle
-          </button>
+          </button>-->
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addDateToEditorContent"
+            @click="addContentToEditorData($event)"
           >
-            Tarih Ekle
+            Toplantı Tarihi Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addTimeToEditorContent"
+            @click="addContentToEditorData($event)"
           >
-            Saat Ekle
+            Toplantı Saati Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addLocationToEditorContent"
+            @click="addContentToEditorData($event)"
           >
             Lokasyon Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addMeetingCodeToEditorContent"
+            @click="addContentToEditorData($event)"
           >
-            Toplantı Kodu Ekle
+            Toplantı Konusu Ekle
           </button>
         </div>
-        <div class="col-12 text-center">
-          <button
-            class="btn btn-outline-primary mx-2 my-2"
-            @click="putContentsInEditor"
-          >
-            Döküman'a Aktar
-          </button>
-          <button
-            class="btn btn-outline-danger mx-2 my-2"
-            @click="resetAll"
-          >
-            Iptal Et
-          </button>
-        </div>
-        <div class="col-12 my-2 vh-100">
+        <div class="col-12 my-2">
           <ckeditor
             :editor="editor"
             v-model="editorData"
             :config="editorConfig"
+            @focus="onEditorFocus"
           ></ckeditor>
         </div>
       </div>
@@ -102,26 +89,16 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, markRaw } from "vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default defineComponent({
   data() {
     return {
       editor: ClassicEditor,
-      editorData: "",
-      editorContent: {
-        introduction: "",
-        body: "",
-        result: "",
-      },
-      defaultContent: {
-        introduction:
-          " bilgileri dahilinde gerçekleştirilecek olan toplantıya ",
-        body: " katılımınızı rica ederiz. ",
-        result_1: ' Katılım için "KATIL" yazıp ',
-        result_2: " 3184 sms yolla.",
-      },
+      editorData: "<p></p>",
+      tempFocusEditor: null,
+      positionOfCursorInEditor: null,
       editorConfig: {
         toolbar: {
           items: [
@@ -140,95 +117,44 @@ export default defineComponent({
     };
   },
   methods: {
-    addNameToEditorContent(e) {
-      this.editorContent.introduction += "@Name ";
-      this.$toast.open({
-        message: "Yasal Ad Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
+    onEditorFocus(event, editor) {
+      this.tempFocusEditor = markRaw(editor);
     },
-    addSurnameToEditorContent(e) {
-      this.editorContent.introduction += "@Surname ";
-      this.$toast.open({
-        message: "Yasal Soyad Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    addGroupToEditorContent(e) {
-      this.editorContent.introduction += "@Group ";
-      this.$toast.open({
-        message: "Yasal Grup Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    addDateToEditorContent(e) {
-      this.editorContent.body += "@Date ";
-      this.$toast.open({
-        message: "Tarih Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    addTimeToEditorContent(e) {
-      this.editorContent.body += "@Time ";
-      this.$toast.open({
-        message: "Saat Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    addLocationToEditorContent(e) {
-      this.editorContent.body += "@Location ";
-      this.$toast.open({
-        message: "Lokasyon Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    addMeetingCodeToEditorContent(e) {
-      this.editorContent.result += "@Meeting Code ";
-      this.$toast.open({
-        message: "Toplantı Kodu Başarıyla Eklendi.",
-        position: "top-right",
-        type: "success",
-        duration: 800,
-      });
-      e.target.disabled = true;
-    },
-    putContentsInEditor() {
-      if (this.editorContent !== "") {
-        this.editorData = this.editorContent.introduction + this.defaultContent.introduction + this.editorContent.body + this.defaultContent.body + this.defaultContent.result_1 + this.editorContent.result + this.defaultContent.result_2;
-        this.clearEditorContent();
+    addContentToEditorData(e) {
+      if (this.tempFocusEditor === null) {
+        this.$toast.open({
+          message: "Bir Alan Seçiniz",
+          position: "top-right",
+          type: "error",
+          duration: 800,
+        });
+      } else {
+        const targetElemContentArray = e.target.innerText.split(" ");
+        targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
+        this.tempFocusEditor.model.change((writer) => {
+          writer.insertText(
+            `@${targetElemContentArray.join("")} `,
+            this.tempFocusEditor.model.document.selection.getFirstPosition()
+          );
+        });
+
+        this.$toast.open({
+          message: `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
+          position: "top-right",
+          type: "success",
+          duration: 800,
+        });
       }
+
+      //e.target.disabled = true;
     },
-    resetAll(){
+    resetAll() {
       this.clearEditorData();
       this.clearEditorContent();
       this.activeContentButtons();
-    },  
+    },
     clearEditorData() {
       this.editorData = "";
-    },
-    clearEditorContent() {
-      const editorContentObjKeys = Object.keys(this.editorContent);
-      editorContentObjKeys.forEach((editorContentKey) => {
-        this.editorContent[editorContentKey] = "";
-      });
     },
     activeContentButtons() {
       const contentButtons = document.querySelectorAll("#contentButtons .btn");
@@ -240,7 +166,8 @@ export default defineComponent({
 });
 </script>
 <style>
-  .ck-editor__editable_inline {
-    min-height : 300px;
-  }
+.ck-editor__editable_inline {
+  min-height: 300px;
+  width: 100%;
+}
 </style>

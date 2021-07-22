@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import Header from "./header/header.vue";
 import MenuSidebar from "./menu-sidebar/menu-sidebar.vue";
 import Footer from "./footer/footer.vue";

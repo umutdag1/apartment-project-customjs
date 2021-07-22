@@ -5,6 +5,7 @@ import Login from '@/modules/login/login.vue';
 import Register from '@/modules/register/register.vue';
 
 import Dashboard from '@/pages/dashboard/dashboard.vue';
+import EditorTemplate from '@/pages/editorTemplate/editorTemplate.vue';
 import Profile from '@/pages/profile/profile.vue';
 import ForgotPassword from '@/modules/forgot-password/forgot-password.vue';
 
@@ -23,6 +24,11 @@ const routes = [
                 path: 'profile',
                 name: 'Profile',
                 component: Profile
+            },
+            {
+                path: 'editorTemplate',
+                name: 'EditorTemplate',
+                component : EditorTemplate
             }
         ]
     },

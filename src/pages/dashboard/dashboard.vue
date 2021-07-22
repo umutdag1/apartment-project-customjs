@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Dashboard</h1>
+          <h1 class="m-0">Toplantı Oluştur</h1>
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
@@ -32,15 +32,25 @@
           <!-- Custom Tabs -->
           <div class="card">
             <div class="card-header d-flex p-0">
-              <h3 class="card-title p-3">Tabs</h3>
+              <h3 class="card-title p-3">Yeni Veri Kaydı</h3>
               <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#tab_1" data-toggle="tab"
-                    >Tab 1</a
+                  <a
+                    class="nav-link active"
+                    href="#tab_1"
+                    data-toggle="tab"
+                    @click="resetTab"
+                    >Dosya Ekle</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab_2" data-toggle="tab">Tab 2</a>
+                  <a
+                    class="nav-link"
+                    href="#tab_2"
+                    data-toggle="tab"
+                    @click="resetTab"
+                    >Kişi Ekle</a
+                  >
                 </li>
               </ul>
             </div>
@@ -50,7 +60,7 @@
                 <div class="tab-pane active" id="tab_1">
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="col-md-12 pl-0">
+                      <div class="col-md-12">
                         <div class="input-group mb-3">
                           <input
                             type="text"
@@ -80,10 +90,12 @@
                                 type="file"
                                 id="file"
                                 ref="file"
+                                accept=".xls,.xlsx"
                                 v-on:change="onChangeFileUpload()"
                               />
                             </label>
-                            <button v-on:click="submitForm()">Yükle</button>
+                            <button class="btn btn-primary mx-2 my-2" @click="submitForm">Yükle</button>
+                            <button class="btn btn-danger mx-2 my-2" @click="resetForm">Sil</button>
                           </div>
                         </div>
                       </div>
@@ -100,14 +112,10 @@
                             flex-column
                           "
                         >
-                          <button
-                            class="btn btn-block btn-primary my-2"   
-                          >
+                          <button class="btn btn-block btn-primary my-2">
                             Devam Et
                           </button>
-                          <button
-                            class="btn btn-block btn-danger my-2"
-                          >
+                          <button class="btn btn-block btn-danger my-2">
                             İptal Et
                           </button>
                         </div>
@@ -121,15 +129,15 @@
                     <div class="col-md-6">
                       <div class="col-md-12">
                         <div class="form-group">
-                        <label>Grup Seç</label>
-                        <select class="form-control">
-                          <option>Group 1</option>
-                          <option>Group 2</option>
-                          <option>Group 3</option>
-                          <option>Group 4</option>
-                          <option>Group 5</option>
-                        </select>
-                      </div>
+                          <label>Grup Seç</label>
+                          <select class="form-control">
+                            <option>Group 1</option>
+                            <option>Group 2</option>
+                            <option>Group 3</option>
+                            <option>Group 4</option>
+                            <option>Group 5</option>
+                          </select>
+                        </div>
                       </div>
                       <div class="col-md-12">
                         <div class="input-group mb-3">
@@ -215,9 +223,7 @@
                         >
                           Ekle
                         </button>
-                        <button
-                          class="btn btn-block btn-danger my-2"
-                        >
+                        <button class="btn btn-block btn-danger my-2">
                           Sil
                         </button>
                       </div>
@@ -249,7 +255,14 @@ export default defineComponent({
     };
   },
   methods: {
-    addPersonToDB(){
+    resetTab(e) {
+      const targetID = e.target.href.slice(e.target.href.indexOf("#"));
+      const targetElem = document.querySelector(targetID);
+      if (!targetElem.classList.contains("active")) {
+        this.resetForm();
+      }
+    },
+    addPersonToDB() {
       this.axios
         .get("https://jsonplaceholder.typicode.com/posts")
         .then((response) => {
@@ -262,12 +275,14 @@ export default defineComponent({
           }
         });
     },
+    resetForm(){
+      this.isFileLoaded = false;
+      this.$refs.file.disabled = false;
+      document.querySelector("#file").value = "";
+    },
     submitForm() {
       const formData = new FormData();
       formData.append("bytes", this.file);
-
-      console.log("File is uploaded");
-      this.isFileLoaded = true;
 
       /*this.axios.post("https://localhost:44313/api/app/file/save", formData, {
           headers: {
@@ -295,8 +310,8 @@ export default defineComponent({
         });
     },
     onChangeFileUpload() {
-      debugger;
       this.file = this.$refs.file[0];
+      this.$refs.file.disabled = true;
     },
   },
   mounted() {

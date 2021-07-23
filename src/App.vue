@@ -15,7 +15,7 @@ export default {
     function addNextScriptToBody() {
       const scriptElem = document.createElement("script");
       scriptElem.setAttribute("src", scriptArr[scriptIndex++]);
-      document.body.appendChild(scriptElem);
+      document.head.appendChild(scriptElem);
       scriptElem.addEventListener(
         "load",
         function () {

@@ -96,7 +96,7 @@ export default defineComponent({
   data() {
     return {
       editor: ClassicEditor,
-      editorData: "<p></p>",
+      editorData: "",
       tempFocusEditor: null,
       positionOfCursorInEditor: null,
       editorConfig: {
@@ -122,12 +122,7 @@ export default defineComponent({
     },
     addContentToEditorData(e) {
       if (this.tempFocusEditor === null) {
-        this.$toast.open({
-          message: "Bir Alan Seçiniz",
-          position: "top-right",
-          type: "error",
-          duration: 800,
-        });
+        this.fireToast("Bir Alan Seçiniz", "error", 800);
       } else {
         const targetElemContentArray = e.target.innerText.split(" ");
         targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
@@ -137,16 +132,20 @@ export default defineComponent({
             this.tempFocusEditor.model.document.selection.getFirstPosition()
           );
         });
-
-        this.$toast.open({
-          message: `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
-          position: "top-right",
-          type: "success",
-          duration: 800,
-        });
+        this.fireToast(
+          `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
+          "success",
+          800
+        );
       }
-
-      //e.target.disabled = true;
+    },
+    fireToast(message, type, duration) {
+      this.$toast.open({
+        message: message,
+        position: "top-right",
+        type: type,
+        duration: duration,
+      });
     },
     resetAll() {
       this.clearEditorData();

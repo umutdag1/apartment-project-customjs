@@ -321,8 +321,7 @@ export default defineComponent({
       "assets/plugins/jquery/jquery.min.js",
       "assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
       "assets/dist/js/adminlte.min.js",
-      "assets/plugins/toastr/toastr.min.js",
-      "assets/plugins/sweetalert2/sweetalert2.min.js",
+      "assets/custom/js/script.js"
     ];
     let scriptIndex = 0;
     function addNextScriptToBody() {

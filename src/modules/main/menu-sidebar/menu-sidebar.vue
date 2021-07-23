@@ -40,8 +40,8 @@
               exact
               exact-active-class="active"
             >
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Dashboard</p>
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>Toplantı Oluştur</p>
             </router-link>
           </li>
           <li class="nav-item">

@@ -10,9 +10,9 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
-              <router-link to="/">Home</router-link>
+              <router-link to="/">Anasayfa</router-link>
             </li>
-            <li class="breadcrumb-item active">Dashboard v1</li>
+            <li class="breadcrumb-item active">Toplantı Oluştur</li>
           </ol>
         </div>
         <!-- /.col -->
@@ -32,24 +32,22 @@
           <!-- Custom Tabs -->
           <div class="card">
             <div class="card-header d-flex p-0">
-              <h3 class="card-title p-3"></h3>
+              <h3 class="card-title p-3">{{ tabs.activeTab.tabLink }}</h3>
               <ul class="nav nav-pills ml-auto p-2">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    href="#tab_1"
-                    data-toggle="tab"
-                    @click="resetTab"
-                    >Dosya Ekle</a
-                  >
-                </li>
-                <li class="nav-item">
+                <li
+                  class="nav-item"
+                  v-for="tabIndex in tabs.tabContentArr.length"
+                  :key="tabIndex"
+                >
                   <a
                     class="nav-link"
-                    href="#tab_2"
+                    :class="{
+                      active: tabIndex - 1 === 0,
+                    }"
+                    :href="`#tab_${tabIndex}`"
                     data-toggle="tab"
-                    @click="resetTab"
-                    >Kişi Ekle</a
+                    @click="changeTab"
+                    >{{ tabs.tabContentArr[tabIndex - 1] }}</a
                   >
                 </li>
               </ul>
@@ -244,9 +242,21 @@
   <!-- /.content -->
 </template>
   <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
+  setup() {
+    const tabs = ref({
+      tabContentArr: ["Dosya Ekle", "Kişi Ekle"],
+      tabLinkArr: ["Excel Dosya Ekleme", "Kişi Ekleme"],
+      activeTab: {
+        tabContent: "Dosya Ekle",
+        tabLink: "Excel Dosya Ekleme",
+      },
+    });
+
+    return { tabs };
+  },
   data() {
     return {
       file: "",
@@ -255,9 +265,14 @@ export default defineComponent({
     };
   },
   methods: {
-    resetTab(e) {
+    changeTab(e) {
       const targetID = e.target.href.slice(e.target.href.indexOf("#"));
+      const targetIDLastIndexAsNumber = Number(targetID.charAt(targetID.length - 1));
       const targetElem = document.querySelector(targetID);
+      this.tabs.activeTab.tabContent =
+        this.tabs.tabContentArr[targetIDLastIndexAsNumber - 1];
+      this.tabs.activeTab.tabLink =
+        this.tabs.tabLinkArr[targetIDLastIndexAsNumber - 1];
       if (!targetElem.classList.contains("active")) {
         this.resetForm();
       }
@@ -315,31 +330,6 @@ export default defineComponent({
       this.file = this.$refs.file[0];
       this.isFileLoaded = true;
     },
-  },
-  mounted() {
-    const scriptArr = [
-      "assets/plugins/jquery/jquery.min.js",
-      "assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
-      "assets/dist/js/adminlte.min.js",
-      "assets/custom/js/script.js"
-    ];
-    let scriptIndex = 0;
-    function addNextScriptToBody() {
-      const scriptElem = document.createElement("script");
-      scriptElem.setAttribute("src", scriptArr[scriptIndex++]);
-      document.body.appendChild(scriptElem);
-      scriptElem.addEventListener(
-        "load",
-        function () {
-          if (scriptArr.length !== scriptIndex) {
-            addNextScriptToBody();
-          }
-        },
-        false
-      );
-    }
-
-    addNextScriptToBody();
   },
 });
 </script>

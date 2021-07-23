@@ -12,15 +12,13 @@
     "@ckeditor/ckeditor5-vue": "^2.0.1",
     "@enso-ui/tables": "^2.6.13",
     "@enso-ui/toastr": "^2.1.2",
-    "@vueup/vue-quill": "^1.0.0-beta.7",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "dropzone-vue": "^0.1.8",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.4",
-    "vue-plugin-load-script": "^2.0.1",
     "vue-router": "^4.0.0-0",
     "vue-toast-notification": "^2.0.0",
+    "vue3-dropzone": "0.0.7",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

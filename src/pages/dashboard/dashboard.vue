@@ -314,10 +314,10 @@ export default defineComponent({
   data() {
     return {
       files: [],
-      file: "",
       axiosRequest: {
-        isRequestCanceled: false,
-        requestCancelToken: this.axios.CancelToken.source(),
+        isRequestCanceledArr: [],
+        isRequestContinuingStatusArr: [],
+        cancelTokenArr: [],
       },
       isFileLoaded: false,
       isUploadBtnDisabled: false,
@@ -347,11 +347,13 @@ export default defineComponent({
           error: "Kişi Ekleme Başarısız",
         },
       };
+
       this.makeGetRequest(request);
     },
     uploadFile(fileIndex) {
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
+      this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = true;
       const formData = new FormData();
       formData.append("bytes", this.files[fileIndex]);
       const request = {
@@ -359,14 +361,17 @@ export default defineComponent({
         fileIndex: fileIndex,
         url: "https://v2.convertapi.com/upload",
         config: {
-          cancelToken: this.axiosRequest.requestCancelToken.token,
+          cancelToken: this.axiosRequest.cancelTokenArr[fileIndex].token,
           headers: {
             "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
-            if (this.axiosRequest.isRequestCanceled) {
-              this.axiosRequest.requestCancelToken.cancel();
-              this.axiosRequest.isRequestCanceled = false;
+            if (this.axiosRequest.isRequestCanceledArr[fileIndex]) {
+              this.axiosRequest.cancelTokenArr[fileIndex].cancel();
+              this.axiosRequest.cancelTokenArr[fileIndex] =
+                this.axios.CancelToken.source();
+              this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = false;
+              this.axiosRequest.isRequestCanceledArr[fileIndex] = false;
             } else {
               this.$refs[`fileProgress_${fileIndex + 1}`].style.width =
                 (progressEvent.loaded / progressEvent.total) * 100 + "%";
@@ -375,7 +380,7 @@ export default defineComponent({
         },
         toastMessages: {
           success: "Dosya Başarıyla Yüklendi",
-          warning: "Dosya Yüklemesi İptal Edildi.",
+          warning: "Dosya Yükleme İşlemi İptal Edildi.",
           error: "Dosya Yükleme Başarısız",
         },
       };
@@ -385,28 +390,53 @@ export default defineComponent({
     cancelUploadFile(fileIndex) {
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = false;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = true;
-      this.axiosRequest.isRequestCanceled = true;
+      this.axiosRequest.isRequestCanceledArr[fileIndex] = true;
+      this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = false;
     },
     resetForm() {
-      this.files = [];
+      const isStillRequestContinuingArr =
+        this.axiosRequest.isRequestContinuingStatusArr.filter(
+          (boolItem) => boolItem === true
+        );
+      if (isStillRequestContinuingArr.length > 0) {
+        this.fireToast(
+          "Dosya Yükleme İşlemi Sürerken Temizleyemezsin.",
+          "error",
+          2000
+        );
+      } else {
+        this.files = [];
+        this.axiosRequest.cancelTokenArr = [];
+        this.axiosRequest.isRequestCanceledArr = [];
+        this.axiosRequest.isRequestContinuingStatusArr = [];
+      }
     },
     makePostRequest(request) {
       const vm = this;
       this.axios
         .post(request.url, request.data, request.config)
         .then(function (data) {
-          vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = true;
-          vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = true;
+          if (Object.keys(request).includes("fileIndex")) {
+            vm.axiosRequest.isRequestContinuingStatusArr[
+              request.fileIndex
+            ] = false;
+            vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = true;
+            vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = true;
+          }
           vm.fireToast(request.toastMessages.success, "success", 2000);
           console.log(data.data);
         })
         .catch(function (thrown) {
           if (thrown.__CANCEL__) {
             vm.fireToast(request.toastMessages.warning, "warning", 2000);
-            vm.axiosRequest.requestCancelToken = vm.axios.CancelToken.source();
           } else {
-            vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = false;
-            vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = false;
+            if (Object.keys(request).includes("fileIndex")) {
+              vm.axiosRequest.isRequestContinuingStatusArr[
+                request.fileIndex
+              ] = false;
+              vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = false;
+              vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = false;
+            }
             vm.fireToast(request.toastMessages.error, "error", 2000);
           }
         });
@@ -416,26 +446,37 @@ export default defineComponent({
       this.axios
         .get(request.url, request.config)
         .then(function (data) {
-          vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = true;
-          vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = true;
+          if (Object.keys(request).includes("fileIndex")) {
+            vm.axiosRequest.isRequestContinuingStatusArr[
+              request.fileIndex
+            ] = false;
+            vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = true;
+            vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = true;
+          }
           vm.fireToast(request.toastMessages.success, "success", 2000);
           console.log(data.data);
         })
         .catch(function (thrown) {
           if (thrown.__CANCEL__) {
             vm.fireToast(request.toastMessages.warning, "warning", 2000);
-            vm.axiosRequest.requestCancelToken = vm.axios.CancelToken.source();
           } else {
             vm.fireToast(request.toastMessages.error, "error", 2000);
-            vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = false;
-            vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = false;
+            if (Object.keys(request).includes("fileIndex")) {
+              vm.axiosRequest.isRequestContinuingStatusArr[
+                request.fileIndex
+              ] = false;
+              vm.$refs[`uploadBtn_${request.fileIndex + 1}`].disabled = false;
+              vm.$refs[`cancelBtn_${request.fileIndex + 1}`].disabled = false;
+            }
           }
         });
     },
     onChangeFileUpload() {
+      this.axiosRequest.isRequestCanceledArr.push(false);
+      this.axiosRequest.isRequestContinuingStatusArr.push(false);
+      this.axiosRequest.cancelTokenArr.push(this.axios.CancelToken.source());
       this.files.push(this.$refs.file.files[0]);
       this.$refs.file.value = "";
-
     },
     fireToast(message, type, duration) {
       this.$toast.open({

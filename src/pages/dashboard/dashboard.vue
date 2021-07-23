@@ -364,7 +364,6 @@ export default defineComponent({
             "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
-            console.log("aa");
             if (this.axiosRequest.isRequestCanceled) {
               this.axiosRequest.requestCancelToken.cancel();
               this.axiosRequest.isRequestCanceled = false;
@@ -435,6 +434,8 @@ export default defineComponent({
     },
     onChangeFileUpload() {
       this.files.push(this.$refs.file.files[0]);
+      this.$refs.file.value = "";
+
     },
     fireToast(message, type, duration) {
       this.$toast.open({

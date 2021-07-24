@@ -85,23 +85,23 @@
                         <div class="card-body">
                           <div id="actions" class="row">
                             <div class="col-lg-12">
-                              <div class="btn-group w-100">
-                                <input
+                              <input
                                   type="file"
                                   ref="file"
                                   @change="onChangeFileUpload"
                                   accept=".xlsx,.xls"
                                   class="d-none"
                                 />
+                              <div class="btn-group w-100">
                                 <span
-                                  class="btn btn-secondary col fileinput-button"
+                                  class="btn btn-secondary col"
                                   @click="$refs.file.click()"
                                 >
                                   <i class="far fa-file mr-2"></i>
                                   <span>Dosya Seç</span>
                                 </span>
                                 <span
-                                  class="btn btn-danger col"
+                                  class="btn btn-danger col "
                                   @click="resetForm"
                                 >
                                   <i class="fas fa-trash mr-2"></i>

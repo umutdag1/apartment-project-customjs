@@ -86,29 +86,29 @@ export default defineComponent({
     createDataTable() {
       this.$nextTick(() => {
         var table = $("#dataTable").DataTable({
-          //dom: "Bfrtip",
-          //buttons: ["copyHtml5", "excelHtml5"],
           responsive: true,
           language: {
             url: "assets/custom/library/datatable/language/Turkish.json",
           },
-          searching: false,
           orderCellsTop: true,
-          autoWidth : false,
           fixedHeader: true,
-        });
-        $("#dataTable thead tr").clone(true).appendTo("#dataTable thead");
-        $("#dataTable thead tr:eq(1) th").each(function (i) {
-          var title = $(this).text();
-          $(this).html(
-            '<input type="text" class="w-100" placeholder="Search ' + title + '" />'
-          );
-
-          $("input", this).on("keyup change", function () {
-            if (table.column(i).search() !== this.value) {
-              table.column(i).search(this.value).draw();
-            }
-          });
+          fnInitComplete: function (/*oSettings, json*/) {
+            $("#dataTable_filter").html('<div class="row"></div>');
+            $("#dataTable thead tr th").each(function (i) {
+              const title = $(this).text();
+              const dataTableColumnLength = $("#dataTable thead tr th").length;
+              $("#dataTable_filter .row").append(
+                `<div class="col-md-${12 / dataTableColumnLength} my-1 px-2">
+                <input type="text" class="w-100" placeholder="Search ${title}" />
+              </div>`
+              );
+              $("input", this).on("keyup change", function () {
+                if (table.column(i).search() !== this.value) {
+                  table.column(i).search(this.value).draw();
+                }
+              });
+            });
+          },
         });
       });
     },

@@ -4,13 +4,14 @@
 
 <script>
 export default {
-  mounted() {
+  setup() {
     const scriptArr = [
       "assets/plugins/jquery/jquery.min.js",
       "assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
       "assets/dist/js/adminlte.min.js",
       "assets/custom/js/script.js",
     ];
+    
     let scriptIndex = 0;
     function addNextScriptToBody() {
       const scriptElem = document.createElement("script");

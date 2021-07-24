@@ -177,107 +177,99 @@
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_2">
                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label>Grup Seç</label>
-                          <select class="form-control">
-                            <option>Group 1</option>
-                            <option>Group 2</option>
-                            <option>Group 3</option>
-                            <option>Group 4</option>
-                            <option>Group 5</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi Adı"
-                            aria-label="Kişi Adı"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi Soyadı"
-                            aria-label="Kişi Soyadı"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi Adresi"
-                            aria-label="Kişi Adresi"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi Doğum Tarihi"
-                            aria-label="Kişi Doğum Tarihi"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi Telefon Numarası"
-                            aria-label="Kişi Telefon Numarası"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="input-group mb-3">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Kişi E-posta Adresi"
-                            aria-label="Kişi E-posta Adresi"
-                            aria-describedby="basic-addon2"
-                          />
-                        </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Grup Seç</label>
+                        <select class="form-control">
+                          <option>Group 1</option>
+                          <option>Group 2</option>
+                          <option>Group 3</option>
+                          <option>Group 4</option>
+                          <option>Group 5</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <div
-                        class="
-                          col-md-12
-                          d-flex
-                          justify-content-center
-                          align-items-center
-                          h-100
-                          flex-column
-                        "
-                      >
-                        <button
-                          class="btn btn-block btn-primary my-2"
-                          @click="addPersonToDB"
-                        >
-                          Ekle
-                        </button>
-                        <button class="btn btn-block btn-danger my-2">
-                          Sil
-                        </button>
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi Adı"
+                          aria-label="Kişi Adı"
+                          aria-describedby="basic-addon2"
+                        />
                       </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi Soyadı"
+                          aria-label="Kişi Soyadı"
+                          aria-describedby="basic-addon2"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi Adresi"
+                          aria-label="Kişi Adresi"
+                          aria-describedby="basic-addon2"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi Doğum Tarihi"
+                          aria-label="Kişi Doğum Tarihi"
+                          aria-describedby="basic-addon2"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi Telefon Numarası"
+                          aria-label="Kişi Telefon Numarası"
+                          aria-describedby="basic-addon2"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Kişi E-posta Adresi"
+                          aria-label="Kişi E-posta Adresi"
+                          aria-describedby="basic-addon2"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="
+                        col-md-12
+                        d-flex
+                        justify-content-center
+                        align-items-center
+                      "
+                    >
+                      <button
+                        class="btn btn-block btn-primary my-2 mr-3"
+                        @click="addPersonToDB"
+                      >
+                        Ekle
+                      </button>
+                      <button class="btn btn-block btn-danger my-2">Sil</button>
                     </div>
                   </div>
                 </div>

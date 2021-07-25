@@ -178,10 +178,9 @@ export default defineComponent({
       });
     },
     cancelUploadFile(fileIndex) {
+      this.uploadFileInfo.isUploadCanceledArr[fileIndex] = true;
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = false;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = true;
-      this.uploadFileInfo.isUploadCanceledArr[fileIndex] = true;
-      this.uploadFileInfo.isUploadContinuedArr[fileIndex] = false;
     },
     resetForm() {
       const isStillUploadContinuedArr =
@@ -190,8 +189,8 @@ export default defineComponent({
         );
       if (isStillUploadContinuedArr.length > 0) {
         this.emitter.emit("fireToast", [
-          "Dosya Yükleme İşlemi Sürerken Temizleyemezsin.",
-          "error",
+          "Dosya Yükleme İşlemi Devam Ediyor.",
+          "warning",
           2000,
         ]);
       } else {
@@ -225,6 +224,17 @@ export default defineComponent({
     this.emitter.on("uploadFileGetRequest", (data) => {
       console.log(data.responseData);
     });
+
+    this.emitter.on("callResetForm", (refFunc) => {
+      this.emitter.emit(refFunc, this.resetForm);
+    });
+  },
+  unmounted() {
+    this.emitter.emit("resetEmitter", [
+      "uploadFilePostRequest",
+      "uploadFileGetRequest",
+      "callResetForm",
+    ]);
   },
 });
 </script>

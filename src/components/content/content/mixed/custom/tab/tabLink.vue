@@ -51,7 +51,7 @@ export default defineComponent({
         this.tabLinksProps.links[targetIDLastIndexAsNumber - 1].linkSubject;
 
       if (!e.target.classList.contains("active")) {
-        this.emitter.emit("resetForm", "fileGroupElem");
+        this.emitter.emit("callResetForm", "resetForm");
       }
     },
   },

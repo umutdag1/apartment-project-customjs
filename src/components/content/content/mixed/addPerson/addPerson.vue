@@ -1,4 +1,7 @@
 <template>
+  <div class="col-12 mb-3">
+    <p class="h3">Gruba Kişi Oluştur</p>
+  </div>
   <content-form-group :formGroupProps="content.formGroupForSelectGroup">
   </content-form-group>
   <content-input-group
@@ -112,6 +115,13 @@ export default defineComponent({
       console.log(data.responseData);
     });
   },
+  unmounted(){
+    this.emitter.emit("resetEmitter", [
+      "addUserPostRequest",
+      "addUserGetRequest",
+      "callResetForm",
+    ]);
+  }
 });
 </script>
 

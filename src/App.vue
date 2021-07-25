@@ -118,13 +118,24 @@ export default {
     this.emitter.on("fireToast", (data) => {
       this.fireToast(...data);
     });
+
     this.emitter.on("makePostRequest", (configParams) => {
       this.makePostRequest(configParams);
     });
+
     this.emitter.on("makeGetRequest", (configParams) => {
       this.makeGetRequest(configParams);
     });
+
+    this.emitter.on("resetEmitter" , (emitterNames) => {
+      emitterNames.map((emitterName) => this.emitter.off(emitterName));
+    })
   },
+  unmounted(){
+    for(const emitterKey of this.emitter.all.keys()){
+      this.emitter.off(emitterKey);
+    }
+  }
 };
 </script>
 

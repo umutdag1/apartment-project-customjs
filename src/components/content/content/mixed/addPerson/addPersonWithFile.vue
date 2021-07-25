@@ -48,11 +48,14 @@ export default defineComponent({
       },
     };
   },
-  mounted(){
-    this.emitter.on("resetForm",(refData) => {
-      this.$refs[refData].resetForm();
-    })
-  }
+  mounted() {
+    this.emitter.on("resetForm", (callFunc) => {
+      callFunc();
+    });
+  },
+  unmounted() {
+    this.emitter.emit("resetEmitter", ["resetForm"]);
+  },
 });
 </script>
 

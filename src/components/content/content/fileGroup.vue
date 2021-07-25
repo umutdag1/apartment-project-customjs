@@ -126,7 +126,7 @@ export default defineComponent({
       formData.append("bytes", this.files[fileIndex]);
 
       const request = {
-        name : "uploadFilePostRequest",
+        name: "uploadFilePostRequest",
         data: formData,
         fileIndex: fileIndex,
         url: "https://v2.convertapi.com/upload",
@@ -190,14 +190,15 @@ export default defineComponent({
     },
   },
   mounted() {
+    const vm = this;
     this.emitter.on("uploadFilePostRequest", (data) => {
       if (Object.keys(data.requestedData).includes("fileIndex")) {
-        this.axiosRequest.isRequestContinuingStatusArr[
+        vm.axiosRequest.isRequestContinuingStatusArr[
           data.requestedData.fileIndex
         ] = false;
-        this.$refs[`uploadBtn_${data.requestedData.fileIndex + 1}`].disabled =
+        vm.$refs[`uploadBtn_${data.requestedData.fileIndex + 1}`].disabled =
           data.situation === "success" ? true : false;
-        this.$refs[`cancelBtn_${data.requestedData.fileIndex + 1}`].disabled =
+        vm.$refs[`cancelBtn_${data.requestedData.fileIndex + 1}`].disabled =
           data.situation === "success" ? true : false;
       }
     });

@@ -119,7 +119,6 @@ export default defineComponent({
   methods: {
     onEditorFocus(event, editor) {
       this.tempFocusEditor = markRaw(editor);
-      console.log(this.tempFocusEditor.commands._commands.get("bold"));
     },
     addContentToEditorData(e) {
       if (this.tempFocusEditor === null) {

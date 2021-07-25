@@ -40,6 +40,17 @@
               exact
               exact-active-class="active"
             >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Grup Oluştur</p>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              to="/dashboard"
+              class="nav-link"
+              exact
+              exact-active-class="active"
+            >
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>Toplantı Oluştur</p>
             </router-link>

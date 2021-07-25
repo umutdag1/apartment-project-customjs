@@ -6,15 +6,20 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueToast from 'vue-toast-notification';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import mitt from 'mitt';
 
 import './index.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
+const emitter = mitt();
+const app = createApp(App);
 
-createApp(App)
-    .use(store)
-    .use(router)
-    .use(VueAxios, axios)
-    .use(VueToast)
-    .use(CKEditor)
-    .mount('#app')
+app.config.globalProperties.emitter = emitter;
+
+app
+.use(store)
+.use(router)
+.use(VueAxios, axios)
+.use(VueToast)
+.use(CKEditor)
+.mount('#app')

@@ -4,10 +4,10 @@ import Main from '@/modules/main/main.vue';
 import Login from '@/modules/login/login.vue';
 import Register from '@/modules/register/register.vue';
 
-import Layout from "@/pages/layout.vue";
 import Dashboard from '@/pages/dashboard/dashboard.vue';
 import EditorTemplate from '@/pages/editorTemplate/editorTemplate.vue';
 import DataTable from "@/pages/dataTable/dataTable.vue";
+import CreateGroup from "@/pages/createGroup/createGroup.vue"
 import Profile from '@/pages/profile/profile.vue';
 import ForgotPassword from '@/modules/forgot-password/forgot-password.vue';
 
@@ -18,9 +18,9 @@ const routes = [
         component: Main,
         children: [
             {
-                path: 'layout',
-                name: 'Layout',
-                component : Layout
+                path: '',
+                name: 'CreateGroup',
+                component: CreateGroup
             },
             {
                 path: 'dashboard',
@@ -39,7 +39,7 @@ const routes = [
             },
             {
                 path: 'dataTable',
-                name: 'dataTable',
+                name: 'DataTable',
                 component : DataTable
             }
         ]

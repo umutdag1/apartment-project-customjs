@@ -119,6 +119,7 @@ export default defineComponent({
   methods: {
     onEditorFocus(event, editor) {
       this.tempFocusEditor = markRaw(editor);
+      console.log(this.tempFocusEditor.commands._commands.get("bold"));
     },
     addContentToEditorData(e) {
       if (this.tempFocusEditor === null) {
@@ -126,11 +127,13 @@ export default defineComponent({
       } else {
         const targetElemContentArray = e.target.innerText.split(" ");
         targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
-        this.tempFocusEditor.model.change((writer) => {
-          writer.insertText(
+        this.tempFocusEditor.model.change(async (writer) => {
+          await writer.insertText(
             `@${targetElemContentArray.join("")} `,
+            { bold: true },
             this.tempFocusEditor.model.document.selection.getFirstPosition()
           );
+          this.tempFocusEditor.commands._commands.get("bold").value = false;
         });
         this.fireToast(
           `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,

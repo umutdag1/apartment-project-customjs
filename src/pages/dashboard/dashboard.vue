@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header :headerObj="content.header"></content-header>
+      <content-header-component :headerObj="content.header"></content-header-component>
     </div>
   </div>
 
@@ -9,25 +9,23 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card">
-            <div class="card-header d-flex p-0">
+          <tab-component>
+            <template v-slot:tabLink>
               <tab-link-component
-                :tabsLinkProps="tabs.tabLinks"
+                :tabLinksProps="tabs.tabLinks"
               ></tab-link-component>
-            </div>
-            <div class="card-body">
-              <div class="tab-content">
-                <tab-pane-component :tabPanesProp="tabs.tabPanes">
-                  <template v-slot:addPersonWithFilePane>
-                    <add-person-with-file-component></add-person-with-file-component>
-                  </template>
-                  <template v-slot:addPersonPane>
-                    <add-person-component></add-person-component>
-                  </template>
-                </tab-pane-component>
-              </div>
-            </div>
-          </div>
+            </template>
+            <template v-slot:tabContent>
+              <tab-pane-component :tabPanesProps="tabs.tabPanes">
+                <template v-slot:addPersonWithFilePane>
+                  <add-person-with-file-component></add-person-with-file-component>
+                </template>
+                <template v-slot:addPersonPane>
+                  <add-person-component></add-person-component>
+                </template>
+              </tab-pane-component>
+            </template>
+          </tab-component>
         </div>
       </div>
     </div>
@@ -35,16 +33,18 @@
 </template>
   <script>
 import { defineComponent, ref } from "vue";
-import ContentHeader from "@/components/content/header/header.vue";
-import AddPersonComponent from "@/components/content/content/mixed/addPerson.vue";
-import AddPersonWithFileComponent from "@/components/content/content/mixed/addPersonWithFile.vue";
-import TabLinkComponent from "@/components/content/content/mixed/tab/tabLink.vue";
-import TabPaneComponent from "@/components/content/content/mixed/tab/tabPane.vue";
+import ContentHeaderComponent from "@/components/content/header/header.vue";
+import AddPersonComponent from "@/components/content/content/mixed/addPerson/addPerson.vue";
+import AddPersonWithFileComponent from "@/components/content/content/mixed/addPerson/addPersonWithFile.vue";
+import TabComponent from "@/components/content/content/mixed/custom/tab/tab.vue";
+import TabLinkComponent from "@/components/content/content/mixed/custom/tab/tabLink.vue";
+import TabPaneComponent from "@/components/content/content/mixed/custom/tab/tabPane.vue";
 export default defineComponent({
   components: {
-    ContentHeader,
+    ContentHeaderComponent,
     AddPersonComponent,
     AddPersonWithFileComponent,
+    TabComponent,
     TabLinkComponent,
     TabPaneComponent,
   },

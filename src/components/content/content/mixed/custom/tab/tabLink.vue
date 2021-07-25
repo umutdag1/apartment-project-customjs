@@ -3,7 +3,7 @@
   <ul class="nav nav-pills ml-auto p-2">
     <li
       class="nav-item"
-      v-for="tabIndex in tabsLinkProps.links.length"
+      v-for="tabIndex in tabLinksProps.links.length"
       :key="tabIndex"
     >
       <a
@@ -14,7 +14,7 @@
         :href="`#tab_${tabIndex}`"
         data-toggle="tab"
         @click="changeTab"
-        >{{ tabsLinkProps.links[tabIndex - 1].linkContent }}</a
+        >{{ tabLinksProps.links[tabIndex - 1].linkContent }}</a
       >
     </li>
   </ul>
@@ -25,7 +25,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    tabsLinkProps: {
+    tabLinksProps: {
       required: true,
       type: Object,
     },
@@ -46,9 +46,9 @@ export default defineComponent({
       );
 
       this.activeTab.linkContent =
-        this.tabsLinkProps.links[targetIDLastIndexAsNumber - 1].linkContent;
+        this.tabLinksProps.links[targetIDLastIndexAsNumber - 1].linkContent;
       this.activeTab.linkSubject =
-        this.tabsLinkProps.links[targetIDLastIndexAsNumber - 1].linkSubject;
+        this.tabLinksProps.links[targetIDLastIndexAsNumber - 1].linkSubject;
 
       if (!e.target.classList.contains("active")) {
         this.emitter.emit("resetForm", "fileGroupElem");

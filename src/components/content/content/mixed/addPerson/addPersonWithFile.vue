@@ -12,8 +12,8 @@
 
 <script>
 import { defineComponent } from "vue";
-import ContentFileGroup from "@/components/content/content/fileGroup.vue";
-import ContentFormGroup from "@/components/content/content/formGroup.vue";
+import ContentFileGroup from "@/components/content/content/mixed/custom/group/fileGroup.vue";
+import ContentFormGroup from "@/components/content/content/mixed/custom/group/formGroup.vue";
 
 export default defineComponent({
   components: {

@@ -1,43 +1,38 @@
 <template>
-  <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
-      <content-header :headerObj="content.header"></content-header>
-      <!-- /.row -->
+      <content-header-component
+        :headerObj="content.header"
+      ></content-header-component>
     </div>
-    <!-- /.container-fluid -->
   </div>
-  <!-- /.content-header -->
-  <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <input-group
+        <input-group-component
           :inputProps="content.inputGroupForAddNewGroup"
           @userInput="userInput = $event"
-        ></input-group>
-        <button-group
+        ></input-group-component>
+        <button-group-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @saveGroup="saveGroup"
           @nextPage="nextPage"
           @saveAndnextPage="saveAndnextPage"
-        ></button-group>
+        ></button-group-component>
       </div>
     </div>
-    <!-- /.container-fluid -->
   </section>
-  <!-- /.content -->
 </template>
 <script>
 import { defineComponent } from "vue";
-import ContentHeader from "@/components/content/header/header.vue";
-import InputGroup from "@/components/content/content/inputGroup.vue";
-import ButtonGroup from "@/components/content/content/buttonGroup.vue";
+import ContentHeaderComponent from "@/components/content/header/header.vue";
+import InputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
+import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
 export default defineComponent({
   components: {
-    ContentHeader,
-    InputGroup,
-    ButtonGroup,
+    ContentHeaderComponent,
+    InputGroupComponent,
+    ButtonGroupComponent,
   },
   data() {
     return {

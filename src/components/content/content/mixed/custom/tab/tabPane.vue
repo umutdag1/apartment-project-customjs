@@ -1,6 +1,6 @@
 <template>
   <template
-    v-for="tabPaneIndex in tabPanesProp.panes.length"
+    v-for="tabPaneIndex in tabPanesProps.panes.length"
     :key="tabPaneIndex"
   >
     <div
@@ -11,7 +11,7 @@
       :id="`tab_${tabPaneIndex}`"
     >
       <div class="row">
-        <slot :name="tabPanesProp.panes[tabPaneIndex-1].name"></slot>
+        <slot :name="tabPanesProps.panes[tabPaneIndex-1].name"></slot>
       </div>
     </div>
   </template>
@@ -22,7 +22,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    tabPanesProp: {
+    tabPanesProps: {
       required: true,
       type: Object,
     },

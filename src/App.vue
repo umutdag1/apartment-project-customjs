@@ -32,53 +32,76 @@ export default {
     addNextScriptToBody();
   },
   methods: {
-    makePostRequest(request) {
+    makePostRequest(configParams) {
       const vm = this;
+      const axiosRequestParams = configParams.axiosRequestParams;
+      const requestedObjParams = configParams.currentObjParams;
       this.axios
-        .post(request.url, request.data, request.config)
+        .post(
+          axiosRequestParams.url,
+          axiosRequestParams.data,
+          axiosRequestParams.config
+        )
         .then(function (data) {
-          vm.emitter.emit(request.name, {
+          vm.emitter.emit(axiosRequestParams.name, {
             responseData: data,
             situation: "success",
-            requestedData: request,
+            requestedObjParams,
           });
-          vm.fireToast(request.toastMessages.success, "success", 2000);
+          vm.fireToast(
+            axiosRequestParams.toastMessages.success,
+            "success",
+            2000
+          );
           console.log(data.data);
         })
         .catch(function (thrown) {
           if (thrown.__CANCEL__) {
-            vm.fireToast(request.toastMessages.warning, "warning", 2000);
+            vm.fireToast(
+              axiosRequestParams.toastMessages.warning,
+              "warning",
+              2000
+            );
           } else {
-            vm.emitter.emit(request.name, {
+            vm.emitter.emit(axiosRequestParams.name, {
               responseData: [],
               situation: "error",
-              requestedData: request,
+              requestedObjParams,
             });
-            vm.fireToast(request.toastMessages.error, "error", 2000);
+            vm.fireToast(axiosRequestParams.toastMessages.error, "error", 2000);
           }
         });
     },
-    makeGetRequest(request) {
+    makeGetRequest(configParams) {
       const vm = this;
+      const axiosRequestParams = configParams.axiosRequestParams;
       this.axios
-        .get(request.url, request.config)
+        .get(axiosRequestParams.url, axiosRequestParams.config)
         .then(function (data) {
-          vm.emitter.emit(request.name, {
+          vm.emitter.emit(axiosRequestParams.name, {
             responseData: data,
             situation: "success",
           });
-          vm.fireToast(request.toastMessages.success, "success", 2000);
+          vm.fireToast(
+            axiosRequestParams.toastMessages.success,
+            "success",
+            2000
+          );
           console.log(data.data);
         })
         .catch(function (thrown) {
           if (thrown.__CANCEL__) {
-            vm.fireToast(request.toastMessages.warning, "warning", 2000);
+            vm.fireToast(
+              axiosRequestParams.toastMessages.warning,
+              "warning",
+              2000
+            );
           } else {
-            vm.emitter.emit(request.name, {
+            vm.emitter.emit(axiosRequestParams.name, {
               responseData: [],
               situation: "error",
             });
-            vm.fireToast(request.toastMessages.error, "error", 2000);
+            vm.fireToast(axiosRequestParams.toastMessages.error, "error", 2000);
           }
         });
     },
@@ -95,11 +118,11 @@ export default {
     this.emitter.on("fireToast", (data) => {
       this.fireToast(...data);
     });
-    this.emitter.on("makePostRequest", (request) => {
-      this.makePostRequest(request)
+    this.emitter.on("makePostRequest", (configParams) => {
+      this.makePostRequest(configParams);
     });
-    this.emitter.on("makeGetRequest", (request) => {
-      this.makeGetRequest(request)
+    this.emitter.on("makeGetRequest", (configParams) => {
+      this.makeGetRequest(configParams);
     });
   },
 };

@@ -89,7 +89,7 @@ export default defineComponent({
   },
   methods: {
     addUserToDB() {
-      const request = {
+      const axiosRequestParams = {
         name: "addUserGetRequest",
         url: "https://jsonplaceholder.typicode.com/posts",
         config: {},
@@ -99,7 +99,9 @@ export default defineComponent({
         },
       };
 
-      this.emitter.emit("makeGetRequest", request);
+      this.emitter.emit("makeGetRequest", {
+        axiosRequestParams
+      });
     },
   },
   mounted() {

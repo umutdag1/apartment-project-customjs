@@ -3,7 +3,6 @@
   <div class="content-header">
     <div class="container-fluid">
       <content-header :headerObj="content.header"></content-header>
-      <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
   </div>
@@ -18,42 +17,17 @@
           <!-- Custom Tabs -->
           <div class="card">
             <div class="card-header d-flex p-0">
-              <h3 class="card-title p-3">{{ tabs.activeTab.tabLink }}</h3>
-              <ul class="nav nav-pills ml-auto p-2">
-                <li
-                  class="nav-item"
-                  v-for="tabIndex in tabs.tabContentArr.length"
-                  :key="tabIndex"
-                >
-                  <a
-                    class="nav-link"
-                    :class="{
-                      active: tabIndex - 1 === 0,
-                    }"
-                    :href="`#tab_${tabIndex}`"
-                    data-toggle="tab"
-                    @click="changeTab"
-                    >{{ tabs.tabContentArr[tabIndex - 1] }}</a
-                  >
-                </li>
-              </ul>
+              <tab-link-component
+                :tabsLinkProps="tabs.tabLinks"
+              ></tab-link-component>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
               <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
                   <div class="row">
-                    <div class="col-12 mb-3">
-                      <p class="h3">Gruba Liste Oluştur</p>
-                    </div>
-                    <content-form-group
-                      :formGroupProps="content.formGroupForSelectGroup"
-                    >
-                    </content-form-group>
-                    <content-file-group
-                      :fileGroupProps="content.fileGroupForAddFile"
-                      ref="fileGroupElem"
-                    ></content-file-group>
+                    <add-person-with-file-component
+                    ></add-person-with-file-component>
                   </div>
                 </div>
                 <!-- /.tab-pane -->
@@ -79,20 +53,30 @@
   <script>
 import { defineComponent, ref } from "vue";
 import ContentHeader from "@/components/content/header/header.vue";
-import ContentFileGroup from "@/components/content/content/fileGroup.vue";
-import ContentFormGroup from "@/components/content/content/formGroup.vue";
-import AddPersonComponent from "@/components/content/content/addPerson.vue";
+import AddPersonComponent from "@/components/content/content/mixed/addPerson.vue";
+import AddPersonWithFileComponent from "@/components/content/content/mixed/addPersonWithFile.vue";
+import TabLinkComponent from "@/components/content/content/mixed/tab/tabLink.vue";
 export default defineComponent({
   components: {
     ContentHeader,
-    ContentFileGroup,
-    ContentFormGroup,
-    AddPersonComponent
+    AddPersonComponent,
+    AddPersonWithFileComponent,
+    TabLinkComponent,
   },
   setup() {
     const tabs = ref({
-      tabContentArr: ["Dosya Ekle", "Kişi Ekle"],
-      tabLinkArr: ["Excel Dosya Ekleme", "Kişi Ekleme"],
+      tabLinks: {
+        links: [
+          {
+            linkContent: "Dosya Ekle",
+            linkSubject: "Excel Dosya Ekleme",
+          },
+          {
+            linkContent: "Kişi Ekle",
+            linkSubject: "Kişi Ekleme",
+          },
+        ],
+      },
       activeTab: {
         tabContent: "Dosya Ekle",
         tabLink: "Excel Dosya Ekleme",
@@ -107,46 +91,8 @@ export default defineComponent({
         header: {
           name: "Toplantı Oluştur",
         },
-        fileGroupForAddFile: {
-          fileType: "Excel",
-          encapsulationElem: {
-            class: "col-12",
-          },
-        },
-        formGroupForSelectGroup: {
-          labelName: "Grup Seç",
-          options: [
-            {
-              name: "Group1",
-              class: "",
-            },
-            {
-              name: "Group2",
-              class: "",
-            },
-          ],
-          encapsulationElem: {
-            class: "col-12",
-          },
-        },
       },
     };
-  },
-  methods: {
-    changeTab(e) {
-      const targetID = e.target.href.slice(e.target.href.indexOf("#"));
-      const targetIDLastIndexAsNumber = Number(
-        targetID.charAt(targetID.length - 1)
-      );
-      const targetElem = document.querySelector(targetID);
-      this.tabs.activeTab.tabContent =
-        this.tabs.tabContentArr[targetIDLastIndexAsNumber - 1];
-      this.tabs.activeTab.tabLink =
-        this.tabs.tabLinkArr[targetIDLastIndexAsNumber - 1];
-      if (!targetElem.classList.contains("active")) {
-        this.$refs.fileGroupElem.resetForm();
-      }
-    },
   },
 });
 </script>

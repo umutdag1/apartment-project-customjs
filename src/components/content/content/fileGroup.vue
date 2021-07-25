@@ -107,9 +107,11 @@ export default defineComponent({
   data() {
     return {
       files: [],
+      uploadFileInfo: {
+        isUploadCanceledArr: [],
+        isUploadContinuedArr: [],
+      },
       axiosRequest: {
-        isRequestCanceledArr: [],
-        isRequestContinuingStatusArr: [],
         cancelTokenArr: [],
       },
       isFileLoaded: false,
@@ -120,15 +122,14 @@ export default defineComponent({
     uploadFile(fileIndex) {
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
-      this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = true;
+      this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
 
       const formData = new FormData();
       formData.append("bytes", this.files[fileIndex]);
 
-      const request = {
+      const axiosRequestParams = {
         name: "uploadFilePostRequest",
         data: formData,
-        fileIndex: fileIndex,
         url: "https://v2.convertapi.com/upload",
         config: {
           cancelToken: this.axiosRequest.cancelTokenArr[fileIndex].token,
@@ -136,15 +137,26 @@ export default defineComponent({
             "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
-            if (this.axiosRequest.isRequestCanceledArr[fileIndex]) {
-              this.axiosRequest.cancelTokenArr[fileIndex].cancel();
-              this.axiosRequest.cancelTokenArr[fileIndex] =
-                this.axios.CancelToken.source();
-              this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = false;
-              this.axiosRequest.isRequestCanceledArr[fileIndex] = false;
+            const fileProgressElem =
+              this.$refs[`fileProgress_${fileIndex + 1}`];
+
+            if (this.uploadFileInfo.isUploadCanceledArr[fileIndex]) {
+              cancelProcess(this);
             } else {
-              this.$refs[`fileProgress_${fileIndex + 1}`].style.width =
-                (progressEvent.loaded / progressEvent.total) * 100 + "%";
+              if (fileProgressElem === null) {
+                cancelProcess(this);
+              } else {
+                fileProgressElem.style.width =
+                  (progressEvent.loaded / progressEvent.total) * 100 + "%";
+              }
+            }
+
+            function cancelProcess(curThis) {
+              curThis.axiosRequest.cancelTokenArr[fileIndex].cancel();
+              curThis.axiosRequest.cancelTokenArr[fileIndex] =
+                curThis.axios.CancelToken.source();
+              curThis.uploadFileInfo.isUploadContinuedArr[fileIndex] = false;
+              curThis.uploadFileInfo.isUploadCanceledArr[fileIndex] = false;
             }
           },
         },
@@ -155,20 +167,28 @@ export default defineComponent({
         },
       };
 
-      this.emitter.emit("makePostRequest", request);
+      const currentObjParams = {
+        curThis: this,
+        fileIndex,
+      };
+
+      this.emitter.emit("makePostRequest", {
+        axiosRequestParams,
+        currentObjParams,
+      });
     },
     cancelUploadFile(fileIndex) {
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = false;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = true;
-      this.axiosRequest.isRequestCanceledArr[fileIndex] = true;
-      this.axiosRequest.isRequestContinuingStatusArr[fileIndex] = false;
+      this.uploadFileInfo.isUploadCanceledArr[fileIndex] = true;
+      this.uploadFileInfo.isUploadContinuedArr[fileIndex] = false;
     },
     resetForm() {
-      const isStillRequestContinuingArr =
-        this.axiosRequest.isRequestContinuingStatusArr.filter(
+      const isStillUploadContinuedArr =
+        this.uploadFileInfo.isUploadContinuedArr.filter(
           (boolItem) => boolItem === true
         );
-      if (isStillRequestContinuingArr.length > 0) {
+      if (isStillUploadContinuedArr.length > 0) {
         this.emitter.emit("fireToast", [
           "Dosya Yükleme İşlemi Sürerken Temizleyemezsin.",
           "error",
@@ -177,31 +197,31 @@ export default defineComponent({
       } else {
         this.files = [];
         this.axiosRequest.cancelTokenArr = [];
-        this.axiosRequest.isRequestCanceledArr = [];
-        this.axiosRequest.isRequestContinuingStatusArr = [];
+        this.uploadFileInfo.isUploadCanceledArr = [];
+        this.uploadFileInfo.isUploadContinuedArr = [];
       }
     },
     onChangeFileUpload() {
-      this.axiosRequest.isRequestCanceledArr.push(false);
-      this.axiosRequest.isRequestContinuingStatusArr.push(false);
+      this.uploadFileInfo.isUploadCanceledArr.push(false);
+      this.uploadFileInfo.isUploadContinuedArr.push(false);
       this.axiosRequest.cancelTokenArr.push(this.axios.CancelToken.source());
       this.files.push(this.$refs.file.files[0]);
       this.$refs.file.value = "";
     },
   },
   mounted() {
-    const vm = this;
     this.emitter.on("uploadFilePostRequest", (data) => {
-      if (Object.keys(data.requestedData).includes("fileIndex")) {
-        vm.axiosRequest.isRequestContinuingStatusArr[
-          data.requestedData.fileIndex
-        ] = false;
-        vm.$refs[`uploadBtn_${data.requestedData.fileIndex + 1}`].disabled =
-          data.situation === "success" ? true : false;
-        vm.$refs[`cancelBtn_${data.requestedData.fileIndex + 1}`].disabled =
-          data.situation === "success" ? true : false;
-      }
+      this.uploadFileInfo.isUploadContinuedArr[
+        data.requestedObjParams.fileIndex
+      ] = false;
+      data.requestedObjParams.curThis.$refs[
+        `uploadBtn_${data.requestedObjParams.fileIndex + 1}`
+      ].disabled = data.situation === "success" ? true : false;
+      data.requestedObjParams.curThis.$refs[
+        `cancelBtn_${data.requestedObjParams.fileIndex + 1}`
+      ].disabled = data.situation === "success" ? true : false;
     });
+
     this.emitter.on("uploadFileGetRequest", (data) => {
       console.log(data.responseData);
     });

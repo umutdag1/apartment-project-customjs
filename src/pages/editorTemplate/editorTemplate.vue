@@ -41,12 +41,6 @@
           >
             Soyad Ekle
           </button>
-          <!--<button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addGroupToEditorContent"
-          >
-            Yasal Grup Ekle
-          </button>-->
           <button
             class="btn btn-outline-secondary mx-2 my-2"
             @click="addContentToEditorData($event)"

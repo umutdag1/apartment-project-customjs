@@ -1,17 +1,33 @@
 <template>
-  <template>
-    <div class="tab-pane active" id="tab_1">
+  <template
+    v-for="tabPaneIndex in tabPanesProp.panes.length"
+    :key="tabPaneIndex"
+  >
+    <div
+      class="tab-pane"
+      :class="{
+        active: tabPaneIndex - 1 === 0,
+      }"
+      :id="`tab_${tabPaneIndex}`"
+    >
       <div class="row">
-        <slot name=""></slot>
-        <add-person-with-file-component></add-person-with-file-component>
+        <slot :name="tabPanesProp.panes[tabPaneIndex-1].name"></slot>
       </div>
     </div>
   </template>
 </template>
-</template>
 
 <script>
-export default {};
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    tabPanesProp: {
+      required: true,
+      type: Object,
+    },
+  },
+});
 </script>
 
 <style>

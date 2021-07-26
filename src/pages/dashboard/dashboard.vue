@@ -1,7 +1,9 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component :headerObj="content.header"></content-header-component>
+      <content-header-component
+        :headerObj="content.header"
+      ></content-header-component>
     </div>
   </div>
 
@@ -27,6 +29,10 @@
             </template>
           </tab-component>
         </div>
+        <button-group-component
+          :buttonProps="content.buttonGroupForAddNewGroup"
+          @nextPage="nextPage"
+        ></button-group-component>
       </div>
     </div>
   </section>
@@ -39,6 +45,7 @@ import AddPersonWithFileComponent from "@/components/content/content/mixed/addPe
 import TabComponent from "@/components/content/content/mixed/custom/tab/tab.vue";
 import TabLinkComponent from "@/components/content/content/mixed/custom/tab/tabLink.vue";
 import TabPaneComponent from "@/components/content/content/mixed/custom/tab/tabPane.vue";
+import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
 export default defineComponent({
   components: {
     ContentHeaderComponent,
@@ -47,6 +54,7 @@ export default defineComponent({
     TabComponent,
     TabLinkComponent,
     TabPaneComponent,
+    ButtonGroupComponent,
   },
   setup() {
     const tabs = ref({
@@ -86,8 +94,25 @@ export default defineComponent({
         header: {
           name: "Toplantı Oluştur",
         },
+        buttonGroupForAddNewGroup: {
+          buttons: [
+            {
+              class: "btn btn-block btn-primary my-2",
+              clickEvent: "nextPage",
+              innerHtml: "Devam Et",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-12",
+          },
+        },
       },
     };
+  },
+  methods: {
+    nextPage() {
+      this.$router.push("editorTemplate");
+    },
   },
 });
 </script>

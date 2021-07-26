@@ -1,12 +1,10 @@
 <template>
-  <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">Toplantı Şablonu Oluştur</h1>
         </div>
-        <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
@@ -15,13 +13,9 @@
             <li class="breadcrumb-item active">Editor Template</li>
           </ol>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
   </div>
-  <!-- /.content-header -->
 
   <!-- Main content -->
   <section class="content">
@@ -31,37 +25,37 @@
         <div class="col-12 text-center" id="contentButtons">
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Ad Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Soyad Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Toplantı Tarihi Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Toplantı Saati Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Toplantı Yeri Ekle
           </button>
           <button
             class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditorData($event)"
+            @click="addContentToEditor($event)"
           >
             Toplantı Konusu Ekle
           </button>
@@ -75,11 +69,8 @@
           ></ckeditor>
         </div>
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
   </section>
-  <!-- /.content -->
 </template>
 
 <script>
@@ -114,19 +105,19 @@ export default defineComponent({
     onEditorFocus(event, editor) {
       this.tempFocusEditor = markRaw(editor);
     },
-    addContentToEditorData(e) {
+    addContentToEditor(e) {
       if (this.tempFocusEditor === null) {
         this.fireToast("Bir Alan Seçiniz", "error", 800);
       } else {
         const targetElemContentArray = e.target.innerText.split(" ");
         targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
-        this.tempFocusEditor.model.change(async (writer) => {
-          await writer.insertText(
-            `@${targetElemContentArray.join("")} `,
+        this.tempFocusEditor.model.change((writer) => {
+          writer.insertText(
+            ` @${targetElemContentArray.join("")} `,
             { bold: true },
             this.tempFocusEditor.model.document.selection.getFirstPosition()
-          );
-          this.tempFocusEditor.commands._commands.get("bold").value = false;
+          );        
+          this.tempFocusEditor.setData(this.tempFocusEditor.getData()); 
         });
         this.fireToast(
           `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,

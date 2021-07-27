@@ -29,7 +29,6 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForCreateMeeting"
-          @goBackPage="emitter.emit('goBackPage')"
           @sendBySMS="sendMeeting($event)"
           @sendByReturnReceipt="sendMeeting($event)"
           @sendByEmail="sendMeeting($event)"
@@ -126,11 +125,6 @@ export default defineComponent({
         },
         buttonGroupForCreateMeeting: {
           buttons: [
-            {
-              class: "btn btn-block btn-secondary my-2 mr-3",
-              clickEvent: "goBackPage",
-              innerHtml: "Geri Dön",
-            },
             {
               class: "btn btn-block btn-info my-2 mr-3",
               clickEvent: "sendBySMS",

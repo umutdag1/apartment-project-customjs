@@ -45,7 +45,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <router-link
-                  to="/"
+                  to="/createGroup"
                   class="nav-link"
                   exact
                   exact-active-class="active"
@@ -102,7 +102,7 @@
 
               <li class="nav-item">
                 <router-link
-                  to="/createTemplate"
+                  to="/createMeetingTemplate"
                   class="nav-link"
                   active-class="active"
                 >

@@ -20,7 +20,7 @@
               accept=".xlsx,.xls"
               class="d-none"
             />
-            <div class="btn-group w-100">
+            <div class="btn-group w-100 overflow-auto">
               <button class="btn btn-secondary col" @click="$refs.file.click()">
                 <i class="far fa-file mr-2"></i>
                 <span>Dosya Seç</span>
@@ -89,7 +89,6 @@
           </div>
         </div>
       </div>
-      <!-- /.card-body -->
     </div>
   </div>
 </template>

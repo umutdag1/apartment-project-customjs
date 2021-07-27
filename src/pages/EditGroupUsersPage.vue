@@ -1,14 +1,15 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <app-header-component
-        :headerObj="content.header"
-      ></app-header-component>
+      <app-header-component :headerObj="content.header"></app-header-component>
     </div>
   </div>
 
   <section class="content">
     <div class="container-fluid">
+      <app-form-component :formGroupProps="content.formGroupForSelectGroup">
+      </app-form-component>
+
       <app-data-table-component
         :dataTableProps="content.dataTableProps"
       ></app-data-table-component>
@@ -16,7 +17,7 @@
       <app-button-component
         :buttonProps="content.buttonGroupForAddNewGroup"
         @goBackPage="emitter.emit('goBackPage')"
-        @goNextPage="emitter.emit('goNextPage', 'createTemplate')"
+        @goNextPage="emitter.emit('goNextPage', 'createMeetingTemplate')"
       ></app-button-component>
     </div>
   </section>
@@ -25,12 +26,14 @@
 <script>
 import { defineComponent } from "vue";
 import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 import AppDataTableComponent from "@/components/Content/Table/AppDataTable.vue";
 import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 
 export default defineComponent({
   components: {
     AppHeaderComponent,
+    AppFormComponent,
     AppDataTableComponent,
     AppButtonComponent,
   },
@@ -39,6 +42,22 @@ export default defineComponent({
       content: {
         header: {
           name: "Grup Kişileri Düzenle",
+        },
+        formGroupForSelectGroup: {
+          labelName: "Grup Seç",
+          options: [
+            {
+              name: "Group1",
+              class: "",
+            },
+            {
+              name: "Group2",
+              class: "",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-12",
+          },
         },
         buttonGroupForAddNewGroup: {
           buttons: [

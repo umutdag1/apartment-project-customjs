@@ -1,23 +1,27 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <app-header-component
-        :headerObj="content.header"
-      ></app-header-component>
+      <app-header-component :headerObj="content.header"></app-header-component>
     </div>
   </div>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <app-form-component
-          :formGroupProps="content.formGroupForSelectGroup"
-        >
+        <app-form-component :formGroupProps="content.formGroupForSelectGroup">
         </app-form-component>
+
+        <app-button-component
+          :buttonProps="content.buttonGroupForSelectGroup"
+        ></app-button-component>
 
         <app-form-component
           :formGroupProps="content.formGroupForSelectTemplate"
         >
         </app-form-component>
+
+        <app-button-component
+          :buttonProps="content.buttonGroupForSelectTemplate"
+        ></app-button-component>
 
         <app-button-component
           :buttonProps="content.buttonGroupForCreateMeeting"
@@ -63,7 +67,24 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12",
+            class: "col-md-8",
+          },
+        },
+        buttonGroupForSelectGroup: {
+          buttons: [
+            {
+              class: "btn btn-block btn-secondary my-2 mr-1",
+              clickEvent: "goBackPage",
+              innerHtml: "Düzenle",
+            },
+            {
+              class: "btn btn-block btn-primary my-2",
+              clickEvent: "goNextPage",
+              innerHtml: "Oluştur",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-md-4 d-flex align-items-center justify-content-center mt-md-3 overflow-auto",
           },
         },
         formGroupForSelectTemplate: {
@@ -79,7 +100,24 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12",
+            class: "col-md-8",
+          },
+        },
+        buttonGroupForSelectTemplate: {
+          buttons: [
+            {
+              class: "btn btn-block btn-secondary my-2 mr-1",
+              clickEvent: "goBackPage",
+              innerHtml: "Düzenle",
+            },
+            {
+              class: "btn btn-block btn-primary my-2",
+              clickEvent: "goNextPage",
+              innerHtml: "Oluştur",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-md-4 d-flex align-items-center justify-content-center mt-md-3 overflow-auto",
           },
         },
         buttonGroupForCreateMeeting: {
@@ -106,7 +144,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center",
+            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
       },
@@ -121,7 +159,7 @@ export default defineComponent({
         "success",
         2000,
       ]);
-    }
+    },
   },
 });
 </script>

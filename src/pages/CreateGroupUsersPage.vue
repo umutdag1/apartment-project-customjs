@@ -110,7 +110,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex align-items-center justify-content-center",
+            class: "col-12 d-flex align-items-center justify-content-center overflow-auto",
           },
         },
       },

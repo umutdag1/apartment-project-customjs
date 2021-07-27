@@ -8,7 +8,6 @@
 
   <app-file-component
     :fileGroupProps="content.fileGroupForAddFile"
-    ref="fileGroupElem"
   ></app-file-component>
 
 </template>

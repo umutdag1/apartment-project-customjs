@@ -12,6 +12,8 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForSelectGroup"
+          @goEditGroupUsersPage="emitter.emit('goNextPage','editGroupUsers')"
+          @goCreateGroupUsersPage="emitter.emit('goNextPage','createGroupUsers')"
         ></app-button-component>
 
         <app-form-component
@@ -21,6 +23,8 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForSelectTemplate"
+          @goCreateMeetingTemplatePage="emitter.emit('goNextPage','createMeetingTemplate')"
+          @goEditMeetingTemplatePage="emitter.emit('goNextPage','editMeetingTemplate')"
         ></app-button-component>
 
         <app-button-component
@@ -74,12 +78,12 @@ export default defineComponent({
           buttons: [
             {
               class: "btn btn-block btn-secondary my-2 mr-1",
-              clickEvent: "goBackPage",
+              clickEvent: "goEditGroupUsersPage",
               innerHtml: "Düzenle",
             },
             {
               class: "btn btn-block btn-primary my-2",
-              clickEvent: "goNextPage",
+              clickEvent: "goCreateGroupUsersPage",
               innerHtml: "Oluştur",
             },
           ],
@@ -107,12 +111,12 @@ export default defineComponent({
           buttons: [
             {
               class: "btn btn-block btn-secondary my-2 mr-1",
-              clickEvent: "goBackPage",
+              clickEvent: "goEditMeetingTemplatePage",
               innerHtml: "Düzenle",
             },
             {
               class: "btn btn-block btn-primary my-2",
-              clickEvent: "goNextPage",
+              clickEvent: "goCreateMeetingTemplatePage",
               innerHtml: "Oluştur",
             },
           ],

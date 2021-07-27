@@ -59,7 +59,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center",
+            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
         buttonGroupForCreateGroup: {

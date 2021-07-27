@@ -34,6 +34,17 @@
           role="menu"
           data-accordion="false"
         >
+          <li class="nav-item">
+            <router-link
+              to="/createMeeting"
+              class="nav-link"
+              active-class="active"
+            >
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>Toplantı Oluştur</p>
+            </router-link>
+          </li>
+
           <li class="nav-item menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -81,24 +92,13 @@
 
           <li class="nav-item menu-open">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-file-signature"></i>
               <p>
-                Toplantı
+                Şablon
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-
-              <li class="nav-item">
-                <router-link
-                  to="/createMeeting"
-                  class="nav-link"
-                  active-class="active"
-                >
-                  <i class="nav-icon far fa-circle"></i>
-                  <p>Toplantı Oluştur</p>
-                </router-link>
-              </li>
 
               <li class="nav-item">
                 <router-link
@@ -107,7 +107,18 @@
                   active-class="active"
                 >
                   <i class="nav-icon far fa-circle"></i>
-                  <p>Toplantı Şablonu Oluştur</p>
+                  <p>Şablon Oluştur</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link
+                  to="/editMeetingTemplate"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>Şablon Düzenle</p>
                 </router-link>
               </li>
             </ul>

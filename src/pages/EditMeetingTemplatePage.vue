@@ -9,10 +9,8 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <app-input-component
-          :inputProps="content.inputGroupForAddTemplate"
-          @userInput="userInput = $event"
-        ></app-input-component>
+        <app-form-component :formGroupProps="content.formGroupForSelectTemplate">
+      </app-form-component>
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddContentToEditor"
@@ -42,14 +40,14 @@
 <script>
 import { defineComponent } from "vue";
 import AppHeaderComponent from "@/components/Header/AppHeader.vue";
-import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 import AppEditorComponent from "@/components/Content/Form/AppEditor.vue";
 
 export default defineComponent({
   components: {
     AppHeaderComponent,
-    AppInputComponent,
+    AppFormComponent,
     AppButtonComponent,
     AppEditorComponent,
   },
@@ -58,7 +56,7 @@ export default defineComponent({
       buttonEventToAddItsContent: new PointerEvent(""),
       content: {
         header: {
-          name: "Şablon Oluştur",
+          name: "Şablon Düzenle",
         },
         buttonGroupForAddContentToEditor: {
           buttons: [
@@ -124,8 +122,18 @@ export default defineComponent({
             class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
-        inputGroupForAddTemplate: {
-          name: ["Şablon Adı"],
+        formGroupForSelectTemplate: {
+          labelName: "Şablon Seç",
+          options: [
+            {
+              name: "Şablon1",
+              class: "",
+            },
+            {
+              name: "Şablon2",
+              class: "",
+            },
+          ],
           encapsulationElem: {
             class: "col-12",
           },

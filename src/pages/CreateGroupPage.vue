@@ -1,39 +1,39 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component
+      <app-header-component
         :headerObj="content.header"
-      ></content-header-component>
+      ></app-header-component>
     </div>
   </div>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <input-group-component
+        <app-input-component
           :inputProps="content.inputGroupForAddNewGroup"
           @userInput="userInput = $event"
-        ></input-group-component>
+        ></app-input-component>
         
-        <button-group-component
+        <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @save="save"
           @goNextPage="emitter.emit('goNextPage','createGroupUsers')"
           @saveAndnextPage="saveAndnextPage"
-        ></button-group-component>
+        ></app-button-component>
       </div>
     </div>
   </section>
 </template>
 <script>
 import { defineComponent } from "vue";
-import ContentHeaderComponent from "@/components/content/header/header.vue";
-import InputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
-import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 export default defineComponent({
   components: {
-    ContentHeaderComponent,
-    InputGroupComponent,
-    ButtonGroupComponent,
+    AppHeaderComponent,
+    AppInputComponent,
+    AppButtonComponent,
   },
   data() {
     return {

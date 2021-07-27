@@ -1,9 +1,9 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component
+      <app-header-component
         :headerObj="content.header"
-      ></content-header-component>
+      ></app-header-component>
     </div>
   </div>
 
@@ -11,52 +11,52 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <tab-component>
+          <app-tab-component>
             <template v-slot:tabLink>
-              <tab-link-component
+              <app-tab-link-component
                 :tabLinksProps="tabs.tabLinks"
-              ></tab-link-component>
+              ></app-tab-link-component>
             </template>
             <template v-slot:tabContent>
-              <tab-pane-component :tabPanesProps="tabs.tabPanes">
-                <template v-slot:addPersonWithFilePane>
-                  <add-person-with-file-component></add-person-with-file-component>
+              <app-tab-pane-component :tabPanesProps="tabs.tabPanes">
+                <template v-slot:addUserWithFilePane>
+                  <add-user-with-file-component></add-user-with-file-component>
                 </template>
-                <template v-slot:addPersonPane>
-                  <add-person-component></add-person-component>
+                <template v-slot:addUserWithHandPane>
+                  <add-user-with-hand-component></add-user-with-hand-component>
                 </template>
-              </tab-pane-component>
+              </app-tab-pane-component>
             </template>
-          </tab-component>
+          </app-tab-component>
         </div>
         
-        <button-group-component
+        <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @goBackPage="emitter.emit('goBackPage')"
           @goNextPage="emitter.emit('goNextPage','editGroupUsers')"
-        ></button-group-component>
+        ></app-button-component>
       </div>
     </div>
   </section>
 </template>
   <script>
 import { defineComponent, ref } from "vue";
-import ContentHeaderComponent from "@/components/content/header/header.vue";
-import AddPersonComponent from "@/components/content/content/mixed/addPerson/addPerson.vue";
-import AddPersonWithFileComponent from "@/components/content/content/mixed/addPerson/addPersonWithFile.vue";
-import TabComponent from "@/components/content/content/mixed/custom/tab/tab.vue";
-import TabLinkComponent from "@/components/content/content/mixed/custom/tab/tabLink.vue";
-import TabPaneComponent from "@/components/content/content/mixed/custom/tab/tabPane.vue";
-import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AddUserWithHandComponent from "@/components/Content/Mixed/AddUser/AddUserWithHand.vue";
+import AddUserWithFileComponent from "@/components/Content/Mixed/AddUser/AddUserWithFile.vue";
+import AppTabComponent from "@/components/Content/UI/Tab/AppTab.vue";
+import AppTabLinkComponent from "@/components/Content/UI/Tab/AppTabLink.vue";
+import AppTabPaneComponent from "@/components/Content/UI/Tab/AppTabPane.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 export default defineComponent({
   components: {
-    ContentHeaderComponent,
-    AddPersonComponent,
-    AddPersonWithFileComponent,
-    TabComponent,
-    TabLinkComponent,
-    TabPaneComponent,
-    ButtonGroupComponent,
+    AppHeaderComponent,
+    AddUserWithHandComponent,
+    AddUserWithFileComponent,
+    AppTabComponent,
+    AppTabLinkComponent,
+    AppTabPaneComponent,
+    AppButtonComponent,
   },
   setup() {
     const tabs = ref({
@@ -75,10 +75,10 @@ export default defineComponent({
       tabPanes: {
         panes: [
           {
-            name: "addPersonWithFilePane",
+            name: "addUserWithFilePane",
           },
           {
-            name: "addPersonPane",
+            name: "addUserWithHandPane",
           },
         ],
       },

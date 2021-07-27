@@ -11,9 +11,10 @@
         :placeholder="inputContentName"
         :aria-label="inputContentName"
         aria-describedby="basic-addon2"
-        v-model.lazy="user.input[index]"
+        v-model="user.input[index]"
       />
     </div>
+
     {{ user.input[index] }}
   </div>
 </template>
@@ -31,6 +32,7 @@ export default defineComponent({
   emits: ["userInput"],
   data() {
     return {
+      elem : "",
       user: {
         input: [],
       },

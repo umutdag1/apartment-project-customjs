@@ -3,31 +3,31 @@
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
 
-  <content-form-group :formGroupProps="content.formGroupForSelectGroup">
-  </content-form-group>
+  <content-form-group-component :formGroupProps="content.formGroupForSelectGroup">
+  </content-form-group-component>
 
-  <content-input-group
+  <content-input-group-component
     :inputProps="content.inputGroupForAddNewUser"
-  ></content-input-group>
+  ></content-input-group-component>
 
-  <content-button-group
+  <content-button-group-component
     :buttonProps="content.buttonGroupForAddNewUser"
     @addUserToDB="addUserToDB"
   >
-  </content-button-group>
+  </content-button-group-component>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import ContentInputGroup from "@/components/content/content/mixed/custom/group/inputGroup.vue";
-import ContentButtonGroup from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
-import ContentFormGroup from "@/components/content/content/mixed/custom/group/formGroup.vue";
+import ContentInputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
+import ContentButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import ContentFormGroupComponent from "@/components/content/content/mixed/custom/group/formGroup.vue";
 
 export default defineComponent({
   components: {
-    ContentFormGroup,
-    ContentInputGroup,
-    ContentButtonGroup,
+    ContentFormGroupComponent,
+    ContentInputGroupComponent,
+    ContentButtonGroupComponent,
   },
   data() {
     return {
@@ -106,7 +106,7 @@ export default defineComponent({
       };
 
       this.emitter.emit("makeGetRequest", {
-        axiosRequestParams
+        axiosRequestParams,
       });
     },
   },
@@ -118,13 +118,13 @@ export default defineComponent({
       console.log(data.responseData);
     });
   },
-  unmounted(){
+  unmounted() {
     this.emitter.emit("resetEmitter", [
       "addUserPostRequest",
       "addUserGetRequest",
       "callResetForm",
     ]);
-  }
+  },
 });
 </script>
 

@@ -17,6 +17,7 @@
               </div>
             </div>
           </div>
+
           <div class="input-group mb-3">
             <input
               type="password"
@@ -29,6 +30,7 @@
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-8">
               <div class="icheck-primary">
@@ -78,10 +80,22 @@
 </template>
 <script>
 import { defineComponent } from "vue";
+
 export default defineComponent({
+  components: {
+  },
   data() {
     return {
       appElement: null,
+      content : {
+        inputProps : {
+          name : ["Password"],
+          encapsulationElem : {
+            class : "input-group mb-3"
+          }
+        }
+      },
+      user : ""
     };
   },
   mounted() {

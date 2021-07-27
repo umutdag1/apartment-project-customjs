@@ -31,7 +31,7 @@
           :buttonProps="content.buttonGroupForAddTemplate"
           @goBackPage="emitter.emit('goBackPage')"
           @save="save"
-          @goNextPage="emitter.emit('goNextPage','editGroupUser')"
+          @goNextPage="emitter.emit('goNextPage','createMeeting')"
           @saveAndnextPage="saveAndnextPage"
         ></button-group-component>
       </div>
@@ -152,7 +152,7 @@ export default defineComponent({
     },
     saveAndnextPage() {
       this.save();
-      this.emitter.emit('goNextPage','editGroupUser');
+      this.emitter.emit('goNextPage','createMeeting');
     },
   }
 });

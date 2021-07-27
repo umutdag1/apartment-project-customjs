@@ -34,45 +34,83 @@
           role="menu"
           data-accordion="false"
         >
-          <li class="nav-item">
-            <router-link
-              to="/"
-              class="nav-link"
-              exact
-              exact-active-class="active"
-            >
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
-              <p>Grup Oluştur</p>
-            </router-link>
+              <p>
+                Grup
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link
+                  to="/"
+                  class="nav-link"
+                  exact
+                  exact-active-class="active"
+                >
+                  <i class="nav-icon far fa-circle nav-icon"></i>
+                  <p>Grup Oluştur</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link
+                  to="/createGroupUsers"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle nav-icon"></i>
+                  <p>Grup Kişileri Ekle</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link
+                  to="/editGroupUsers"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle nav-icon"></i>
+                  <p>Grup Kişileri Düzenle</p>
+                </router-link>
+              </li>
+            </ul>
           </li>
 
-          <li class="nav-item">
-            <router-link to="/createGroupUsers" class="nav-link" active-class="active">
-              <i class="nav-icon fas fa-users-cog"></i>
-              <p>Grup Kişileri Ekle</p>
-            </router-link>
-          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                Toplantı
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
 
-          <li class="nav-item">
-            <router-link
-              to="/editGroupUsers"
-              class="nav-link"
-              active-class="active"
-            >
-              <i class="nav-icon fas fa-users-slash"></i>
-              <p>Grup Kişileri Düzenle</p>
-            </router-link>
-          </li>
+              <li class="nav-item">
+                <router-link
+                  to="/createMeeting"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>Toplantı Oluştur</p>
+                </router-link>
+              </li>
 
-          <li class="nav-item">
-            <router-link
-              to="/createTemplate"
-              class="nav-link"
-              active-class="active"
-            >
-              <i class="nav-icon fas fa-file-signature"></i>
-              <p>Toplantı Şablonu Oluştur</p>
-            </router-link>
+              <li class="nav-item">
+                <router-link
+                  to="/createTemplate"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>Toplantı Şablonu Oluştur</p>
+                </router-link>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>

@@ -1,12 +1,14 @@
 <template>
-  <table class="table table-hover table-bordered w-100" id="dataTable">
-    <data-table-head-component
-      :tableHeads="table.heads"
-    ></data-table-head-component>
-    <data-table-body-component
-      :tableDataProps="table.data"
-    ></data-table-body-component>
-  </table>
+  <div :class="dataTableProps.encapsulationElem.class">
+    <table class="table table-hover table-bordered w-100" id="dataTable">
+      <data-table-head-component
+        :tableHeads="table.heads"
+      ></data-table-head-component>
+      <data-table-body-component
+        :tableDataProps="table.data"
+      ></data-table-body-component>
+    </table>
+  </div>
 </template>
 
 <script>

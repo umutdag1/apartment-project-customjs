@@ -47,15 +47,26 @@
           </li>
 
           <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link" active-class="active">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>Toplantı Oluştur</p>
+            <router-link to="/createGroupUsers" class="nav-link" active-class="active">
+              <i class="nav-icon fas fa-users-cog"></i>
+              <p>Grup Kişileri Ekle</p>
             </router-link>
           </li>
 
           <li class="nav-item">
             <router-link
-              to="/editorTemplate"
+              to="/editGroupUsers"
+              class="nav-link"
+              active-class="active"
+            >
+              <i class="nav-icon fas fa-users-slash"></i>
+              <p>Grup Kişileri Düzenle</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link
+              to="/createTemplate"
               class="nav-link"
               active-class="active"
             >

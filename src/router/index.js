@@ -4,9 +4,9 @@ import Main from '@/modules/main/main.vue';
 import Login from '@/modules/login/login.vue';
 import Register from '@/modules/register/register.vue';
 
-import Dashboard from '@/pages/dashboard/dashboard.vue';
-import EditorTemplate from '@/pages/editorTemplate/editorTemplate.vue';
-import DataTable from "@/pages/dataTable/dataTable.vue";
+import CreateGroupUsers from '@/pages/createGroupUsers/createGroupUsers.vue';
+import CreateTemplate from '@/pages/createTemplate/createTemplate.vue';
+import EditGroupUsers from "@/pages/editGroupUsers/editGroupUsers.vue";
 import CreateGroup from "@/pages/createGroup/createGroup.vue"
 import Profile from '@/pages/profile/profile.vue';
 import ForgotPassword from '@/modules/forgot-password/forgot-password.vue';
@@ -23,9 +23,9 @@ const routes = [
                 component: CreateGroup
             },
             {
-                path: 'dashboard',
-                name: 'Dashboard',
-                component: Dashboard
+                path: 'createGroupUsers',
+                name: 'CreateGroupUsers',
+                component: CreateGroupUsers
             },
             {
                 path: 'profile',
@@ -33,14 +33,14 @@ const routes = [
                 component: Profile
             },
             {
-                path: 'editorTemplate',
-                name: 'EditorTemplate',
-                component : EditorTemplate
+                path: 'createTemplate',
+                name: 'CreateTemplate',
+                component : CreateTemplate
             },
             {
-                path: 'dataTable',
-                name: 'DataTable',
-                component : DataTable
+                path: 'editGroupUsers',
+                name: 'EditGroupUsers',
+                component : EditGroupUsers
             }
         ]
     },

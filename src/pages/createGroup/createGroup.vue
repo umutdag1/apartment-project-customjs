@@ -17,7 +17,7 @@
         <button-group-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @save="save"
-          @goNextPage="emitter.emit('goNextPage','dashboard')"
+          @goNextPage="emitter.emit('goNextPage','createGroupUsers')"
           @saveAndnextPage="saveAndnextPage"
         ></button-group-component>
       </div>
@@ -103,12 +103,9 @@ export default defineComponent({
         2000,
       ]);
     },
-    nextPage() {
-      this.$router.push("dashboard");
-    },
     saveAndnextPage() {
       this.save();
-      this.nextPage();
+      this.emitter.emit('goNextPage','createGroupUsers')
     },
   },
 });

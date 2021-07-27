@@ -33,7 +33,7 @@
         <button-group-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @goBackPage="emitter.emit('goBackPage')"
-          @goNextPage="emitter.emit('goNextPage','editorTemplate')"
+          @goNextPage="emitter.emit('goNextPage','editGroupUsers')"
         ></button-group-component>
       </div>
     </div>
@@ -94,7 +94,7 @@ export default defineComponent({
     return {
       content: {
         header: {
-          name: "Toplantı Oluştur",
+          name: "Grup Kişileri Ekle",
         },
         buttonGroupForAddNewGroup: {
           buttons: [

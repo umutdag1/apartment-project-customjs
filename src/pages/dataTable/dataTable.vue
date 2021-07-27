@@ -2,122 +2,43 @@
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6">
-          <h1 class="m-0">Toplantı Şablonu Oluştur</h1>
-        </div>
-        <!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-              <router-link to="/">Home</router-link>
-            </li>
-            <li class="breadcrumb-item active">Editor Template</li>
-          </ol>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+      <content-header-component
+        :headerObj="content.header"
+      ></content-header-component>
     </div>
-    <!-- /.container-fluid -->
   </div>
-  <!-- /.content-header -->
 
-  <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
-      <table class="table table-hover table-bordered w-100" id="dataTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Body</th>
-            <th>UserID</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.title }}</td>
-            <td>{{ user.body }}</td>
-            <td>{{ user.userId }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- /.row -->
+      <data-table-component :dataTableProps="content.dataTableProps"></data-table-component>
     </div>
-    <!-- /.container-fluid -->
   </section>
-  <!-- /.content -->
 </template>
   
 <script>
 import { defineComponent } from "vue";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import jsZip from "jszip";
-import "datatables.net-buttons-dt/js/buttons.dataTables";
-import "datatables.net-buttons-dt/css/buttons.dataTables.min.css";
-import "datatables.net-buttons/js/buttons.html5.min";
-import "datatables.net-responsive-dt/js/responsive.dataTables.min";
-import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
-import $ from "jquery";
+import ContentHeaderComponent from "@/components/content/header/header.vue";
+import DataTableComponent from "@/components/content/content/mixed/custom/dataTable/dataTable.vue"
 
 export default defineComponent({
-  mounted() {
-    window.JSZip = jsZip;
-    //API Call
-    this.axios.get("https://jsonplaceholder.typicode.com/posts").then((res) => {
-      this.users = res.data;
-      this.createDataTable();
-    });
-    /*
-    //Server Side Rendering
-    $("#dataTable").DataTable({
-      processing: true,
-      serverSide: true,
-      dom: "Bfrtip",
-      buttons: ["copyHtml5", "excelHtml5"],
-      responsive: true
-    });*/
-  },
-  methods: {
-    createDataTable() {
-      this.$nextTick(() => {
-        var table = $("#dataTable").DataTable({
-          responsive: true,
-          language: {
-            url: "assets/custom/library/datatable/language/Turkish.json",
-          },
-          orderCellsTop: true,
-          fixedHeader: true,
-          fnInitComplete: function (/*oSettings, json*/) {
-            $("#dataTable_filter").html('<div class="row"></div>');
-            $("#dataTable thead tr th").each(function (i) {
-              const title = $(this).text();
-              const dataTableColumnLength = $("#dataTable thead tr th").length;
-              $("#dataTable_filter .row").append(
-                `<div class="col-md-${12 / dataTableColumnLength} my-1 px-2">
-                <input type="text" class="w-100" placeholder="Search ${title}" />
-              </div>`
-              );
-              $("input", this).on("keyup change", function () {
-                if (table.column(i).search() !== this.value) {
-                  table.column(i).search(this.value).draw();
-                }
-              });
-            });
-          },
-        });
-      });
-    },
+  components: {
+    ContentHeaderComponent,
+    DataTableComponent
   },
   data() {
     return {
-      users: [],
+      content: {
+        header: {
+          name: "Grup Kişileri Düzenle",
+        },
+        dataTableProps : {
+          axios : {
+            url : "https://jsonplaceholder.typicode.com/posts"
+          }
+        }
+      },
     };
-  },
+  }
 });
 </script>
 

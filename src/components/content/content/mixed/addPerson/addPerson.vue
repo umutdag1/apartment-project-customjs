@@ -2,11 +2,14 @@
   <div class="col-12 mb-3">
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
+
   <content-form-group :formGroupProps="content.formGroupForSelectGroup">
   </content-form-group>
+
   <content-input-group
     :inputProps="content.inputGroupForAddNewUser"
   ></content-input-group>
+
   <content-button-group
     :buttonProps="content.buttonGroupForAddNewUser"
     @addUserToDB="addUserToDB"
@@ -45,9 +48,9 @@ export default defineComponent({
         buttonGroupForAddNewUser: {
           buttons: [
             {
-              class: "btn btn-block btn-primary my-2 mr-3",
+              class: "btn btn-block btn-info my-2 mr-3",
               clickEvent: "addUserToDB",
-              innerHtml: "Ekle",
+              innerHtml: "Kaydet",
             },
             {
               class: "btn btn-block btn-danger my-2",
@@ -56,7 +59,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-md-12 d-flex justify-content-center align-items-center",
+            class: "col-12 d-flex justify-content-center align-items-center",
           },
         },
         buttonGroupForCreateGroup: {

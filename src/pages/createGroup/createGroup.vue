@@ -13,10 +13,11 @@
           :inputProps="content.inputGroupForAddNewGroup"
           @userInput="userInput = $event"
         ></input-group-component>
+        
         <button-group-component
           :buttonProps="content.buttonGroupForAddNewGroup"
-          @saveGroup="saveGroup"
-          @nextPage="nextPage"
+          @save="save"
+          @goNextPage="emitter.emit('goNextPage','dashboard')"
           @saveAndnextPage="saveAndnextPage"
         ></button-group-component>
       </div>
@@ -50,19 +51,19 @@ export default defineComponent({
         inputGroupForAddNewGroup: {
           name: ["Grup Adı"],
           encapsulationElem: {
-            class: "col-md-12",
+            class: "col-12",
           },
         },
         buttonGroupForAddNewGroup: {
           buttons: [
             {
-              class: "btn btn-block btn-secondary my-2 mr-2",
-              clickEvent: "saveGroup",
+              class: "btn btn-block btn-info my-2 mr-3",
+              clickEvent: "save",
               innerHtml: "Kaydet",
             },
             {
-              class: "btn btn-block btn-primary my-2 mr-2",
-              clickEvent: "nextPage",
+              class: "btn btn-block btn-primary my-2 mr-3",
+              clickEvent: "goNextPage",
               innerHtml: "Devam Et",
             },
             {
@@ -72,7 +73,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-md-12 d-flex justify-content-center align-items-center",
+            class: "col-12 d-flex justify-content-center align-items-center",
           },
         },
         formGroupForSelectTemplate: {
@@ -95,8 +96,7 @@ export default defineComponent({
     };
   },
   methods: {
-    saveGroup() {
-      console.log("Grup Kaydedildi");
+    save() {
       this.emitter.emit("fireToast", [
         "Grup İsmi Başarıyla Eklendi.",
         "success",
@@ -107,7 +107,7 @@ export default defineComponent({
       this.$router.push("dashboard");
     },
     saveAndnextPage() {
-      this.saveGroup();
+      this.save();
       this.nextPage();
     },
   },

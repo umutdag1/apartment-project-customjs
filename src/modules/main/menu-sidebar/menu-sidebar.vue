@@ -19,6 +19,7 @@
             alt="User Image"
           />
         </div>
+
         <div class="info">
           <router-link to="/profile" class="d-block"
             >Alexander Pierce</router-link
@@ -44,21 +45,22 @@
               <p>Grup Oluştur</p>
             </router-link>
           </li>
+
           <li class="nav-item">
-            <router-link
-              to="/dashboard"
-              class="nav-link"
-              exact
-              exact-active-class="active"
-            >
+            <router-link to="/dashboard" class="nav-link" active-class="active">
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>Toplantı Oluştur</p>
             </router-link>
           </li>
+
           <li class="nav-item">
-            <router-link to="/profile" class="nav-link" active-class="active">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Profile</p>
+            <router-link
+              to="/editorTemplate"
+              class="nav-link"
+              active-class="active"
+            >
+              <i class="nav-icon fas fa-file-signature"></i>
+              <p>Toplantı Şablonu Oluştur</p>
             </router-link>
           </li>
         </ul>

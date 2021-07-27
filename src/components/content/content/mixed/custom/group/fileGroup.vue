@@ -41,7 +41,7 @@
           >
             <div class="col-auto">
               <span class="preview"
-                ><i class="far fa-file-excel fa-3x"></i
+                ><i class="fas fa-file-upload fa-3x"></i
               ></span>
             </div>
             <div class="col d-flex align-items-center">

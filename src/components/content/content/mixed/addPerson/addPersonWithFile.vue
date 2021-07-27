@@ -2,12 +2,15 @@
   <div class="col-12 mb-3">
     <p class="h3">Gruba Liste Oluştur</p>
   </div>
+
   <content-form-group :formGroupProps="content.formGroupForSelectGroup">
   </content-form-group>
+
   <content-file-group
     :fileGroupProps="content.fileGroupForAddFile"
     ref="fileGroupElem"
   ></content-file-group>
+
 </template>
 
 <script>
@@ -18,7 +21,7 @@ import ContentFormGroup from "@/components/content/content/mixed/custom/group/fo
 export default defineComponent({
   components: {
     ContentFileGroup,
-    ContentFormGroup,
+    ContentFormGroup
   },
   data() {
     return {
@@ -44,9 +47,18 @@ export default defineComponent({
           encapsulationElem: {
             class: "col-12",
           },
-        },
+        }
       },
     };
+  },
+  methods : {
+    save(){
+      this.emitter.emit("fireToast", [
+        "Gruba Liste Başarıyla Kaydedildi.",
+        "success",
+        2000,
+      ]);
+    }
   },
   mounted() {
     this.emitter.on("resetForm", (callFunc) => {

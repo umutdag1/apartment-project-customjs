@@ -105,6 +105,12 @@ export default {
           }
         });
     },
+    goBackPage(){
+      this.$router.back();
+    },
+    goNextPage(page){
+      this.$router.push(page);
+    },
     fireToast(message, type, duration) {
       this.$toast.open({
         message: message,
@@ -117,6 +123,14 @@ export default {
   mounted() {
     this.emitter.on("fireToast", (data) => {
       this.fireToast(...data);
+    });
+
+    this.emitter.on("goBackPage", () => {
+      this.goBackPage();
+    });
+    
+    this.emitter.on("goNextPage", (page) => {
+      this.goNextPage(page);
     });
 
     this.emitter.on("makePostRequest", (configParams) => {

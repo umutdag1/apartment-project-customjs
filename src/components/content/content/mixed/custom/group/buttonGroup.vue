@@ -2,7 +2,7 @@
   <div :class="buttonProps.encapsulationElem.class">
     <button
       :class="button.class"
-      @click="$emit(button.clickEvent)"
+      @click="$emit(button.clickEvent,$event)"
       v-for="(button, index) in buttonProps.buttons"
       :key="index"
       v-html="button.innerHtml"

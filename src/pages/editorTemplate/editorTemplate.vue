@@ -1,159 +1,163 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0">Toplantı Şablonu Oluştur</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-              <router-link to="/">Home</router-link>
-            </li>
-            <li class="breadcrumb-item active">Editor Template</li>
-          </ol>
-        </div>
-      </div>
+      <content-header-component
+        :headerObj="content.header"
+      ></content-header-component>
     </div>
   </div>
-
-  <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-12 text-center" id="contentButtons">
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Ad Ekle
-          </button>
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Soyad Ekle
-          </button>
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Toplantı Tarihi Ekle
-          </button>
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Toplantı Saati Ekle
-          </button>
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Toplantı Yeri Ekle
-          </button>
-          <button
-            class="btn btn-outline-secondary mx-2 my-2"
-            @click="addContentToEditor($event)"
-          >
-            Toplantı Konusu Ekle
-          </button>
-        </div>
-        <div class="col-12 my-2">
-          <ckeditor
-            :editor="editor"
-            v-model="editorData"
-            :config="editorConfig"
-            @focus="onEditorFocus"
-          ></ckeditor>
-        </div>
+        <input-group-component
+          :inputProps="content.inputGroupForAddTemplate"
+          @userInput="userInput = $event"
+        ></input-group-component>
+
+        <button-group-component
+          :buttonProps="content.buttonGroupForAddContentToEditor"
+          @addContentToEditor="
+            buttonEventToAddItsContent = $event
+          "
+        ></button-group-component>
+
+        <wysiwyg-component
+          :wysiwygProps="content.wysiwygProps"
+          :addButtonContentToWysiwyg="buttonEventToAddItsContent"
+          @editorData="editor.data = $event"
+        ></wysiwyg-component>
+
+        <button-group-component
+          :buttonProps="content.buttonGroupForAddTemplate"
+          @goBackPage="emitter.emit('goBackPage')"
+          @save="save"
+          @goNextPage="emitter.emit('goNextPage','dataTable')"
+          @saveAndnextPage="saveAndnextPage"
+        ></button-group-component>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import { defineComponent, markRaw } from "vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { defineComponent } from "vue";
+import ContentHeaderComponent from "@/components/content/header/header.vue";
+import InputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
+import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import WysiwygComponent from "@/components/content/content/mixed/custom/wysiwyg/ckeditor.vue";
 
 export default defineComponent({
+  components: {
+    ContentHeaderComponent,
+    InputGroupComponent,
+    ButtonGroupComponent,
+    WysiwygComponent,
+  },
   data() {
     return {
-      editor: ClassicEditor,
-      editorData: "",
-      tempFocusEditor: null,
-      positionOfCursorInEditor: null,
-      editorConfig: {
-        toolbar: {
-          items: [
-            "heading",
-            "bold",
-            "italic",
-            "link",
-            "undo",
-            "redo",
-            "|",
-            "bulletedList",
-            "numberedList",
-          ],
+      buttonEventToAddItsContent: new PointerEvent(""),
+      content: {
+        header: {
+          name: "Toplantı Şablonu Oluştur",
         },
+        buttonGroupForAddContentToEditor: {
+          buttons: [
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Ad Ekle",
+            },
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Soyad Ekle",
+            },
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Toplantı Tarihi Ekle",
+            },
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Toplantı Saati Ekle",
+            },
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Toplantı Yeri Ekle",
+            },
+            {
+              class: "btn btn-outline-secondary mx-2 my-2",
+              clickEvent: "addContentToEditor",
+              innerHtml: "Toplantı Konusu Ekle",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-12 text-center",
+          },
+        },
+        buttonGroupForAddTemplate: {
+          buttons: [
+            {
+              class: "btn btn-block btn-secondary my-2 mr-3",
+              clickEvent: "goBackPage",
+              innerHtml: "Geri Dön",
+            },
+            {
+              class: "btn btn-block btn-info my-2 mr-3",
+              clickEvent: "save",
+              innerHtml: "Kaydet",
+            },
+            {
+              class: "btn btn-block btn-primary my-2 mr-3",
+              clickEvent: "goNextPage",
+              innerHtml: "Devam Et",
+            },
+            {
+              class: "btn btn-block btn-success my-2",
+              clickEvent: "saveAndnextPage",
+              innerHtml: "Kaydet ve Devam Et",
+            },
+          ],
+          encapsulationElem: {
+            class: "col-12 d-flex justify-content-center align-items-center",
+          },
+        },
+        inputGroupForAddTemplate: {
+          name: ["Şablon Adı"],
+          encapsulationElem: {
+            class: "col-12",
+          },
+        },
+        wysiwygProps: {
+          encapsulationElem: {
+            class: "col-12 my-2",
+          },
+        },
+      },
+      userInput: {},
+      editor: {
+        data: "",
       },
     };
   },
   methods: {
-    onEditorFocus(event, editor) {
-      this.tempFocusEditor = markRaw(editor);
+    save() {
+      this.emitter.emit("fireToast", [
+        "Şablon Başarıyla Eklendi.",
+        "success",
+        2000,
+      ]);
     },
-    addContentToEditor(e) {
-      if (this.tempFocusEditor === null) {
-        this.fireToast("Bir Alan Seçiniz", "error", 800);
-      } else {
-        const targetElemContentArray = e.target.innerText.split(" ");
-        targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
-        this.tempFocusEditor.model.change((writer) => {
-          writer.insertText(
-            ` @${targetElemContentArray.join("")} `,
-            { bold: true },
-            this.tempFocusEditor.model.document.selection.getFirstPosition()
-          );        
-          this.tempFocusEditor.setData(this.tempFocusEditor.getData()); 
-        });
-        this.fireToast(
-          `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
-          "success",
-          800
-        );
-      }
+    saveAndnextPage() {
+      this.save();
+      this.emitter.emit('goNextPage','dataTable');
     },
-    fireToast(message, type, duration) {
-      this.$toast.open({
-        message: message,
-        position: "top-right",
-        type: type,
-        duration: duration,
-      });
-    },
-    resetAll() {
-      this.clearEditorData();
-      this.clearEditorContent();
-      this.activeContentButtons();
-    },
-    clearEditorData() {
-      this.editorData = "";
-    },
-    activeContentButtons() {
-      const contentButtons = document.querySelectorAll("#contentButtons .btn");
-      for (const contentButton of contentButtons) {
-        contentButton.disabled = false;
-      }
-    },
-  },
+  }
 });
 </script>
+
 <style>
-.ck-editor__editable_inline {
-  min-height: 300px;
-  width: 100%;
-}
+
 </style>

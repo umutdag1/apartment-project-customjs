@@ -29,9 +29,11 @@
             </template>
           </tab-component>
         </div>
+        
         <button-group-component
           :buttonProps="content.buttonGroupForAddNewGroup"
-          @nextPage="nextPage"
+          @goBackPage="emitter.emit('goBackPage')"
+          @goNextPage="emitter.emit('goNextPage','editorTemplate')"
         ></button-group-component>
       </div>
     </div>
@@ -97,22 +99,22 @@ export default defineComponent({
         buttonGroupForAddNewGroup: {
           buttons: [
             {
+              class: "btn btn-block btn-secondary my-2 mr-3",
+              clickEvent: "goBackPage",
+              innerHtml: "Geri Dön",
+            },
+            {
               class: "btn btn-block btn-primary my-2",
-              clickEvent: "nextPage",
+              clickEvent: "goNextPage",
               innerHtml: "Devam Et",
             },
           ],
           encapsulationElem: {
-            class: "col-12",
+            class: "col-12 d-flex align-items-center justify-content-center",
           },
         },
       },
     };
-  },
-  methods: {
-    nextPage() {
-      this.$router.push("editorTemplate");
-    },
   },
 });
 </script>

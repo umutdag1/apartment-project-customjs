@@ -50,9 +50,9 @@ export default defineComponent({
       this.activeTab.linkSubject =
         this.tabLinksProps.links[targetIDLastIndexAsNumber - 1].linkSubject;
 
-      if (!e.target.classList.contains("active")) {
+      /*if (!e.target.classList.contains("active")) {
         this.emitter.emit("callResetForm", "resetForm");
-      }
+      }*/
     },
   },
 });

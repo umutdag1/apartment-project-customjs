@@ -1,38 +1,38 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component
+      <app-header-component
         :headerObj="content.header"
-      ></content-header-component>
+      ></app-header-component>
     </div>
   </div>
 
   <section class="content">
     <div class="container-fluid">
-      <data-table-component
+      <app-data-table-component
         :dataTableProps="content.dataTableProps"
-      ></data-table-component>
+      ></app-data-table-component>
 
-      <button-group-component
+      <app-button-component
         :buttonProps="content.buttonGroupForAddNewGroup"
         @goBackPage="emitter.emit('goBackPage')"
         @goNextPage="emitter.emit('goNextPage', 'createTemplate')"
-      ></button-group-component>
+      ></app-button-component>
     </div>
   </section>
 </template>
   
 <script>
 import { defineComponent } from "vue";
-import ContentHeaderComponent from "@/components/content/header/header.vue";
-import DataTableComponent from "@/components/content/content/mixed/custom/dataTable/dataTable.vue";
-import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AppDataTableComponent from "@/components/Content/Table/AppDataTable.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 
 export default defineComponent({
   components: {
-    ContentHeaderComponent,
-    DataTableComponent,
-    ButtonGroupComponent,
+    AppHeaderComponent,
+    AppDataTableComponent,
+    AppButtonComponent,
   },
   data() {
     return {

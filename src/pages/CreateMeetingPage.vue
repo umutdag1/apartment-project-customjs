@@ -1,31 +1,31 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component
+      <app-header-component
         :headerObj="content.header"
-      ></content-header-component>
+      ></app-header-component>
     </div>
   </div>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <content-form-group-component
+        <app-form-component
           :formGroupProps="content.formGroupForSelectGroup"
         >
-        </content-form-group-component>
+        </app-form-component>
 
-        <content-form-group-component
+        <app-form-component
           :formGroupProps="content.formGroupForSelectTemplate"
         >
-        </content-form-group-component>
+        </app-form-component>
 
-        <button-group-component
+        <app-button-component
           :buttonProps="content.buttonGroupForCreateMeeting"
           @goBackPage="emitter.emit('goBackPage')"
           @sendBySMS="sendMeeting($event)"
           @sendByReturnReceipt="sendMeeting($event)"
           @sendByEmail="sendMeeting($event)"
-        ></button-group-component>
+        ></app-button-component>
       </div>
     </div>
   </section>
@@ -33,15 +33,15 @@
   
   <script>
 import { defineComponent } from "vue";
-import ContentHeaderComponent from "@/components/content/header/header.vue";
-import ContentFormGroupComponent from "@/components/content/content/mixed/custom/group/formGroup.vue";
-import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
+import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 
 export default defineComponent({
   components: {
-    ContentHeaderComponent,
-    ContentFormGroupComponent,
-    ButtonGroupComponent,
+    AppHeaderComponent,
+    AppFormComponent,
+    AppButtonComponent,
   },
   data() {
     return {
@@ -109,10 +109,6 @@ export default defineComponent({
             class: "col-12 d-flex justify-content-center align-items-center",
           },
         },
-      },
-      userInput: {},
-      editor: {
-        data: "",
       },
     };
   },

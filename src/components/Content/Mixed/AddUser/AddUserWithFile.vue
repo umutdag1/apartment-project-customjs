@@ -3,25 +3,25 @@
     <p class="h3">Gruba Liste Oluştur</p>
   </div>
 
-  <content-form-group :formGroupProps="content.formGroupForSelectGroup">
-  </content-form-group>
+  <app-form-component :formGroupProps="content.formGroupForSelectGroup">
+  </app-form-component>
 
-  <content-file-group
+  <app-file-component
     :fileGroupProps="content.fileGroupForAddFile"
     ref="fileGroupElem"
-  ></content-file-group>
+  ></app-file-component>
 
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import ContentFileGroup from "@/components/content/content/mixed/custom/group/fileGroup.vue";
-import ContentFormGroup from "@/components/content/content/mixed/custom/group/formGroup.vue";
+import AppFileComponent from "@/components/Content/Form/AppFile.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 
 export default defineComponent({
   components: {
-    ContentFileGroup,
-    ContentFormGroup
+    AppFileComponent,
+    AppFormComponent
   },
   data() {
     return {
@@ -50,15 +50,6 @@ export default defineComponent({
         }
       },
     };
-  },
-  methods : {
-    save(){
-      this.emitter.emit("fireToast", [
-        "Gruba Liste Başarıyla Kaydedildi.",
-        "success",
-        2000,
-      ]);
-    }
   },
   mounted() {
     this.emitter.on("resetForm", (callFunc) => {

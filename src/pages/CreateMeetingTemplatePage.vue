@@ -1,39 +1,39 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <content-header-component
+      <app-header-component
         :headerObj="content.header"
-      ></content-header-component>
+      ></app-header-component>
     </div>
   </div>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <input-group-component
+        <app-input-component
           :inputProps="content.inputGroupForAddTemplate"
           @userInput="userInput = $event"
-        ></input-group-component>
+        ></app-input-component>
 
-        <button-group-component
+        <app-button-component
           :buttonProps="content.buttonGroupForAddContentToEditor"
           @addContentToEditor="
             buttonEventToAddItsContent = $event
           "
-        ></button-group-component>
+        ></app-button-component>
 
-        <wysiwyg-component
+        <app-editor-component
           :wysiwygProps="content.wysiwygProps"
           :addButtonContentToWysiwyg="buttonEventToAddItsContent"
           @editorData="editor.data = $event"
-        ></wysiwyg-component>
+        ></app-editor-component>
 
-        <button-group-component
+        <app-button-component
           :buttonProps="content.buttonGroupForAddTemplate"
           @goBackPage="emitter.emit('goBackPage')"
           @save="save"
           @goNextPage="emitter.emit('goNextPage','createMeeting')"
           @saveAndnextPage="saveAndnextPage"
-        ></button-group-component>
+        ></app-button-component>
       </div>
     </div>
   </section>
@@ -41,17 +41,17 @@
 
 <script>
 import { defineComponent } from "vue";
-import ContentHeaderComponent from "@/components/content/header/header.vue";
-import InputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
-import ButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
-import WysiwygComponent from "@/components/content/content/mixed/custom/wysiwyg/ckeditor.vue";
+import AppHeaderComponent from "@/components/Header/AppHeader.vue";
+import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
+import AppEditorComponent from "@/components/Content/Form/AppEditor.vue";
 
 export default defineComponent({
   components: {
-    ContentHeaderComponent,
-    InputGroupComponent,
-    ButtonGroupComponent,
-    WysiwygComponent,
+    AppHeaderComponent,
+    AppInputComponent,
+    AppButtonComponent,
+    AppEditorComponent,
   },
   data() {
     return {

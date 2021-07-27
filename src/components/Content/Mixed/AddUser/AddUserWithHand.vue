@@ -3,31 +3,31 @@
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
 
-  <content-form-group-component :formGroupProps="content.formGroupForSelectGroup">
-  </content-form-group-component>
+  <app-form-component :formGroupProps="content.formGroupForSelectGroup">
+  </app-form-component>
 
-  <content-input-group-component
+  <app-input-component
     :inputProps="content.inputGroupForAddNewUser"
-  ></content-input-group-component>
+  ></app-input-component>
 
-  <content-button-group-component
+  <app-button-component
     :buttonProps="content.buttonGroupForAddNewUser"
     @addUserToDB="addUserToDB"
   >
-  </content-button-group-component>
+  </app-button-component>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import ContentInputGroupComponent from "@/components/content/content/mixed/custom/group/inputGroup.vue";
-import ContentButtonGroupComponent from "@/components/content/content/mixed/custom/group/buttonGroup.vue";
-import ContentFormGroupComponent from "@/components/content/content/mixed/custom/group/formGroup.vue";
+import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 
 export default defineComponent({
   components: {
-    ContentFormGroupComponent,
-    ContentInputGroupComponent,
-    ContentButtonGroupComponent,
+    AppInputComponent,
+    AppButtonComponent,
+    AppFormComponent,
   },
   data() {
     return {

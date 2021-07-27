@@ -1,12 +1,12 @@
 <template>
   <div :class="dataTableProps.encapsulationElem.class">
     <table class="table table-hover table-bordered w-100" id="dataTable">
-      <data-table-head-component
+      <app-data-table-head-component
         :tableHeads="table.heads"
-      ></data-table-head-component>
-      <data-table-body-component
+      ></app-data-table-head-component>
+      <app-data-table-body-component
         :tableDataProps="table.data"
-      ></data-table-body-component>
+      ></app-data-table-body-component>
     </table>
   </div>
 </template>
@@ -23,19 +23,19 @@ import "datatables.net-responsive-dt/js/responsive.dataTables.min";
 import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import $ from "jquery";
 
-import DataTableHeadComponent from "@/components/content/content/mixed/custom/dataTable/dataTableHead.vue";
-import DataTableBodyComponent from "@/components/content/content/mixed/custom/dataTable/dataTableBody.vue";
+import AppDataTableHeadComponent from "@/components/Content/Table/AppDataTableHead.vue";
+import AppDataTableBodyComponent from "@/components/Content/Table/AppDataTableBody.vue";
 
 export default defineComponent({
+  components: {
+    AppDataTableHeadComponent,
+    AppDataTableBodyComponent,
+  },
   props: {
     dataTableProps: {
       required: true,
       type: Object,
     },
-  },
-  components: {
-    DataTableHeadComponent,
-    DataTableBodyComponent,
   },
   setup() {
     const table = ref({

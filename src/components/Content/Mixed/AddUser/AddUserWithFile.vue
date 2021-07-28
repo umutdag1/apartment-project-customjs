@@ -32,7 +32,7 @@ export default defineComponent({
             accepted: ".xlsx,.xls",
             clickEvent: {
               selectFile: "onSelectFile",
-              resetForm: "onResetForm"
+              resetForm: "onResetForm",
             },
           },
           encapsulationElem: {
@@ -61,11 +61,11 @@ export default defineComponent({
   methods: {
     onSelectFile(childThis) {
       if (childThis.$refs.file.disabled) {
-        this.emitter.emit("fireToast", [
-          "Sadece Bir Dosya Seçebilirsin.",
-          "warning",
-          2000,
-        ]);
+        this.$store.dispatch("fireToast", {
+          message: "Sadece Bir Dosya Seçebilirsin.",
+          type: "warning",
+          duration: 2000,
+        });
       } else {
         childThis.$refs.file.click();
         childThis.$refs.file.disabled = true;
@@ -73,15 +73,15 @@ export default defineComponent({
     },
     onResetForm(childThis) {
       const isStillUploadContinuedArr =
-      childThis.uploadFileInfo.isUploadContinuedArr.filter(
+        childThis.uploadFileInfo.isUploadContinuedArr.filter(
           (boolItem) => boolItem === true
         );
       if (isStillUploadContinuedArr.length > 0) {
-        this.emitter.emit("fireToast", [
-          "Dosya Yükleme İşlemi Devam Ediyor.",
-          "warning",
-          2000,
-        ]);
+        this.$store.dispatch("fireToast", {
+          message: "Dosya Yükleme İşlemi Devam Ediyor.",
+          type: "warning",
+          duration: 2000,
+        });
       } else {
         childThis.files = [];
         childThis.axiosRequest.cancelTokenArr = [];
@@ -90,9 +90,6 @@ export default defineComponent({
         childThis.$refs.file.disabled = false;
       }
     },
-  },
-  unmounted() {
-    this.emitter.emit("resetEmitter", ["resetForm"]);
   },
 });
 </script>

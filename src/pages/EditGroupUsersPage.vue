@@ -16,8 +16,8 @@
 
       <app-button-component
         :buttonProps="content.buttonGroupForAddNewGroup"
-        @goBackPage="emitter.emit('goBackPage')"
-        @goNextPage="emitter.emit('goNextPage', 'createMeetingTemplate')"
+        @goBackPage="changePage(null, true)"
+        @goNextPage="changePage('createMeetingTemplate', false)"
       ></app-button-component>
     </div>
   </section>
@@ -86,6 +86,14 @@ export default defineComponent({
         },
       },
     };
+  },
+  methods: {
+    changePage(path, backStatus) {
+      this.$store.dispatch("changePage", {
+        path: path,
+        back: backStatus,
+      });
+    },
   },
 });
 </script>

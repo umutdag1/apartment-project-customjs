@@ -31,6 +31,9 @@ export default defineComponent({
   },
   data() {
     return {
+      axiosRequest: {
+        response : null
+      },
       content: {
         inputGroupForAddNewUser: {
           name: [
@@ -105,25 +108,21 @@ export default defineComponent({
         },
       };
 
-      this.emitter.emit("makeGetRequest", {
+      this.$store.dispatch("makeGetRequest", {
         axiosRequestParams,
       });
     },
   },
-  mounted() {
-    this.emitter.on("addUserPostRequest", (data) => {
-      console.log(data.responseData);
-    });
-    this.emitter.on("addUserGetRequest", (data) => {
-      console.log(data.responseData);
-    });
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse.get;
+    },
   },
-  unmounted() {
-    this.emitter.emit("resetEmitter", [
-      "addUserPostRequest",
-      "addUserGetRequest",
-      "callResetForm",
-    ]);
+  watch: {
+    response(val) {
+      this.axiosRequest.response = val;
+      console.log(val);
+    },
   },
 });
 </script>

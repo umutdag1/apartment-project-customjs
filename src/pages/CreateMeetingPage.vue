@@ -12,9 +12,9 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForSelectGroup"
-          @goEditGroupUsersPage="emitter.emit('goNextPage','editGroupUsers')"
-          @goCreateGroupPage="emitter.emit('goNextPage','createGroup')"
-          @goCreateGroupUsersPage="emitter.emit('goNextPage','createGroupUsers')"
+          @goEditGroupUsersPage="changePage('editGroupUsers', false)"
+          @goCreateGroupPage="changePage('createGroup', false)"
+          @goCreateGroupUsersPage="changePage('createGroupUsers', false)"
         ></app-button-component>
 
         <app-form-component
@@ -24,8 +24,10 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForSelectTemplate"
-          @goCreateMeetingTemplatePage="emitter.emit('goNextPage','createMeetingTemplate')"
-          @goEditMeetingTemplatePage="emitter.emit('goNextPage','editMeetingTemplate')"
+          @goCreateMeetingTemplatePage="
+            changePage('createMeetingTemplate', false)
+          "
+          @goEditMeetingTemplatePage="changePage('editMeetingTemplate', false)"
         ></app-button-component>
 
         <app-button-component
@@ -93,7 +95,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
+            class:
+              "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
           },
         },
         formGroupForSelectTemplate: {
@@ -126,7 +129,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
+            class:
+              "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
           },
         },
         buttonGroupForCreateMeeting: {
@@ -148,7 +152,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center overflow-auto mt-4 ",
+            class:
+              "col-12 d-flex justify-content-center align-items-center overflow-auto mt-4 ",
           },
         },
       },
@@ -163,6 +168,12 @@ export default defineComponent({
         "success",
         2000,
       ]);
+    },
+    changePage(path, backStatus) {
+      this.$store.dispatch("changePage", {
+        path: path,
+        back: backStatus,
+      });
     },
   },
 });

@@ -115,12 +115,12 @@ export default defineComponent({
       uploadFileInfo: {
         isUploadCanceledArr: [],
         isUploadContinuedArr: [],
+        index: null,
       },
       axiosRequest: {
         cancelTokenArr: [],
+        response: null,
       },
-      isFileLoaded: false,
-      isUploadBtnDisabled: false,
     };
   },
   methods: {
@@ -128,6 +128,7 @@ export default defineComponent({
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
       this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
+      this.index = fileIndex;
 
       const formData = new FormData();
       formData.append("bytes", this.files[fileIndex]);
@@ -172,14 +173,8 @@ export default defineComponent({
         },
       };
 
-      const currentObjParams = {
-        curThis: this,
-        fileIndex,
-      };
-
-      this.emitter.emit("makePostRequest", {
+      this.$store.dispatch("makePostRequest", {
         axiosRequestParams,
-        currentObjParams,
       });
     },
     cancelUploadFile(fileIndex) {
@@ -195,28 +190,22 @@ export default defineComponent({
       this.$refs.file.value = "";
     },
   },
-  mounted() {
-    this.emitter.on("uploadFilePostRequest", (data) => {
-      this.uploadFileInfo.isUploadContinuedArr[
-        data.requestedObjParams.fileIndex
-      ] = false;
-      data.requestedObjParams.curThis.$refs[
-        `uploadBtn_${data.requestedObjParams.fileIndex + 1}`
-      ].disabled = data.situation === "success" ? true : false;
-      data.requestedObjParams.curThis.$refs[
-        `cancelBtn_${data.requestedObjParams.fileIndex + 1}`
-      ].disabled = data.situation === "success" ? true : false;
-    });
-
-    this.emitter.on("uploadFileGetRequest", (data) => {
-      console.log(data.responseData);
-    });
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse.post;
+    },
   },
-  unmounted() {
-    this.emitter.emit("resetEmitter", [
-      "uploadFilePostRequest",
-      "uploadFileGetRequest",
-    ]);
+  watch: {
+    response(val) {
+      this.axiosRequest.response = val;
+      this.uploadFileInfo.isUploadContinuedArr[
+        this.uploadFileInfo.index
+      ] = false;
+      this.$refs[`uploadBtn_${this.uploadFileInfo.index + 1}`].disabled =
+        this.axiosRequest.response.situation === "success" ? true : false;
+      this.$refs[`cancelBtn_${this.uploadFileInfo.index + 1}`].disabled =
+        this.axiosRequest.response.situation === "success" ? true : false;
+    },
   },
 });
 </script>

@@ -1,22 +1,20 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <app-header-component
-        :headerObj="content.header"
-      ></app-header-component>
+      <app-header-component :headerObj="content.header"></app-header-component>
     </div>
   </div>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <app-form-component :formGroupProps="content.formGroupForSelectTemplate">
-      </app-form-component>
+        <app-form-component
+          :formGroupProps="content.formGroupForSelectTemplate"
+        >
+        </app-form-component>
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddContentToEditor"
-          @addContentToEditor="
-            buttonEventToAddItsContent = $event
-          "
+          @addContentToEditor="buttonEventToAddItsContent = $event"
         ></app-button-component>
 
         <app-editor-component
@@ -27,9 +25,9 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddTemplate"
-          @goBackPage="emitter.emit('goBackPage')"
+          @goBackPage="changePage(null, true)"
           @save="save"
-          @goNextPage="emitter.emit('goNextPage','createMeeting')"
+          @goNextPage="changePage('createMeeting', false)"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -119,7 +117,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
+            class:
+              "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
         formGroupForSelectTemplate: {
@@ -152,20 +151,25 @@ export default defineComponent({
   },
   methods: {
     save() {
-      this.emitter.emit("fireToast", [
-        "Şablon Başarıyla Eklendi.",
-        "success",
-        2000,
-      ]);
+      this.$store.dispatch("fireToast", {
+        message: "Şablon Başarıyla Eklendi.",
+        type: "success",
+        duration: 2000,
+      });
     },
     saveAndnextPage() {
       this.save();
-      this.emitter.emit('goNextPage','createMeeting');
+      this.changePage("createMeeting", false);
     },
-  }
+    changePage(path, backStatus) {
+      this.$store.dispatch("changePage", {
+        path: path,
+        back: backStatus,
+      });
+    },
+  },
 });
 </script>
 
 <style>
-
 </style>

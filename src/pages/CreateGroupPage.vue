@@ -1,9 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <app-header-component
-        :headerObj="content.header"
-      ></app-header-component>
+      <app-header-component :headerObj="content.header"></app-header-component>
     </div>
   </div>
   <section class="content">
@@ -13,11 +11,11 @@
           :inputProps="content.inputGroupForAddNewGroup"
           @userInput="userInput = $event"
         ></app-input-component>
-        
+
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @save="save"
-          @goNextPage="emitter.emit('goNextPage','createGroupUsers')"
+          @goNextPage="emitter.emit('goNextPage', 'createGroupUsers')"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -73,7 +71,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
+            class:
+              "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
         formGroupForSelectTemplate: {
@@ -97,15 +96,18 @@ export default defineComponent({
   },
   methods: {
     save() {
-      this.emitter.emit("fireToast", [
-        "Grup İsmi Başarıyla Eklendi.",
-        "success",
-        2000,
-      ]);
+      this.$store.dispatch("fireToast", {
+        message: "Grup İsmi Başarıyla Eklendi.",
+        type: "success",
+        duration: 2000,
+      });
     },
     saveAndnextPage() {
       this.save();
-      this.emitter.emit('goNextPage','createGroupUsers')
+      this.$store.dispatch("changePage", {
+        path: "createGroupUsers",
+        back: false,
+      });
     },
   },
 });

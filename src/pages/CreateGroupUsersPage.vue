@@ -1,9 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <app-header-component
-        :headerObj="content.header"
-      ></app-header-component>
+      <app-header-component :headerObj="content.header"></app-header-component>
     </div>
   </div>
 
@@ -29,11 +27,11 @@
             </template>
           </app-tab-component>
         </div>
-        
+
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
-          @goBackPage="emitter.emit('goBackPage')"
-          @goNextPage="emitter.emit('goNextPage','editGroupUsers')"
+          @goBackPage="changePage(null, true)"
+          @goNextPage="changePage('editGroupUsers', false)"
         ></app-button-component>
       </div>
     </div>
@@ -110,11 +108,20 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex align-items-center justify-content-center overflow-auto",
+            class:
+              "col-12 d-flex align-items-center justify-content-center overflow-auto",
           },
         },
       },
     };
+  },
+  methods: {
+    changePage(path, backStatus) {
+      this.$store.dispatch("changePage", {
+        path: path,
+        back: backStatus,
+      });
+    },
   },
 });
 </script>

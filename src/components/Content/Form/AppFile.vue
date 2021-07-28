@@ -128,7 +128,7 @@ export default defineComponent({
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
       this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
-      this.index = fileIndex;
+      this.uploadFileInfo.index = fileIndex;
 
       const formData = new FormData();
       formData.append("bytes", this.files[fileIndex]);

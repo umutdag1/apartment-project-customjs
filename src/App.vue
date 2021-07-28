@@ -3,7 +3,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   setup() {
     const scriptArr = [
       "assets/plugins/jquery/jquery.min.js",
@@ -105,10 +107,10 @@ export default {
           }
         });
     },
-    goBackPage(){
+    goBackPage() {
       this.$router.back();
     },
-    goNextPage(page){
+    goNextPage(page) {
       this.$router.push(page);
     },
     fireToast(message, type, duration) {
@@ -121,6 +123,16 @@ export default {
     },
   },
   mounted() {
+    const loader = this.$loading.show({
+      container: null,
+      opacity: 1,
+      canCancel: false,
+    });
+
+    setTimeout(() => {
+      loader.hide();
+    }, 1000);
+
     this.emitter.on("fireToast", (data) => {
       this.fireToast(...data);
     });
@@ -128,7 +140,7 @@ export default {
     this.emitter.on("goBackPage", () => {
       this.goBackPage();
     });
-    
+
     this.emitter.on("goNextPage", (page) => {
       this.goNextPage(page);
     });
@@ -141,16 +153,16 @@ export default {
       this.makeGetRequest(configParams);
     });
 
-    this.emitter.on("resetEmitter" , (emitterNames) => {
+    this.emitter.on("resetEmitter", (emitterNames) => {
       emitterNames.map((emitterName) => this.emitter.off(emitterName));
-    })
+    });
   },
-  unmounted(){
-    for(const emitterKey of this.emitter.all.keys()){
+  unmounted() {
+    for (const emitterKey of this.emitter.all.keys()) {
       this.emitter.off(emitterKey);
     }
-  }
-};
+  },
+});
 </script>
 
 <style>

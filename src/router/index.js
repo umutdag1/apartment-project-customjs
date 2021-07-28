@@ -30,8 +30,9 @@ const routes = [
                 component: CreateGroupUsersPage
             },
             {
-                path: 'createMeeting',
+                path: '',
                 name: 'CreateMeetingPage',
+                alias: 'createMeeting',
                 component: CreateMeetingPage
             },
             {

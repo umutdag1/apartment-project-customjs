@@ -12,10 +12,7 @@
                 </button>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <router-link to="/" class="nav-link">Home</router-link>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <router-link to="/" class="nav-link">Contact</router-link>
+                <router-link to="/" class="nav-link">Toplantı Oluştur</router-link>
             </li>
         </ul>
 

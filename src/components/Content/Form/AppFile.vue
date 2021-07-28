@@ -5,7 +5,7 @@
         <h3 class="card-title">
           Dosya Ekle
           <small
-            ><em>Yalnızca {{ fileGroupProps.fileType }} Dosya Türü</em>
+            ><em>Yalnızca {{ fileGroupProps.file.type }} Dosya Türü</em>
             Seçiniz</small
           >
         </h3>
@@ -17,15 +17,21 @@
               type="file"
               ref="file"
               @change="onChangeFileUpload"
-              accept=".xlsx,.xls"
+              :accept="fileGroupProps.file.accepted"
               class="d-none"
             />
             <div class="btn-group w-100 overflow-auto">
-              <button class="btn btn-secondary col" @click="$refs.file.click()">
+              <button
+                class="btn btn-secondary col"
+                @click="$emit(fileGroupProps.file.clickEvent.selectFile, this)"
+              >
                 <i class="far fa-file mr-2"></i>
                 <span>Dosya Seç</span>
               </button>
-              <button class="btn btn-danger col" @click="resetForm">
+              <button
+                class="btn btn-danger col"
+                @click="$emit(fileGroupProps.file.clickEvent.resetForm, this)"
+              >
                 <i class="fas fa-trash mr-2"></i>
                 <span>Temizle</span>
               </button>
@@ -181,24 +187,6 @@ export default defineComponent({
       this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = false;
       this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = true;
     },
-    resetForm() {
-      const isStillUploadContinuedArr =
-        this.uploadFileInfo.isUploadContinuedArr.filter(
-          (boolItem) => boolItem === true
-        );
-      if (isStillUploadContinuedArr.length > 0) {
-        this.emitter.emit("fireToast", [
-          "Dosya Yükleme İşlemi Devam Ediyor.",
-          "warning",
-          2000,
-        ]);
-      } else {
-        this.files = [];
-        this.axiosRequest.cancelTokenArr = [];
-        this.uploadFileInfo.isUploadCanceledArr = [];
-        this.uploadFileInfo.isUploadContinuedArr = [];
-      }
-    },
     onChangeFileUpload() {
       this.uploadFileInfo.isUploadCanceledArr.push(false);
       this.uploadFileInfo.isUploadContinuedArr.push(false);
@@ -223,16 +211,11 @@ export default defineComponent({
     this.emitter.on("uploadFileGetRequest", (data) => {
       console.log(data.responseData);
     });
-
-    this.emitter.on("callResetForm", (refFunc) => {
-      this.emitter.emit(refFunc, this.resetForm);
-    });
   },
   unmounted() {
     this.emitter.emit("resetEmitter", [
       "uploadFilePostRequest",
       "uploadFileGetRequest",
-      "callResetForm",
     ]);
   },
 });

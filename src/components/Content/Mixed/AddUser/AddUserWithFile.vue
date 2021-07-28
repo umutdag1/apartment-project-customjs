@@ -8,8 +8,9 @@
 
   <app-file-component
     :fileGroupProps="content.fileGroupForAddFile"
+    @onSelectFile="onSelectFile($event)"
+    @onResetForm="onResetForm($event)"
   ></app-file-component>
-
 </template>
 
 <script>
@@ -20,13 +21,20 @@ import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 export default defineComponent({
   components: {
     AppFileComponent,
-    AppFormComponent
+    AppFormComponent,
   },
   data() {
     return {
       content: {
         fileGroupForAddFile: {
-          fileType: "Excel",
+          file: {
+            type: "Excel",
+            accepted: ".xlsx,.xls",
+            clickEvent: {
+              selectFile: "onSelectFile",
+              resetForm: "onResetForm"
+            },
+          },
           encapsulationElem: {
             class: "col-12",
           },
@@ -46,14 +54,42 @@ export default defineComponent({
           encapsulationElem: {
             class: "col-12",
           },
-        }
+        },
       },
     };
   },
-  mounted() {
-    this.emitter.on("resetForm", (callFunc) => {
-      callFunc();
-    });
+  methods: {
+    onSelectFile(childThis) {
+      if (childThis.$refs.file.disabled) {
+        this.emitter.emit("fireToast", [
+          "Sadece Bir Dosya Seçebilirsin.",
+          "warning",
+          2000,
+        ]);
+      } else {
+        childThis.$refs.file.click();
+        childThis.$refs.file.disabled = true;
+      }
+    },
+    onResetForm(childThis) {
+      const isStillUploadContinuedArr =
+      childThis.uploadFileInfo.isUploadContinuedArr.filter(
+          (boolItem) => boolItem === true
+        );
+      if (isStillUploadContinuedArr.length > 0) {
+        this.emitter.emit("fireToast", [
+          "Dosya Yükleme İşlemi Devam Ediyor.",
+          "warning",
+          2000,
+        ]);
+      } else {
+        childThis.files = [];
+        childThis.axiosRequest.cancelTokenArr = [];
+        childThis.uploadFileInfo.isUploadCanceledArr = [];
+        childThis.uploadFileInfo.isUploadContinuedArr = [];
+        childThis.$refs.file.disabled = false;
+      }
+    },
   },
   unmounted() {
     this.emitter.emit("resetEmitter", ["resetForm"]);

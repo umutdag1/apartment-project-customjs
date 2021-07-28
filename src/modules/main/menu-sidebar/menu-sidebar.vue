@@ -38,7 +38,8 @@
             <router-link
               to="/createMeeting"
               class="nav-link"
-              active-class="active"
+              exact
+              exact-active-class="active"
             >
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>Toplantı Oluştur</p>
@@ -99,7 +100,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-
               <li class="nav-item">
                 <router-link
                   to="/createMeetingTemplate"

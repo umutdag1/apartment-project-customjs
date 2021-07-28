@@ -3,6 +3,7 @@
     <div class="form-group">
       <label>{{ formGroupProps.labelName }}</label>
       <select class="form-control">
+        <option>{{ formGroupProps.labelName }}</option>
         <option :class="formGroupOption.class"
           v-for="(formGroupOption, index) in formGroupProps.options"
           :key="index"

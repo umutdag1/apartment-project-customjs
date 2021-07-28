@@ -20,7 +20,7 @@ export default defineComponent({
       type: Object,
     },
     addButtonContentToWysiwyg: {
-      required: true,
+      required: false,
       type: PointerEvent,
     },
   },

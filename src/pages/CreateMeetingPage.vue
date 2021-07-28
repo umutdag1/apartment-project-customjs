@@ -13,6 +13,7 @@
         <app-button-component
           :buttonProps="content.buttonGroupForSelectGroup"
           @goEditGroupUsersPage="emitter.emit('goNextPage','editGroupUsers')"
+          @goCreateGroupPage="emitter.emit('goNextPage','createGroup')"
           @goCreateGroupUsersPage="emitter.emit('goNextPage','createGroupUsers')"
         ></app-button-component>
 
@@ -70,24 +71,29 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-md-8",
+            class: "col-xl-8",
           },
         },
         buttonGroupForSelectGroup: {
           buttons: [
             {
-              class: "btn btn-block btn-secondary my-2 mr-1",
+              class: "btn btn-block btn-secondary my-1 mr-1",
               clickEvent: "goEditGroupUsersPage",
               innerHtml: "Düzenle",
             },
             {
-              class: "btn btn-block btn-primary my-2",
-              clickEvent: "goCreateGroupUsersPage",
+              class: "btn btn-block btn-primary my-1 mr-1",
+              clickEvent: "goCreateGroupPage",
               innerHtml: "Oluştur",
+            },
+            {
+              class: "btn btn-block btn-danger my-1",
+              clickEvent: "goCreateGroupUsersPage",
+              innerHtml: "Kişi Ekle",
             },
           ],
           encapsulationElem: {
-            class: "col-md-4 d-flex align-items-center justify-content-center mt-md-3 overflow-auto",
+            class: "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
           },
         },
         formGroupForSelectTemplate: {
@@ -103,24 +109,24 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-md-8",
+            class: "col-xl-8",
           },
         },
         buttonGroupForSelectTemplate: {
           buttons: [
             {
-              class: "btn btn-block btn-secondary my-2 mr-1",
+              class: "btn btn-block btn-secondary my-1 mr-1",
               clickEvent: "goEditMeetingTemplatePage",
               innerHtml: "Düzenle",
             },
             {
-              class: "btn btn-block btn-primary my-2",
+              class: "btn btn-block btn-primary my-1",
               clickEvent: "goCreateMeetingTemplatePage",
               innerHtml: "Oluştur",
             },
           ],
           encapsulationElem: {
-            class: "col-md-4 d-flex align-items-center justify-content-center mt-md-3 overflow-auto",
+            class: "col-xl-4 d-flex align-items-center justify-content-center mt-xl-3 overflow-auto",
           },
         },
         buttonGroupForCreateMeeting: {
@@ -142,7 +148,7 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
+            class: "col-12 d-flex justify-content-center align-items-center overflow-auto mt-4 ",
           },
         },
       },

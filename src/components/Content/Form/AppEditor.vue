@@ -53,7 +53,11 @@ export default defineComponent({
     },
     addContentToEditor(e) {
       if (this.tempFocusEditor === null) {
-        this.emitter.emit("fireToast", ["Bir Alan Seçiniz", "error", 800]);
+        this.$store.dispatch("fireToast", {
+          message: "Bir Alan Seçiniz",
+          type: "error",
+          duration: 800,
+        });
       } else {
         const targetElemContentArray = e.target.innerText.split(" ");
         targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
@@ -65,11 +69,11 @@ export default defineComponent({
           );
           this.tempFocusEditor.setData(this.tempFocusEditor.getData());
         });
-        this.emitter.emit("fireToast", [
-          `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
-          "success",
-          800,
-        ]);
+        this.$store.dispatch("fireToast", {
+          message: `${targetElemContentArray.join(" ")} Başarıyla Eklendi.`,
+          type: "success",
+          duration: 800,
+        });
       }
     },
     resetAll() {

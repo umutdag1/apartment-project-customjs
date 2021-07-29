@@ -12,9 +12,13 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForSelectGroup"
-          @goEditGroupUsersPage="changePage('editGroupUsers', false)"
-          @goCreateGroupPage="changePage('createGroup', false)"
-          @goCreateGroupUsersPage="changePage('createGroupUsers', false)"
+          @goEditGroupUsersPage="
+            $store.dispatch('changePage', 'editGroupUsers')
+          "
+          @goCreateGroupPage="$store.dispatch('changePage', 'createGroup')"
+          @goCreateGroupUsersPage="
+            $store.dispatch('changePage', 'createGroupUsers')
+          "
         ></app-button-component>
 
         <app-form-component
@@ -25,9 +29,11 @@
         <app-button-component
           :buttonProps="content.buttonGroupForSelectTemplate"
           @goCreateMeetingTemplatePage="
-            changePage('createMeetingTemplate', false)
+            $store.dispatch('changePage', 'createMeetingTemplate')
           "
-          @goEditMeetingTemplatePage="changePage('editMeetingTemplate', false)"
+          @goEditMeetingTemplatePage="
+            $store.dispatch('changePage', 'editMeetingTemplate')
+          "
         ></app-button-component>
 
         <app-button-component
@@ -168,12 +174,6 @@ export default defineComponent({
         "success",
         2000,
       ]);
-    },
-    changePage(path, backStatus) {
-      this.$store.dispatch("changePage", {
-        path: path,
-        back: backStatus,
-      });
     },
   },
 });

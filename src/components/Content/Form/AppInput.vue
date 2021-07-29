@@ -1,21 +1,31 @@
 <template>
   <div
     :class="inputProps.encapsulationElem.class"
-    v-for="(inputContentName, index) in inputProps.name"
+    v-for="(inputContent, index) in inputProps.content"
     :key="index"
   >
     <div class="input-group mb-3">
       <input
-        type="text"
+        :type="inputContent.type"
         class="form-control"
-        :placeholder="inputContentName"
-        :aria-label="inputContentName"
+        :onfocus="
+          inputContent.column === 'birth_date'
+            ? `this.type = 'date'`
+            : `this.type = '${inputContent.type}'`
+        "
+        :placeholder="inputContent.name"
+        :aria-label="inputContent.name"
         aria-describedby="basic-addon2"
-        v-model="user.input[index]"
+        v-model="user.input[inputContent.column]"
       />
+      <div class="input-group-append" v-if="inputContent.icon">
+        <div class="input-group-text">
+          <span :class="inputContent.icon"></span>
+        </div>
+      </div>
     </div>
 
-    {{ user.input[index] }}
+    {{ user.input[inputContent.column] }}
   </div>
 </template>
 
@@ -32,16 +42,16 @@ export default defineComponent({
   emits: ["userInput"],
   data() {
     return {
-      elem : "",
+      elem: "",
       user: {
-        input: [],
+        input: {},
       },
     };
   },
   watch: {
     user: {
       handler(val) {
-        this.$emit("userInput",val);
+        this.$emit("userInput", val);
       },
       deep: true,
     },

@@ -192,7 +192,7 @@ export default defineComponent({
   },
   computed: {
     response() {
-      return this.$store.getters.axiosRequestResponse.post;
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
     },
   },
   watch: {

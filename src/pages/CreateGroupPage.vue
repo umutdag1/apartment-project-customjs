@@ -15,7 +15,7 @@
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @save="save"
-          @goNextPage="emitter.emit('goNextPage', 'createGroupUsers')"
+          @goNextPage="$store.dispatch('changePage','createGroupUsers')"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -104,10 +104,7 @@ export default defineComponent({
     },
     saveAndnextPage() {
       this.save();
-      this.$store.dispatch("changePage", {
-        path: "createGroupUsers",
-        back: false,
-      });
+      this.changePage("createGroupUsers", false);
     },
   },
 });

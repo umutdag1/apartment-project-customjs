@@ -30,8 +30,8 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
-          @goBackPage="changePage(null, true)"
-          @goNextPage="changePage('editGroupUsers', false)"
+          @goBackPage="$store.dispatch('changePage',null)"
+          @goNextPage="$store.dispatch('changePage','editGroupUsers')"
         ></app-button-component>
       </div>
     </div>
@@ -114,14 +114,6 @@ export default defineComponent({
         },
       },
     };
-  },
-  methods: {
-    changePage(path, backStatus) {
-      this.$store.dispatch("changePage", {
-        path: path,
-        back: backStatus,
-      });
-    },
   },
 });
 </script>

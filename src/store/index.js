@@ -4,10 +4,7 @@ export default createStore({
     state: {
         vueThisObj: null,
         axiosRequest: {
-            response: {
-                post: null,
-                get: null
-            }
+            response: {}
         }
     },
     mutations: {
@@ -23,10 +20,10 @@ export default createStore({
             state.vueThisObj = data;
         },
         changePage(state, data) {
-            if (data.back) {
+            if (!data) {
                 state.vueThisObj.$router.back();
             } else {
-                state.vueThisObj.$router.push(data.path);
+                state.vueThisObj.$router.push(data);
             }
         },
         makePostRequest(state, configParams) {
@@ -39,7 +36,7 @@ export default createStore({
                     axiosRequestParams.config
                 )
                 .then(function (data) {
-                    state.axiosRequest.response.post = {
+                    state.axiosRequest.response[axiosRequestParams.name] = {
                         responseData: data,
                         situation: "success",
                     };
@@ -60,7 +57,7 @@ export default createStore({
                             duration: 2000
                         });
                     } else {
-                        state.axiosRequest.response.post = {
+                        state.axiosRequest.response[axiosRequestParams.name]= {
                             responseData: [],
                             situation: "error",
                         };
@@ -82,7 +79,7 @@ export default createStore({
                     axiosRequestParams.config
                 )
                 .then(function (data) {
-                    state.axiosRequest.response.get = {
+                    state.axiosRequest.response[axiosRequestParams.name] = {
                         responseData: data,
                         situation: "success",
                     };
@@ -103,7 +100,7 @@ export default createStore({
                             duration: 2000
                         });
                     } else {
-                        state.axiosRequest.response.get = {
+                        state.axiosRequest.response[axiosRequestParams.name] = {
                             responseData: [],
                             situation: "error",
                         };

@@ -3,7 +3,10 @@
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
 
-  <app-form-component :formGroupProps="content.formGroupForSelectGroup">
+  <app-form-component
+    :formGroupProps="content.formGroupForSelectGroup"
+    @userInput="userInput = $event"
+  >
   </app-form-component>
 
   <app-input-component
@@ -31,18 +34,49 @@ export default defineComponent({
   },
   data() {
     return {
+      userInput: {},
       axiosRequest: {
-        response : null
+        response: null,
       },
       content: {
         inputGroupForAddNewUser: {
-          name: [
-            "Kişi Adı",
-            "Kişi Soyadı",
-            "Kişi Adresi",
-            "Kişi Doğum Tarihi",
-            "Kişi Telefon Numarası",
-            "Kişi E-posta Adresi",
+          content: [
+            {
+              type: "text",
+              name: "Kişi Adı",
+              column: "first_name",
+              icon: "fas fa-user",
+            },
+            {
+              type: "text",
+              name: "Kişi Soyadı",
+              column: "last_name",
+              icon: "fas fa-user",
+            },
+            {
+              type: "text",
+              name: "Kişi Adresi",
+              column: "address",
+              icon: "fas fa-map-marker-alt",
+            },
+            {
+              type: "text",
+              name: "Kişi Doğum Tarihi",
+              column: "birth_date",
+              icon: "fas fa-calendar",
+            },
+            {
+              type: "tel",
+              name: "Kişi Telefon Numarası",
+              column: "gsm_number",
+              icon: "fas fa-phone",
+            },
+            {
+              type: "text",
+              name: "Kişi E-posta Adresi",
+              column: "email",
+              icon: "fas fa-envelope",
+            },
           ],
           encapsulationElem: {
             class: "col-md-6",
@@ -62,7 +96,8 @@ export default defineComponent({
             },
           ],
           encapsulationElem: {
-            class: "col-12 d-flex justify-content-center align-items-center overflow-auto",
+            class:
+              "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
         },
         buttonGroupForCreateGroup: {
@@ -99,7 +134,7 @@ export default defineComponent({
   methods: {
     addUserToDB() {
       const axiosRequestParams = {
-        name: "addUserGetRequest",
+        name: this.$options.__file,
         url: "https://jsonplaceholder.typicode.com/posts",
         config: {},
         toastMessages: {
@@ -108,6 +143,8 @@ export default defineComponent({
         },
       };
 
+      console.log(this.$options.__file);
+
       this.$store.dispatch("makeGetRequest", {
         axiosRequestParams,
       });
@@ -115,13 +152,12 @@ export default defineComponent({
   },
   computed: {
     response() {
-      return this.$store.getters.axiosRequestResponse.get;
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
     },
   },
   watch: {
     response(val) {
       this.axiosRequest.response = val;
-      console.log(val);
     },
   },
 });

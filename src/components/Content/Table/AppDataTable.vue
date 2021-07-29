@@ -84,6 +84,7 @@ export default defineComponent({
   mounted() {
     window.JSZip = jsZip;
     //API Call
+    
     this.axios.get(this.dataTableProps.axios.url).then((res) => {
       this.table.data.values = res.data;
       this.createDataTable();

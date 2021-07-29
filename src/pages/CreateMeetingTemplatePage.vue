@@ -25,9 +25,9 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddTemplate"
-          @goBackPage="changePage(null, true)"
+          @goBackPage="$store.dispatch('changePage', null)"
           @save="save"
-          @goNextPage="changePage('createMeeting', false)"
+          @goNextPage="$store.dispatch('changePage', 'createMeeting')"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -122,7 +122,14 @@ export default defineComponent({
           },
         },
         inputGroupForAddTemplate: {
-          name: ["Şablon Adı"],
+          content: [
+            {
+              type: "text",
+              name: "Şablon Adı",
+              column: "template_name",
+              icon: null,
+            },
+          ],
           encapsulationElem: {
             class: "col-12",
           },
@@ -149,13 +156,7 @@ export default defineComponent({
     },
     saveAndnextPage() {
       this.save();
-      this.changePage("createMeeting", false);
-    },
-    changePage(path, backStatus) {
-      this.$store.dispatch("changePage", {
-        path: path,
-        back: backStatus,
-      });
+      this.$store.dispatch("changePage", "createMeeting");
     },
   },
 });

@@ -1,6 +1,5 @@
 <template>
   <div class="login-box">
-    <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
         <a href="../../index2.html" class="h1"><b>Yasal </b>Çağrı</a>
@@ -64,17 +63,25 @@ export default defineComponent({
         inputGroupForLoginUser: {
           content: [
             {
-              type: "email",
-              required : true,
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+                invalidMessage: "En az 8 karakter ve Geçerli karakterler giriniz.",
+              },
               name: "E-posta Adresi",
               column: "email",
               icon: "fas fa-envelope",
             },
             {
-              type: "password",
-              required : true,
-              pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-              invalidMessage : "Geçerli karakterler giriniz.",
+              attribute: {
+                type: "password",
+                targetType: null,
+                required: true,
+                pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
+                invalidMessage: "Geçerli karakterler giriniz.",
+              },
               name: "Şifre",
               column: "password",
               icon: "fas fa-lock",

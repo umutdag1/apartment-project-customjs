@@ -6,20 +6,21 @@
   >
     <div class="input-group mb-3">
       <input
-        :type="inputContent.type"
+        :type="inputContent.attribute.type"
         class="form-control"
         :onfocus="
-          inputContent.column === 'birth_date'
-            ? `this.type = 'date'`
-            : `this.type = '${inputContent.type}'`
+          inputContent.attribute.targetType
+            ? `this.type = '${inputContent.attribute.targetType}'`
+            : `this.type = '${inputContent.attribute.type}'`
         "
         :placeholder="inputContent.name"
-        :pattern="inputContent.pattern ? inputContent.pattern : null"
-        :title="inputContent.invalidMessage ? inputContent.invalidMessage : null"
+        :pattern="inputContent.attribute.pattern"
         :aria-label="inputContent.name"
-        :required="inputContent.required ? inputContent.required : false"
+        :required="inputContent.attribute.required"
         aria-describedby="basic-addon2"
         v-model.trim="user.input[inputContent.column]"
+        :ref="inputContent.name"
+        :title="inputContent.attribute.invalidMessage"
       />
       <div class="input-group-append" v-if="inputContent.icon">
         <div class="input-group-text">
@@ -49,6 +50,11 @@ export default defineComponent({
       },
     };
   },
+  methods: {
+    onFocus(event) {
+      console.log(event);
+    },
+  },
   watch: {
     user: {
       handler(val) {
@@ -61,5 +67,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 </style>

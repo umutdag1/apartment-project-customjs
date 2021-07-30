@@ -61,64 +61,100 @@ export default defineComponent({
         inputGroupForRegisterNewUser: {
           content: [
             {
-              type: "text",
-              required: true,
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                invalidMessage: "Yanlızca Harf Kullanınız",
+              },
               name: "Ad",
               column: "first_name",
               icon: "fas fa-user",
             },
             {
-              type: "text",
-              required: true,
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                invalidMessage: "Yanlızca Harf Kullanınız",
+              },
               name: "Soyad",
               column: "last_name",
               icon: "fas fa-user",
             },
             {
-              type: "text",
-              required: true,
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                invalidMessage: "Yanlızca Harf ve Rakam Kullanınız",
+              },
               name: "Adres",
               column: "address",
               icon: "fas fa-map-marker-alt",
             },
             {
-              type: "text",
-              required: true,
+              attribute: {
+                type: "text",
+                targetType: "date",
+                required: true,
+                pattern: "[-0-9]+",
+                invalidMessage: "Yanlızca Rakam Kullanınız",
+              },
               name: "Doğum Tarihi",
               column: "birth_date",
               icon: "fas fa-calendar",
             },
             {
-              type: "text",
-              required: true,
-              pattern: "[0-9]{3}[0-9]{3}[0-9]{4}",
-              invalidMessage:
-                "Başında '0' rakamı olmadan 10 haneli telefon numaranızı giriniz ",
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "[0-9]{3}[0-9]{3}[0-9]{4}",
+                invalidMessage:
+                  "Başında '0' rakamı olmadan 10 haneli telefon numaranızı giriniz",
+              },
               name: "Telefon Numarası",
               column: "gsm_number",
               icon: "fas fa-phone",
             },
             {
-              type: "email",
-              required: true,
+              attribute: {
+                type: "email",
+                targetType: null,
+                required: true,
+                pattern: null,
+                invalidMessage: null,
+              },
               name: "E-posta Adresi",
               column: "email",
               icon: "fas fa-envelope",
             },
             {
-              type: "password",
-              required: true,
-              pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-              invalidMessage : "Geçerli karakterler giriniz.",
+              attribute: {
+                type: "password",
+                targetType: null,
+                required: true,
+                pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
+                invalidMessage:
+                  "En az 8 karakter ve Geçerli karakterler giriniz.",
+              },
               name: "Şifre",
               column: "password",
               icon: "fas fa-lock",
             },
             {
-              type: "password",
-              required: true,
-              pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-              invalidMessage : "Geçerli karakterler giriniz.",
+              attribute: {
+                type: "password",
+                targetType: null,
+                required: true,
+                pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
+                invalidMessage:
+                  "En az 8 karakter ve Geçerli karakterler giriniz.",
+              },
               name: "Şifre Tekrar",
               column: "password_conf",
               icon: "fas fa-lock",
@@ -154,12 +190,12 @@ export default defineComponent({
   methods: {
     submitForm(e) {
       e.preventDefault();
-      
-      if(this.user.input.password !== this.user.input.password_conf){
+
+      if (this.user.input.password !== this.user.input.password_conf) {
         this.$store.dispatch("fireToast", {
-          message : "Şifreler Eşleşmiyor",
-          type : "warning",
-          duration : 1000
+          message: "Şifreler Eşleşmiyor",
+          type: "warning",
+          duration: 1000,
         });
       } else {
         //Request

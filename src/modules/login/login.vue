@@ -36,18 +36,16 @@
 
         <p class="mb-1">
           <router-link to="/forgot-password">
-            I forgot my password
+            Şifremi Unuttum
           </router-link>
         </p>
         <p class="mb-0">
           <router-link to="/register" class="text-center">
-            Register a new membership
+            Kayıt Ol
           </router-link>
         </p>
       </div>
-      <!-- /.card-body -->
     </div>
-    <!-- /.card -->
   </div>
 </template>
 <script>

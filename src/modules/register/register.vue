@@ -89,7 +89,7 @@ export default defineComponent({
                 type: "text",
                 targetType: null,
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf ve Rakam Kullanınız",
               },
               name: "Adres",
@@ -101,8 +101,8 @@ export default defineComponent({
                 type: "text",
                 targetType: "date",
                 required: true,
-                pattern: "[-0-9]+",
-                invalidMessage: "Yanlızca Rakam Kullanınız",
+                pattern: null,
+                invalidMessage: null,
               },
               name: "Doğum Tarihi",
               column: "birth_date",
@@ -123,11 +123,12 @@ export default defineComponent({
             },
             {
               attribute: {
-                type: "email",
+                type: "text",
                 targetType: null,
                 required: true,
-                pattern: null,
-                invalidMessage: null,
+                pattern:
+                  "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+                invalidMessage: "Geçerli bir email giriniz.",
               },
               name: "E-posta Adresi",
               column: "email",
@@ -190,17 +191,8 @@ export default defineComponent({
   methods: {
     submitForm(e) {
       e.preventDefault();
-
-      if (this.user.input.password !== this.user.input.password_conf) {
-        this.$store.dispatch("fireToast", {
-          message: "Şifreler Eşleşmiyor",
-          type: "warning",
-          duration: 1000,
-        });
-      } else {
-        //Request
-        console.log(e);
-      }
+      //Request
+      console.log(e);
     },
   },
 });

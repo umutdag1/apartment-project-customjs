@@ -15,7 +15,7 @@
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
           @save="save"
-          @goNextPage="$store.dispatch('changePage','createGroupUsers')"
+          @goNextPage="$store.dispatch('changePage', 'createGroupUsers')"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -47,7 +47,14 @@ export default defineComponent({
           name: "Grup Oluştur",
         },
         inputGroupForAddNewGroup: {
-          name: ["Grup Adı"],
+          content: [
+            {
+              type: "text",
+              name: "Grup Adı",
+              column: "group_name",
+              icon: null,
+            },
+          ],
           encapsulationElem: {
             class: "col-12",
           },
@@ -104,7 +111,7 @@ export default defineComponent({
     },
     saveAndnextPage() {
       this.save();
-      this.changePage("createGroupUsers", false);
+      this.$store.dispatch("changePage","createGroupUsers");
     },
   },
 });

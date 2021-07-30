@@ -1,13 +1,10 @@
 <template>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <router-link to="/" class="brand-link">
-      <img
-        src="assets/img/logo.png"
-        alt="AdminLTE Logo"
-        class="brand-image img-circle elevation-3"
-        style="opacity: 0.8"
-      />
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <div class="brand-image img-circle elevation-3 mt-1">
+      <i class="fas fa-bullhorn" style="opacity: 0.8"></i>
+    </div>
+      <span class="brand-text font-weight-light">Yasal Çağrı</span>
     </router-link>
 
     <div class="sidebar">

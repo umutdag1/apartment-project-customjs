@@ -14,9 +14,12 @@
             : `this.type = '${inputContent.type}'`
         "
         :placeholder="inputContent.name"
+        :pattern="inputContent.pattern ? inputContent.pattern : null"
+        :title="inputContent.invalidMessage ? inputContent.invalidMessage : null"
         :aria-label="inputContent.name"
+        :required="inputContent.required ? inputContent.required : false"
         aria-describedby="basic-addon2"
-        v-model="user.input[inputContent.column]"
+        v-model.trim="user.input[inputContent.column]"
       />
       <div class="input-group-append" v-if="inputContent.icon">
         <div class="input-group-text">
@@ -24,8 +27,6 @@
         </div>
       </div>
     </div>
-
-    {{ user.input[inputContent.column] }}
   </div>
 </template>
 
@@ -59,5 +60,13 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+  input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
 </style>

@@ -134,7 +134,7 @@ export default defineComponent({
       formData.append("bytes", this.files[fileIndex]);
 
       const axiosRequestParams = {
-        name: "uploadFilePostRequest",
+        name: this.$options.__file,
         data: formData,
         url: "https://v2.convertapi.com/upload",
         config: {

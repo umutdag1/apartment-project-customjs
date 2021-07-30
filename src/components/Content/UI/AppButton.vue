@@ -5,6 +5,7 @@
       @click="$emit(button.clickEvent,$event)"
       v-for="(button, index) in buttonProps.buttons"
       :key="index"
+      :type="button.type"
       v-html="button.innerHtml"
     >
     </button>

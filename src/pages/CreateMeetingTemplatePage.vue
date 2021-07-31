@@ -6,31 +6,33 @@
   </div>
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <app-input-component
-          :inputProps="content.inputGroupForAddTemplate"
-          @userInput="userInput = $event"
-        ></app-input-component>
+      <form @submit.prevent="save" ref="form">
+        <div class="row">
+          <app-input-component
+            :inputProps="content.inputGroupForAddTemplate"
+            @userInput="userInput = $event"
+          ></app-input-component>
 
-        <app-button-component
-          :buttonProps="content.buttonGroupForAddContentToEditor"
-          @addContentToEditor="buttonEventToAddItsContent = $event"
-        ></app-button-component>
+          <app-button-component
+            :buttonProps="content.buttonGroupForAddContentToEditor"
+            @addContentToEditor="buttonEventToAddItsContent = $event"
+          ></app-button-component>
 
-        <app-editor-component
-          :wysiwygProps="content.wysiwygProps"
-          :addButtonContentToWysiwyg="buttonEventToAddItsContent"
-          @editorData="editor.data = $event"
-        ></app-editor-component>
+          <app-editor-component
+            :wysiwygProps="content.wysiwygProps"
+            :addButtonContentToWysiwyg="buttonEventToAddItsContent"
+            @editorData="editor.data = $event"
+          ></app-editor-component>
 
-        <app-button-component
-          :buttonProps="content.buttonGroupForAddTemplate"
-          @goBackPage="$store.dispatch('changePage', null)"
-          @save="save"
-          @goNextPage="$store.dispatch('changePage', 'createMeeting')"
-          @saveAndnextPage="saveAndnextPage"
-        ></app-button-component>
-      </div>
+          <app-button-component
+            :buttonProps="content.buttonGroupForAddTemplate"
+            @goBackPage="$store.dispatch('changePage', null)"
+            @save="saveStatus = 0"
+            @goNextPage="$store.dispatch('changePage', 'createMeeting')"
+            @saveAndnextPage="saveStatus = 1"
+          ></app-button-component>
+        </div>
+      </form>
     </div>
   </section>
 </template>
@@ -51,6 +53,7 @@ export default defineComponent({
   },
   data() {
     return {
+      saveStatus: 0,
       buttonEventToAddItsContent: new PointerEvent(""),
       content: {
         header: {
@@ -60,31 +63,37 @@ export default defineComponent({
           buttons: [
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Ad Ekle",
             },
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Soyad Ekle",
             },
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Toplantı Tarihi Ekle",
             },
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Toplantı Saati Ekle",
             },
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Toplantı Yeri Ekle",
             },
             {
               class: "btn btn-outline-secondary mx-2 my-2",
+              type: "button",
               clickEvent: "addContentToEditor",
               innerHtml: "Toplantı Konusu Ekle",
             },
@@ -97,21 +106,25 @@ export default defineComponent({
           buttons: [
             {
               class: "btn btn-block btn-secondary my-2 mr-3",
+              type: "button",
               clickEvent: "goBackPage",
               innerHtml: "Geri Dön",
             },
             {
               class: "btn btn-block btn-info my-2 mr-3",
+              type: "submit",
               clickEvent: "save",
               innerHtml: "Kaydet",
             },
             {
               class: "btn btn-block btn-primary my-2 mr-3",
+              type: "button",
               clickEvent: "goNextPage",
               innerHtml: "Devam Et",
             },
             {
               class: "btn btn-block btn-success my-2",
+              type: "submit",
               clickEvent: "saveAndnextPage",
               innerHtml: "Kaydet ve Devam Et",
             },
@@ -124,6 +137,13 @@ export default defineComponent({
         inputGroupForAddTemplate: {
           content: [
             {
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
+                invalidMessage: "Yalnızca Harf veya Rakam Kullanınız",
+              },
               type: "text",
               name: "Şablon Adı",
               column: "template_name",
@@ -153,10 +173,10 @@ export default defineComponent({
         type: "success",
         duration: 2000,
       });
-    },
-    saveAndnextPage() {
-      this.save();
-      this.$store.dispatch("changePage", "createMeeting");
+
+      if (this.saveStatus === 1) {
+        this.$store.dispatch("changePage", "createMeeting");
+      }
     },
   },
 });

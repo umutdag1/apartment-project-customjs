@@ -6,19 +6,21 @@
   </div>
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <app-input-component
-          :inputProps="content.inputGroupForAddNewGroup"
-          @userInput="userInput = $event"
-        ></app-input-component>
+      <form @submit.prevent="save" ref="form">
+        <div class="row">
+          <app-input-component
+            :inputProps="content.inputGroupForAddNewGroup"
+            @userInput="userInput = $event"
+          ></app-input-component>
 
-        <app-button-component
-          :buttonProps="content.buttonGroupForAddNewGroup"
-          @save="save"
-          @goNextPage="$store.dispatch('changePage', 'createGroupUsers')"
-          @saveAndnextPage="saveAndnextPage"
-        ></app-button-component>
-      </div>
+          <app-button-component
+            :buttonProps="content.buttonGroupForAddNewGroup"
+            @save="saveStatus = 0"
+            @goNextPage="$store.dispatch('changePage', 'createGroupUsers')"
+            @saveAndnextPage="saveStatus = 1"
+          ></app-button-component>
+        </div>
+      </form>
     </div>
   </section>
 </template>
@@ -35,6 +37,7 @@ export default defineComponent({
   },
   data() {
     return {
+      saveStatus : 0,
       files: [],
       userInput: {},
       axiosRequest: {
@@ -49,6 +52,13 @@ export default defineComponent({
         inputGroupForAddNewGroup: {
           content: [
             {
+              attribute: {
+                type: "text",
+                targetType: null,
+                required: true,
+                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ0-9]|\\s)*$",
+                invalidMessage: "Yalnızca Harf veya Rakam kullanınız.",
+              },
               type: "text",
               name: "Grup Adı",
               column: "group_name",
@@ -64,16 +74,19 @@ export default defineComponent({
             {
               class: "btn btn-block btn-info my-2 mr-3",
               clickEvent: "save",
+              type: "submit",
               innerHtml: "Kaydet",
             },
             {
               class: "btn btn-block btn-primary my-2 mr-3",
               clickEvent: "goNextPage",
+              type: "button",
               innerHtml: "Devam Et",
             },
             {
               class: "btn btn-block btn-success my-2",
               clickEvent: "saveAndnextPage",
+              type: "submit",
               innerHtml: "Kaydet ve Devam Et",
             },
           ],
@@ -108,10 +121,10 @@ export default defineComponent({
         type: "success",
         duration: 2000,
       });
-    },
-    saveAndnextPage() {
-      this.save();
-      this.$store.dispatch("changePage","createGroupUsers");
+
+      if(this.saveStatus === 1) {
+        this.$store.dispatch("changePage", "createGroupUsers");
+      } 
     },
   },
 });

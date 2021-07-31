@@ -61,7 +61,7 @@ export default defineComponent({
           orderCellsTop: true,
           fixedHeader: true,
           fnInitComplete: function (/*oSettings, json*/) {
-            $("#dataTable_filter").html('<div class="row"></div>');
+            $("#dataTable_filter").html('<div class="row overflow-auto"></div>');
             $("#dataTable thead tr th").each(function (i) {
               const title = $(this).text();
               const dataTableColumnLength = $("#dataTable thead tr th").length;

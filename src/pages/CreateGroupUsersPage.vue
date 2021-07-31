@@ -99,11 +99,13 @@ export default defineComponent({
             {
               class: "btn btn-block btn-secondary my-2 mr-3",
               clickEvent: "goBackPage",
+              type : "button",
               innerHtml: "Geri Dön",
             },
             {
               class: "btn btn-block btn-primary my-2",
               clickEvent: "goNextPage",
+              type : "button",
               innerHtml: "Devam Et",
             },
           ],

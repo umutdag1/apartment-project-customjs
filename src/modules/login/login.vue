@@ -66,6 +66,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
+                outerClass : "input-group mb-3",
+                innerClass : "form-control",
                 required: true,
                 pattern: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
                 invalidMessage: "Geçerli bir email giriniz.",
@@ -78,6 +80,8 @@ export default defineComponent({
               attribute: {
                 type: "password",
                 targetType: null,
+                outerClass : "input-group mb-3",
+                innerClass : "form-control",
                 required: true,
                 pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
                 invalidMessage: "En az 8 karakter ve Geçerli karakterler giriniz.",

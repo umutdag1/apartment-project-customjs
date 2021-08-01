@@ -4,11 +4,11 @@
     v-for="(inputContent, index) in inputProps.content"
     :key="index"
   >
-    <div class="input-group mb-3">
+    <div :class="inputContent.attribute.outerClass">
       <input
         :name="inputContent.name"
         :type="inputContent.attribute.type"
-        class="form-control"
+        :class="inputContent.attribute.innerClass"
         :onfocus="
           inputContent.attribute.targetType
             ? `this.type = '${inputContent.attribute.targetType}'`

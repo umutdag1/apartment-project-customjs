@@ -140,6 +140,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
+                outerClass : "input-group mb-3",
+                innerClass : "form-control",
                 required: true,
                 pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yalnızca Harf veya Rakam Kullanınız",

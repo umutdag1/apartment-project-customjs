@@ -1,8 +1,7 @@
 <template>
   <thead>
     <tr>
-      <th v-for="(tableHead, index) in tableHeads" :key="index">
-        {{ tableHead }}
+      <th v-for="(tableHead, index) in tableHeads" :key="index" v-html="tableHead">
       </th>
     </tr>
   </thead>

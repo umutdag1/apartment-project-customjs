@@ -36,37 +36,44 @@ export default createStore({
                     axiosRequestParams.config
                 )
                 .then(function (data) {
+                    console.log(data.data);
                     state.axiosRequest.response[axiosRequestParams.name] = {
                         responseData: data,
                         situation: "success",
                     };
 
-                    vm.dispatch("fireToast", {
-                        message: axiosRequestParams.toastMessages.success,
-                        type: "success",
-                        duration: 2000
-                    });
+                    if (axiosRequestParams.toastMessages) {
+                        vm.dispatch("fireToast", {
+                            message: axiosRequestParams.toastMessages.success,
+                            type: "success",
+                            duration: 2000
+                        });
+                    }
 
-                    console.log(data.data);
+                    
                 })
                 .catch(function (thrown) {
                     if (thrown.__CANCEL__) {
-                        vm.dispatch("fireToast", {
-                            message: axiosRequestParams.toastMessages.warning,
-                            type: "warning",
-                            duration: 2000
-                        });
+                        if (axiosRequestParams.toastMessages) {
+                            vm.dispatch("fireToast", {
+                                message: axiosRequestParams.toastMessages.warning,
+                                type: "warning",
+                                duration: 2000
+                            });
+                        }
                     } else {
-                        state.axiosRequest.response[axiosRequestParams.name]= {
+                        state.axiosRequest.response[axiosRequestParams.name] = {
                             responseData: [],
                             situation: "error",
                         };
 
-                        vm.dispatch("fireToast", {
-                            message: axiosRequestParams.toastMessages.error,
-                            type: "error",
-                            duration: 2000
-                        });
+                        if (axiosRequestParams.toastMessages) {
+                            vm.dispatch("fireToast", {
+                                message: axiosRequestParams.toastMessages.error,
+                                type: "error",
+                                duration: 2000
+                            });
+                        }
                     }
                 });
         },
@@ -79,37 +86,43 @@ export default createStore({
                     axiosRequestParams.config
                 )
                 .then(function (data) {
+                    console.log(data.data);
                     state.axiosRequest.response[axiosRequestParams.name] = {
                         responseData: data,
                         situation: "success",
                     };
 
-                    vm.dispatch("fireToast", {
-                        message: axiosRequestParams.toastMessages.success,
-                        type: "success",
-                        duration: 2000
-                    });
+                    if (axiosRequestParams.toastMessages) {
+                        vm.dispatch("fireToast", {
+                            message: axiosRequestParams.toastMessages.success,
+                            type: "success",
+                            duration: 2000
+                        });
+                    }
 
-                    console.log(data.data);
+                    
                 })
                 .catch(function (thrown) {
                     if (thrown.__CANCEL__) {
-                        vm.dispatch("fireToast", {
-                            message: axiosRequestParams.toastMessages.warning,
-                            type: "warning",
-                            duration: 2000
-                        });
+                        if (axiosRequestParams.toastMessages) {
+                            vm.dispatch("fireToast", {
+                                message: axiosRequestParams.toastMessages.warning,
+                                type: "warning",
+                                duration: 2000
+                            });
+                        }
                     } else {
                         state.axiosRequest.response[axiosRequestParams.name] = {
                             responseData: [],
                             situation: "error",
                         };
-
-                        vm.dispatch("fireToast", {
-                            message: axiosRequestParams.toastMessages.error,
-                            type: "error",
-                            duration: 2000
-                        });
+                        if (axiosRequestParams.toastMessages) {
+                            vm.dispatch("fireToast", {
+                                message: axiosRequestParams.toastMessages.error,
+                                type: "error",
+                                duration: 2000
+                            });
+                        }
                     }
                 });
         }
@@ -133,6 +146,7 @@ export default createStore({
     },
     getters: {
         axiosRequestResponse(state) {
+            console.log("getters calıstı");
             return state.axiosRequest.response;
         }
     },

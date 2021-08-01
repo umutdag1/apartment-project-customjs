@@ -78,7 +78,7 @@ export default defineComponent({
         },
         dataTableProps: {
           axios: {
-            url: "https://jsonplaceholder.typicode.com/posts",
+            url: "https://jsonplaceholder.typicode.com/posts/",
           },
           encapsulationElem: {
             class: "col-12",

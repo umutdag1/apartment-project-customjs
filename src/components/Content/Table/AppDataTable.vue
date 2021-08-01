@@ -2,12 +2,9 @@
   <div :class="dataTableProps.encapsulationElem.class">
     <table class="table table-hover table-bordered w-100" id="dataTable">
       <app-data-table-head-component
-        :tableHeads="table.heads"
+        :tableHeads="tableProps.data.keys"
       ></app-data-table-head-component>
-      <app-data-table-body-component
-        :tableDataProps="table.data"
-        @callDataTable="createDataTable()"
-      >
+      <app-data-table-body-component :tableDataProps="tableProps.data">
         <template v-slot:checkbox>
           <app-input-component
             :inputProps="content.inputCheckbox"
@@ -49,18 +46,15 @@ export default defineComponent({
     },
   },
   setup() {
-    const table = ref({
-      heads: [``, `ID`, `Title`, `Body`],
+    const tableProps = ref({
+      table: null,
       data: {
-        keys: null,
-        values: null,
+        keys: [],
+        values: [],
       },
     });
 
-    table.value.data.keys = table.value.heads.map((head) => head.toLowerCase());
-    console.log(table.value.heads);
-
-    return { table };
+    return { tableProps };
   },
   data() {
     return {
@@ -85,12 +79,15 @@ export default defineComponent({
           },
         },
       },
+      search: {},
+      isDataTableCreated: false,
     };
   },
   methods: {
     createDataTable() {
+      const vm = this;
       this.$nextTick(() => {
-        var table = $("#dataTable").DataTable({
+        /*var table = */ this.tableProps.table = $("#dataTable").DataTable({
           responsive: true,
           language: {
             url: "assets/custom/library/datatable/language/Turkish.json",
@@ -99,9 +96,9 @@ export default defineComponent({
           fixedHeader: true,
           columnDefs: [
             {
-              targets: 0,
+              targets: 1,
               checkboxes: {
-                selectRow: true,
+                selectRow: false,
               },
             },
           ],
@@ -111,56 +108,57 @@ export default defineComponent({
           order: [[1, "asc"]],
           fnInitComplete: function (/*oSettings, json*/) {
             $("#dataTable_filter").html(
-              '<div class="row overflow-auto"></div>'
+              '<div class="row justify-content-center align-items-center" id="datatable-filter"></div>'
             );
-            $("#dataTable thead tr th").each(function (i) {
+            $("#dataTable_filter").addClass("my-2");
+            $("#dataTable_filter").css("float", "none");
+            $("#dataTable_filter").css("text-align", "left");
+            $("#dataTable_length").css("float", "none");
+            $("#dataTable_length").css("text-align", "center");
+            $("#dataTable thead tr th").each(function (/*i*/) {
               const title = $(this).text();
-              const dataTableColumnLength = $("#dataTable thead tr th").length;
-              $("#dataTable_filter .row").append(
-                `<div class="col-md-${12 / dataTableColumnLength} my-1 px-2">
-                <input type="text" class="w-100" placeholder="Search ${title}" />
+              const tableFilterValue = vm.search[title] ? vm.search[title] : "";
+              if (title !== "") {
+                $("#dataTable_filter #datatable-filter").append(
+                  `<div class="col-md-auto my-1 mx-2">
+                <input type="text" class="w-100" placeholder="Search ${title}" id="${title}" value="${tableFilterValue}"/>
               </div>`
-              );
-              $("input[type=text]", this).on("keyup change", function () {
-                if (table.column(i).search() !== this.value) {
-                  table.column(i).search(this.value).draw();
-                }
+                );
+              }
+            });
+            $(`<div class="offset-md-4 col-md-4 my-3">
+                <button type="button" class="btn btn-block btn-primary" id="submitbtn">Ara</button>
+              </div>`).insertAfter("#dataTable_filter #datatable-filter");
+            $("#dataTable_filter input").on("keyup", function () {
+              vm.search[this.id] = this.value;
+              console.log(vm.search);
+            });
+            $("#dataTable_filter #submitbtn").click(function () {
+              const params = Object.keys(vm.search)
+                .reduce((result, key) => {
+                  if (vm.search[key] !== "") {
+                    result.push(`${key}=${vm.search[key]}`);
+                  }
+                  return result;
+                }, [])
+                .join("&");
+              const axiosRequestParams = {
+                name: vm.$options.__file,
+                url: vm.dataTableProps.axios.url + `?${encodeURI(params)}`,
+                config: {},
+                toastMessages: null,
+              };
+              vm.$store.dispatch("makeGetRequest", {
+                axiosRequestParams,
               });
             });
           },
         });
-        table
-          .on("click", "th.select-checkbox", function () {
-            if ($("th.select-checkbox").hasClass("selected")) {
-              table.rows().deselect();
-              $("th.select-checkbox").removeClass("selected");
-            } else {
-              table.rows().select();
-              $("th.select-checkbox").addClass("selected");
-            }
-          })
-          .on("select deselect", function () {
-            ("Some selection or deselection going on");
-            if (
-              table
-                .rows({
-                  selected: true,
-                })
-                .count() !== table.rows().count()
-            ) {
-              $("th.select-checkbox").removeClass("selected");
-            } else {
-              $("th.select-checkbox").addClass("selected");
-            }
-          });
       });
     },
   },
   mounted() {
     window.JSZip = jsZip;
-    //API Call
-
-    this.table.data.values = this.$options.__file;
 
     const axiosRequestParams = {
       name: this.$options.__file,
@@ -172,33 +170,38 @@ export default defineComponent({
     this.$store.dispatch("makeGetRequest", {
       axiosRequestParams,
     });
-
-    /*
-    this.axios.get(this.dataTableProps.axios.url).then((res) => {
-      this.table.data.values = res.data;
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      const responseData = val.responseData.data;
+      if (responseData.length > 0) {
+        let newResponseData = [];
+        Array.isArray(responseData)
+          ? (newResponseData = responseData)
+          : newResponseData.push(responseData);
+        const heads = Object.keys(newResponseData[0]);
+        heads.unshift("", "");
+        this.tableProps.data.keys = heads;
+        this.tableProps.data.values = newResponseData;
+      } else {
+        this.tableProps.data.values = [];
+      }
+      if (this.isDataTableCreated) {
+        this.tableProps.table.destroy();
+      }
+      if (!this.isDataTableCreated) {
+        this.isDataTableCreated = true;
+      }
       this.createDataTable();
-    });
-    */
-    /*
-    //Server Side Rendering
-    $("#dataTable").DataTable({
-      processing: true,
-      serverSide: true,
-      dom: "Bfrtip",
-      buttons: ["copyHtml5", "excelHtml5"],
-      responsive: true
-    });*/
+    },
   },
 });
 </script>
 
 <style>
-table.dataTable tr th.select-checkbox.selected::after {
-  content: "✔";
-  margin-top: -11px;
-  margin-left: -4px;
-  text-align: center;
-  text-shadow: rgb(176, 190, 217) 1px 1px, rgb(176, 190, 217) -1px -1px,
-    rgb(176, 190, 217) 1px -1px, rgb(176, 190, 217) -1px 1px;
-}
 </style>

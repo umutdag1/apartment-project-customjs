@@ -155,6 +155,10 @@ export default defineComponent({
         });
       });
     },
+    reloadDataTable() {
+      this.tableProps.table.destroy();
+      this.createDataTable();
+    },
   },
   mounted() {
     window.JSZip = jsZip;
@@ -191,12 +195,12 @@ export default defineComponent({
         this.tableProps.data.values = [];
       }
       if (this.isDataTableCreated) {
-        this.tableProps.table.destroy();
+        this.reloadDataTable();
       }
       if (!this.isDataTableCreated) {
         this.isDataTableCreated = true;
+        this.createDataTable();
       }
-      this.createDataTable();
     },
   },
 });

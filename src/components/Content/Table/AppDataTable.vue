@@ -129,9 +129,8 @@ export default defineComponent({
             $(`<div class="offset-md-4 col-md-4 my-3">
                 <button type="button" class="btn btn-block btn-primary" id="submitbtn">Ara</button>
               </div>`).insertAfter("#dataTable_filter #datatable-filter");
-            $("#dataTable_filter input").on("keyup", function () {
+            $("#dataTable_filter input[type=text]").on("keyup", function () {
               vm.search[this.id] = this.value;
-              console.log(vm.search);
             });
             $("#dataTable_filter #submitbtn").click(function () {
               const params = Object.keys(vm.search)

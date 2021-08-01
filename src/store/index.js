@@ -146,7 +146,6 @@ export default createStore({
     },
     getters: {
         axiosRequestResponse(state) {
-            console.log("getters calıstı");
             return state.axiosRequest.response;
         }
     },

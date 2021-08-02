@@ -1,14 +1,19 @@
 <template>
   <div :class="dataTableProps.encapsulationElem.class">
     <table class="table table-hover table-bordered w-100" id="dataTable">
-      <app-data-table-head-component
-        :tableHeads="tableProps.data.keys"
-      ></app-data-table-head-component>
+      <app-data-table-head-component :tableHeads="tableProps.data.keys">
+        <template v-slot:editDeleteUserColumn>
+          <th></th>
+        </template>
+      </app-data-table-head-component>
       <app-data-table-body-component :tableDataProps="tableProps.data">
-        <template v-slot:checkbox>
-          <app-input-component
-            :inputProps="content.inputCheckbox"
-          ></app-input-component>
+        <template v-slot:editDeleteUserButton>
+          <td>
+            <app-button-component
+              :buttonProps="content.buttonGroupForEditDeleteUser"
+            >
+            </app-button-component>
+          </td>
         </template>
       </app-data-table-body-component>
     </table>
@@ -32,12 +37,12 @@ import $ from "jquery";
 
 import AppDataTableHeadComponent from "@/components/Content/Table/AppDataTableHead.vue";
 import AppDataTableBodyComponent from "@/components/Content/Table/AppDataTableBody.vue";
-import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 export default defineComponent({
   components: {
     AppDataTableHeadComponent,
     AppDataTableBodyComponent,
-    AppInputComponent,
+    AppButtonComponent,
   },
   props: {
     dataTableProps: {
@@ -59,23 +64,22 @@ export default defineComponent({
   data() {
     return {
       content: {
-        inputCheckbox: {
-          content: [
+        buttonGroupForEditDeleteUser: {
+          buttons: [
             {
-              attribute: {
-                type: "checkbox",
-                targetType: null,
-                required: null,
-                pattern: null,
-                invalidMessage: null,
-              },
-              name: "Checkbox",
-              column: "checkbox",
-              icon: null,
+              class: "btn btn-block btn-primary my-2",
+              clickEvent: "editUser",
+              innerHtml: "Düzenle",
+            },
+            {
+              class: "btn btn-block btn-danger my-2",
+              clickEvent: "deleteUser",
+              innerHtml: "Sil",
             },
           ],
           encapsulationElem: {
-            class: "col-12",
+            class:
+              "col-12 d-flex align-items-center justify-content-center flex-column",
           },
         },
       },
@@ -127,13 +131,14 @@ export default defineComponent({
               }
             });
             $(`<div class="offset-md-4 col-md-4 my-3">
-                <button type="button" class="btn btn-block btn-primary" id="submitbtn">Ara</button>
+                <button type="button" class="btn btn-block btn-primary" id="submitBtn">Ara</button>
               </div>`).insertAfter("#dataTable_filter #datatable-filter");
             $("#dataTable_filter input[type=text]").on("keyup", function () {
               vm.search[this.id] = this.value;
             });
-            $("#dataTable_filter #submitbtn").click(function () {
-              const params = Object.keys(vm.search)
+            $("#dataTable_filter #submitBtn").click(function () {
+              const keysArr = Object.keys(vm.search);
+              const params = keysArr
                 .reduce((result, key) => {
                   if (vm.search[key] !== "") {
                     result.push(`${key}=${vm.search[key]}`);
@@ -154,6 +159,13 @@ export default defineComponent({
           },
         });
       });
+    },
+    addColumnToDataTable(columnsArr, columnNameArr, where) {
+      if (where === "toBeginning") {
+        columnsArr.unshift(...columnNameArr);
+      } else if (where === "toEnding") {
+        columnsArr.push(...columnNameArr);
+      }
     },
     reloadDataTable() {
       this.tableProps.table.destroy();
@@ -188,7 +200,7 @@ export default defineComponent({
           ? (newResponseData = responseData)
           : newResponseData.push(responseData);
         const heads = Object.keys(newResponseData[0]);
-        heads.unshift("", "");
+        this.addColumnToDataTable(heads, ["", ""], "toBeginning");
         this.tableProps.data.keys = heads;
         this.tableProps.data.values = newResponseData;
       } else {

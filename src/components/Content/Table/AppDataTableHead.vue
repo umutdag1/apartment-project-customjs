@@ -3,6 +3,7 @@
     <tr>
       <th v-for="(tableHead, index) in tableHeads" :key="index" v-html="tableHead">
       </th>
+      <slot name="editDeleteUserColumn"></slot>
     </tr>
   </thead>
 </template>

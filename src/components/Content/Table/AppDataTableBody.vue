@@ -7,6 +7,7 @@
       >
         {{ tableData[tableDataKey] }}
       </td>
+      <slot name="editDeleteUserButton"></slot>
     </tr>
   </tbody>
 </template>

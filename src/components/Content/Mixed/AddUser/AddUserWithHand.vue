@@ -6,18 +6,21 @@
   <form @submit.prevent="addUserToDB" ref="form">
     <div class="row">
       <app-form-component
-        :formGroupProps="content.formGroupForSelectGroup"
-        @userInput="userInput = $event"
+        :formGroupProps="addUserWithHandProps.formGroupForSelectGroup"
+        @selectedOption="selectedGroup = $event"
       >
       </app-form-component>
 
       <app-input-component
         :inputProps="content.inputGroupForAddNewUser"
+        @userInput="user = $event"
+        ref="inputRef"
       ></app-input-component>
 
       <app-button-component
         :buttonProps="content.buttonGroupForAddNewUser"
         @addUserToDB="saveStatus = 0"
+        @clearInputs="clearInputs()"
       >
       </app-button-component>
     </div>
@@ -36,10 +39,19 @@ export default defineComponent({
     AppButtonComponent,
     AppFormComponent,
   },
+  props: {
+    addUserWithHandProps: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
+      selectedGroup: "",
       saveStatus: 0,
-      userInput: {},
+      user: {
+        input: {},
+      },
       axiosRequest: {
         response: null,
       },
@@ -50,10 +62,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf Kullanınız",
               },
               name: "Ad",
@@ -64,10 +76,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf Kullanınız",
               },
               name: "Soyad",
@@ -78,10 +90,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-Z0-9ğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf ve Rakam Kullanınız",
               },
               name: "Adres",
@@ -92,8 +104,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: "date",
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: null,
                 invalidMessage: null,
@@ -106,8 +118,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: "[0-9]{3}[0-9]{3}[0-9]{4}",
                 invalidMessage:
@@ -121,8 +133,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern:
                   "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
@@ -131,36 +143,6 @@ export default defineComponent({
               name: "E-posta Adresi",
               column: "email",
               icon: "fas fa-envelope",
-            },
-            {
-              attribute: {
-                type: "password",
-                targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
-                required: true,
-                pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-                invalidMessage:
-                  "En az 8 karakter ve Geçerli karakterler giriniz.",
-              },
-              name: "Şifre",
-              column: "password",
-              icon: "fas fa-lock",
-            },
-            {
-              attribute: {
-                type: "password",
-                targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
-                required: true,
-                pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-                invalidMessage:
-                  "En az 8 karakter ve Geçerli karakterler giriniz.",
-              },
-              name: "Şifre Tekrar",
-              column: "password_conf",
-              icon: "fas fa-lock",
             },
           ],
           encapsulationElem: {
@@ -178,8 +160,8 @@ export default defineComponent({
             {
               class: "btn btn-block btn-danger my-2",
               type: "button",
-              clickEvent: "addPersonToDB",
-              innerHtml: "Sil",
+              clickEvent: "clearInputs",
+              innerHtml: "Temizle",
             },
           ],
           encapsulationElem: {
@@ -202,6 +184,7 @@ export default defineComponent({
         },
         formGroupForSelectGroup: {
           labelName: "Grup Seç",
+          required: true,
           options: [
             {
               name: "Group1",
@@ -223,19 +206,31 @@ export default defineComponent({
     addUserToDB() {
       const axiosRequestParams = {
         name: this.$options.__file,
-        url: "https://jsonplaceholder.typicode.com/posts",
-        config: {},
+        data: JSON.stringify({
+          ...this.user.input,
+          selectedGroup: this.selectedGroup,
+        }),
+        url: "https://reqres.in/api/users",
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
         toastMessages: {
           success: "Kişi Başarıyla Eklendi",
+          warning: null,
           error: "Kişi Ekleme Başarısız",
         },
       };
 
-      console.log(this.$options.__file);
+      console.log(axiosRequestParams.data);
 
-      this.$store.dispatch("makeGetRequest", {
+      this.$store.dispatch("makePostRequest", {
         axiosRequestParams,
       });
+    },
+    clearInputs() {
+      this.$refs.inputRef.user.input = {};
     },
   },
   computed: {

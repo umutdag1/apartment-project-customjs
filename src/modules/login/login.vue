@@ -10,14 +10,14 @@
         <form @submit="submitForm">
           <app-input-component
             :inputProps="content.inputGroupForLoginUser"
-            @userInput="userInput = $event"
+            @userInput="user = $event"
           ></app-input-component>
 
           <div class="row">
             <div class="col-8">
               <div class="icheck-primary">
                 <input type="checkbox" id="remember" />
-                <label for="remember"> Remember Me </label>
+                <label for="remember"> Beni Hatırla </label>
               </div>
             </div>
 
@@ -27,7 +27,7 @@
                 class="btn btn-primary btn-block"
                 @click="login"
               >
-                Sign In
+                Giriş Yap
               </button>
             </div>
           </div>
@@ -58,7 +58,9 @@ export default defineComponent({
   data() {
     return {
       appElement: null,
-      userInput: {},
+      user: {
+        input : {}
+      },
       content: {
         inputGroupForLoginUser: {
           content: [
@@ -96,7 +98,6 @@ export default defineComponent({
           },
         },
       },
-      user: "",
     };
   },
   mounted() {
@@ -109,7 +110,30 @@ export default defineComponent({
   methods: {
     submitForm(e) {
       e.preventDefault();
-      this.$router.push("/");
+
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        data: JSON.stringify(this.user.input),
+        url: "https://reqres.in/api/users",
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: {
+          success: "Başarıyla Giriş Yaptınız.",
+          warning: null,
+          error: "Giriş Yapamadınız.",
+        },
+      };
+
+      console.log(JSON.stringify(this.user.input));
+
+      this.$store.dispatch("makePostRequest", {
+        axiosRequestParams,
+      });
+
+      //this.$router.push("/");
     },
   },
 });

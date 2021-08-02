@@ -18,10 +18,14 @@
             <template v-slot:tabContent>
               <app-tab-pane-component :tabPanesProps="tabs.tabPanes">
                 <template v-slot:addUserWithFilePane>
-                  <add-user-with-file-component></add-user-with-file-component>
+                  <add-user-with-file-component
+                    :addUserWithFileProps="addUserProps.content"
+                  ></add-user-with-file-component>
                 </template>
                 <template v-slot:addUserWithHandPane>
-                  <add-user-with-hand-component></add-user-with-hand-component>
+                  <add-user-with-hand-component
+                    :addUserWithHandProps="addUserProps.content"
+                  ></add-user-with-hand-component>
                 </template>
               </app-tab-pane-component>
             </template>
@@ -30,8 +34,8 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddNewGroup"
-          @goBackPage="$store.dispatch('changePage',null)"
-          @goNextPage="$store.dispatch('changePage','editGroupUsers')"
+          @goBackPage="$store.dispatch('changePage', null)"
+          @goNextPage="$store.dispatch('changePage', 'editGroupUsers')"
         ></app-button-component>
       </div>
     </div>
@@ -90,6 +94,27 @@ export default defineComponent({
   },
   data() {
     return {
+      axiosRequest : {
+        response : null
+      },
+      addUserProps: {
+        content: {
+          formGroupForSelectGroup: {
+            labelName: "Grup Seç",
+            options: [
+              {
+                name: "Group1",
+              },
+              {
+                name: "Group2",
+              },
+            ],
+            encapsulationElem: {
+              class: "col-12",
+            },
+          },
+        },
+      },
       content: {
         header: {
           name: "Grup Kişileri Ekle",
@@ -99,13 +124,13 @@ export default defineComponent({
             {
               class: "btn btn-block btn-secondary my-2 mr-3",
               clickEvent: "goBackPage",
-              type : "button",
+              type: "button",
               innerHtml: "Geri Dön",
             },
             {
               class: "btn btn-block btn-primary my-2",
               clickEvent: "goNextPage",
-              type : "button",
+              type: "button",
               innerHtml: "Devam Et",
             },
           ],
@@ -117,6 +142,33 @@ export default defineComponent({
       },
     };
   },
+  mounted() {
+    const axiosRequestParams = {
+      name: this.$options.__file,
+      url: "https://reqres.in/api/users",
+      config: {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      toastMessages: null
+    };
+
+    this.$store.dispatch("makeGetRequest", {
+      axiosRequestParams,
+    });
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      this.axiosRequest.response = val;
+
+    },
+  }
 });
 </script>
       

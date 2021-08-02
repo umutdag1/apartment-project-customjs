@@ -10,7 +10,7 @@
         <div class="row">
           <app-input-component
             :inputProps="content.inputGroupForAddNewGroup"
-            @userInput="userInput = $event"
+            @userInput="user = $event"
           ></app-input-component>
 
           <app-button-component
@@ -37,13 +37,9 @@ export default defineComponent({
   },
   data() {
     return {
-      saveStatus : 0,
-      files: [],
-      userInput: {},
-      axiosRequest: {
-        isRequestCanceledArr: [],
-        isRequestContinuingStatusArr: [],
-        cancelTokenArr: [],
+      saveStatus: 0,
+      user: {
+        input : {}
       },
       content: {
         header: {
@@ -55,10 +51,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ0-9]|\\s)*$",
+                pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ0-9]|\\s)*$",
                 invalidMessage: "Yalnızca Harf veya Rakam kullanınız.",
               },
               type: "text",
@@ -96,37 +92,38 @@ export default defineComponent({
             class:
               "col-12 d-flex justify-content-center align-items-center overflow-auto",
           },
-        },
-        formGroupForSelectTemplate: {
-          labelName: "Şablon Seç",
-          options: [
-            {
-              name: "Şablon1",
-              class: "",
-            },
-            {
-              name: "Şablon2",
-              class: "",
-            },
-          ],
-          encapsulationElem: {
-            class: "col-12",
-          },
-        },
+        }
       },
     };
   },
   methods: {
     save() {
-      this.$store.dispatch("fireToast", {
-        message: "Grup İsmi Başarıyla Eklendi.",
-        type: "success",
-        duration: 2000,
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        data: JSON.stringify(this.user.input),
+        url: "https://reqres.in/api/users",
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: {
+          success: "Grup İsmi Başarıyla Kaydedildi.",
+          warning: null,
+          error: "Grup İsmi Kaydedilemedi.",
+        },
+      };
+
+      console.log(JSON.stringify(this.user.input));
+
+      this.$store.dispatch("makePostRequest", {
+        axiosRequestParams,
       });
 
-      if(this.saveStatus === 1) {
+
+      if (this.saveStatus === 1) {
         this.$store.dispatch("changePage", "createGroupUsers");
-      } 
+      }
     },
   },
 });

@@ -75,6 +75,7 @@
               <div class="btn-group">
                 <button
                   class="btn btn-primary start"
+                  type="submit"
                   @click="uploadFile(index)"
                   :ref="`uploadBtn_${index + 1}`"
                 >
@@ -133,10 +134,12 @@ export default defineComponent({
       const formData = new FormData();
       formData.append("bytes", this.files[fileIndex]);
 
+      console.log(formData);
+      
       const axiosRequestParams = {
         name: this.$options.__file,
         data: formData,
-        url: "https://v2.convertapi.com/upload",
+        url: this.fileGroupProps.axiosRequest.url,
         config: {
           cancelToken: this.axiosRequest.cancelTokenArr[fileIndex].token,
           headers: {
@@ -173,9 +176,8 @@ export default defineComponent({
         },
       };
 
-      this.$store.dispatch("makePostRequest", {
-        axiosRequestParams,
-      });
+      this.$emit("axiosRequestParamsForFile",axiosRequestParams);
+      
     },
     cancelUploadFile(fileIndex) {
       this.uploadFileInfo.isUploadCanceledArr[fileIndex] = true;

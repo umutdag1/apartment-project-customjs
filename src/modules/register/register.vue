@@ -63,11 +63,11 @@ export default defineComponent({
             {
               attribute: {
                 type: "text",
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 targetType: null,
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf Kullanınız",
               },
               name: "Ad",
@@ -78,10 +78,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-ZğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf Kullanınız",
               },
               name: "Soyad",
@@ -92,10 +92,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-Z0-9ğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yanlızca Harf ve Rakam Kullanınız",
               },
               name: "Adres",
@@ -106,8 +106,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: "date",
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: null,
                 invalidMessage: null,
@@ -120,8 +120,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: "[0-9]{3}[0-9]{3}[0-9]{4}",
                 invalidMessage:
@@ -135,8 +135,8 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern:
                   "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
@@ -150,8 +150,8 @@ export default defineComponent({
               attribute: {
                 type: "password",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
                 invalidMessage:
@@ -165,8 +165,8 @@ export default defineComponent({
               attribute: {
                 type: "password",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
                 invalidMessage:
@@ -208,6 +208,27 @@ export default defineComponent({
     submitForm(e) {
       e.preventDefault();
       //Request
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        data: JSON.stringify(this.user.input),
+        url: "https://reqres.in/api/users",
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: {
+          success: "Bilgileriniz Başarıyla Kayıt Edildi.",
+          warning: null,
+          error: "Bilgileriniz Kayıt Edilemedi.",
+        },
+      };
+
+      this.$store.dispatch("makePostRequest", {
+        axiosRequestParams,
+      });
+      
+      console.log(JSON.stringify(this.user.input));
       console.log(e);
     },
   },

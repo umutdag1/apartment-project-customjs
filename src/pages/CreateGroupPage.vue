@@ -10,7 +10,7 @@
         <div class="row">
           <app-input-component
             :inputProps="content.inputGroupForAddNewGroup"
-            @userInput="axiosRequest.request.user = $event"
+            @userInput="axiosRequest.request.userInput = $event"
           ></app-input-component>
 
           <app-button-component
@@ -37,12 +37,10 @@ export default defineComponent({
   },
   data() {
     return {
-      saveStatus: 0,
+      saveStatus: null,
       axiosRequest: {
         request: {
-          user: {
-            input: {},
-          },
+          userInput: {},
         },
         response : null
       },
@@ -105,7 +103,7 @@ export default defineComponent({
     save() {
       const axiosRequestParams = {
         name: this.$options.__file,
-        data: JSON.stringify(this.axiosRequest.request.user.input),
+        data: JSON.stringify(this.axiosRequest.request),
         url: "https://reqres.in/api/users",
         config: {
           headers: {
@@ -119,7 +117,7 @@ export default defineComponent({
         },
       };
 
-      console.log(JSON.stringify(this.axiosRequest.request.user.input));
+      console.log(JSON.stringify(this.axiosRequest.request));
 
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,

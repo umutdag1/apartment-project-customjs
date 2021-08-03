@@ -21,7 +21,7 @@
         :aria-label="inputContent.name"
         :required="inputContent.attribute.required"
         aria-describedby="basic-addon2"
-        v-model.trim="user.input[inputContent.column]"
+        v-model.trim="userInput[inputContent.column]"
         :title="inputContent.attribute.invalidMessage"
       />
       <div class="input-group-append" v-if="inputContent.icon">
@@ -47,18 +47,17 @@ export default defineComponent({
   data() {
     return {
       elem: "",
-      user: {
-        input: {},
+      userInput: {
       },
     };
   },
   methods: {
     inputConf(e) {
-      for (const userInputKey in this.user.input) {
-        if (this.user.input[`${userInputKey}_conf`]) {
+      for (const userInputKey in this.userInput) {
+        if (this.userInput[`${userInputKey}_conf`]) {
           if (
-            this.user.input[`${userInputKey}`] !==
-            this.user.input[`${userInputKey}_conf`]
+            this.userInput[`${userInputKey}`] !==
+            this.userInput[`${userInputKey}_conf`]
           ) {
             if (e.target.type === userInputKey) {
               const targetElemNameArr = e.target.name.split(" ");
@@ -70,7 +69,7 @@ export default defineComponent({
     },
   },
   watch: {
-    user: {
+    userInput: {
       handler(val) {
         this.$emit("userInput", val);
       },

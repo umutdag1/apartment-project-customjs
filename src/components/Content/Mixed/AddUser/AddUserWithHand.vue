@@ -7,13 +7,13 @@
     <div class="row">
       <app-form-component
         :formGroupProps="addUserWithHandProps.formGroupForSelectGroup"
-        @selectedOption="axiosRequest.request.selectedGroup = $event"
+        @selectedOption="axiosRequest.request.group_name = $event"
       >
       </app-form-component>
 
       <app-input-component
         :inputProps="content.inputGroupForAddNewUser"
-        @userInput="axiosRequest.request.user = $event"
+        @userInput="axiosRequest.request.userInput = $event"
         ref="inputRef"
       ></app-input-component>
 
@@ -50,10 +50,8 @@ export default defineComponent({
       saveStatus: 0,
       axiosRequest: {
         request: {
-          selectedGroup: "",
-          user: {
-            input: {},
-          },
+          group_name: "",
+          userInput: {},
         },
         response: null,
       },
@@ -191,10 +189,7 @@ export default defineComponent({
     addUserToDB() {
       const axiosRequestParams = {
         name: this.$options.__file,
-        data: JSON.stringify({
-          ...this.axiosRequest.request.user.input,
-          selectedGroup: this.axiosRequest.request.selectedGroup,
-        }),
+        data: JSON.stringify(this.axiosRequest.request),
         url: "https://reqres.in/api/users",
         config: {
           headers: {

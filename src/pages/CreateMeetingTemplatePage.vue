@@ -10,7 +10,7 @@
         <div class="row">
           <app-input-component
             :inputProps="content.inputGroupForAddTemplate"
-            @userInput="userInput = $event"
+            @userInput="axiosRequest.request.userInput = $event"
           ></app-input-component>
 
           <app-button-component
@@ -21,7 +21,7 @@
           <app-editor-component
             :wysiwygProps="content.wysiwygProps"
             :addButtonContentToWysiwyg="buttonEventToAddItsContent"
-            @editorData="editor.data = $event"
+            @editorData="axiosRequest.request.editorData = $event"
           ></app-editor-component>
 
           <app-button-component
@@ -53,7 +53,13 @@ export default defineComponent({
   },
   data() {
     return {
-      saveStatus: 0,
+      axiosRequest: {
+        request: {
+          userInput: {},
+          editorData: "",
+        },
+      },
+      saveStatus: null,
       buttonEventToAddItsContent: new PointerEvent(""),
       content: {
         header: {
@@ -140,10 +146,10 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "^([a-zA-Z0-9ğüşöçİĞÜŞÖÇ]|\\s)*$",
+                pattern: "^([a-zA-Z0-9ğüşöçıIİĞÜŞÖÇ]|\\s)*$",
                 invalidMessage: "Yalnızca Harf veya Rakam Kullanınız",
               },
               type: "text",
@@ -162,23 +168,53 @@ export default defineComponent({
           },
         },
       },
-      userInput: {},
-      editor: {
-        data: "",
-      },
     };
   },
   methods: {
     save() {
-      this.$store.dispatch("fireToast", {
-        message: "Şablon Başarıyla Eklendi.",
-        type: "success",
-        duration: 2000,
-      });
+      if (this.axiosRequest.request.editorData !== "") {
+        const axiosRequestParams = {
+          name: this.$options.__file,
+          data: JSON.stringify(this.axiosRequest.request),
+          url: "https://reqres.in/api/users",
+          config: {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+          toastMessages: {
+            success: "Şablon Başarıyla Kaydedildi.",
+            warning: null,
+            error: "Şablon Kaydedilemedi.",
+          },
+        };
 
-      if (this.saveStatus === 1) {
-        this.$store.dispatch("changePage", "createMeeting");
+        console.log(JSON.stringify(this.axiosRequest.request));
+
+        this.$store.dispatch("makePostRequest", {
+          axiosRequestParams,
+        });
+
+        if (this.saveStatus === 1) {
+          this.$store.dispatch("changePage", "createMeeting");
+        }
+      } else {
+        this.$store.dispatch("fireToast", {
+          message: "Şablon Boş Olamaz.",
+          type: "warning",
+          duration: 2000,
+        });
       }
+    },
+    computed: {
+      response() {
+        return this.$store.getters.axiosRequestResponse[this.$options.__file];
+      },
+    },
+    watch: {
+      response(val) {
+        console.log(val.responseData.data);
+      },
     },
   },
 });

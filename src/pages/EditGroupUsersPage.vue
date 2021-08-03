@@ -7,7 +7,10 @@
 
   <section class="content">
     <div class="container-fluid">
-      <app-form-component :formGroupProps="content.formGroupForSelectGroup">
+      <app-form-component
+        :formGroupProps="content.formGroupForSelectGroup"
+        @selectedOption="content.dataTableProps.axios.request.group_name = $event"
+      >
       </app-form-component>
 
       <app-data-table-component
@@ -82,6 +85,10 @@ export default defineComponent({
         dataTableProps: {
           axios: {
             url: "https://jsonplaceholder.typicode.com/posts/",
+            request: {
+              group_name: "",
+            },
+            response : null
           },
           encapsulationElem: {
             class: "col-12",
@@ -89,6 +96,16 @@ export default defineComponent({
         },
       },
     };
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      console.log(val.responseData.data);
+    },
   },
 });
 </script>

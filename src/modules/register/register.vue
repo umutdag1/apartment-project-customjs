@@ -10,7 +10,7 @@
         <form @submit.prevent="submitForm" ref="form">
           <app-input-component
             :inputProps="content.inputGroupForRegisterNewUser"
-            @userInput="user = $event"
+            @userInput="axiosRequest.request.userInput = $event"
           ></app-input-component>
 
           <div class="row">
@@ -54,8 +54,11 @@ export default defineComponent({
   data() {
     return {
       appElement: null,
-      user: {
-        input: {},
+      axiosRequest:{
+        request : {
+          userInput: {}
+        },
+        response : null
       },
       content: {
         inputGroupForRegisterNewUser: {
@@ -210,7 +213,7 @@ export default defineComponent({
       //Request
       const axiosRequestParams = {
         name: this.$options.__file,
-        data: JSON.stringify(this.user.input),
+        data: JSON.stringify(this.axiosRequest.request),
         url: "https://reqres.in/api/users",
         config: {
           headers: {
@@ -228,7 +231,7 @@ export default defineComponent({
         axiosRequestParams,
       });
       
-      console.log(JSON.stringify(this.user.input));
+      console.log(JSON.stringify(this.axiosRequest.request));
       console.log(e);
     },
   },

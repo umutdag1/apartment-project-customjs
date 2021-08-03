@@ -10,7 +10,7 @@
         <form @submit="submitForm">
           <app-input-component
             :inputProps="content.inputGroupForLoginUser"
-            @userInput="user = $event"
+            @userInput="axiosRequest.request.userInput = $event"
           ></app-input-component>
 
           <div class="row">
@@ -34,9 +34,7 @@
         </form>
 
         <p class="mb-1">
-          <router-link to="/forgot-password">
-            Şifremi Unuttum
-          </router-link>
+          <router-link to="/forgot-password"> Şifremi Unuttum </router-link>
         </p>
         <p class="mb-0">
           <router-link to="/register" class="text-center">
@@ -58,8 +56,11 @@ export default defineComponent({
   data() {
     return {
       appElement: null,
-      user: {
-        input : {}
+      axiosRequest:{
+        request : {
+          userInput: {}
+        },
+        response : null
       },
       content: {
         inputGroupForLoginUser: {
@@ -68,10 +69,11 @@ export default defineComponent({
               attribute: {
                 type: "text",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
-                pattern: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+                pattern:
+                  "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
                 invalidMessage: "Geçerli bir email giriniz.",
               },
               name: "E-posta Adresi",
@@ -82,11 +84,12 @@ export default defineComponent({
               attribute: {
                 type: "password",
                 targetType: null,
-                outerClass : "input-group mb-3",
-                innerClass : "form-control",
+                outerClass: "input-group mb-3",
+                innerClass: "form-control",
                 required: true,
                 pattern: "^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*).{8,}$",
-                invalidMessage: "En az 8 karakter ve Geçerli karakterler giriniz.",
+                invalidMessage:
+                  "En az 8 karakter ve Geçerli karakterler giriniz.",
               },
               name: "Şifre",
               column: "password",
@@ -113,7 +116,7 @@ export default defineComponent({
 
       const axiosRequestParams = {
         name: this.$options.__file,
-        data: JSON.stringify(this.user.input),
+        data: JSON.stringify(this.axiosRequest.request),
         url: "https://reqres.in/api/users",
         config: {
           headers: {
@@ -127,7 +130,7 @@ export default defineComponent({
         },
       };
 
-      console.log(JSON.stringify(this.user.input));
+      console.log(JSON.stringify(this.axiosRequest.request));
 
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,

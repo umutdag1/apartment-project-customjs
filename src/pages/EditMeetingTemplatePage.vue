@@ -6,31 +6,34 @@
   </div>
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <app-form-component
-          :formGroupProps="content.formGroupForSelectTemplate"
-        >
-        </app-form-component>
+      <form @submit.prevent="save" ref="form">
+        <div class="row">
+          <app-form-component
+            :formGroupProps="content.formGroupForSelectTemplate"
+            @selectedOption="axiosRequest.request.template_name = $event"
+          >
+          </app-form-component>
 
-        <app-button-component
-          :buttonProps="content.buttonGroupForAddContentToEditor"
-          @addContentToEditor="buttonEventToAddItsContent = $event"
-        ></app-button-component>
+          <app-button-component
+            :buttonProps="content.buttonGroupForAddContentToEditor"
+            @addContentToEditor="buttonEventToAddItsContent = $event"
+          ></app-button-component>
 
-        <app-editor-component
-          :wysiwygProps="content.wysiwygProps"
-          :addButtonContentToWysiwyg="buttonEventToAddItsContent"
-          @editorData="editor.data = $event"
-        ></app-editor-component>
+          <app-editor-component
+            :wysiwygProps="content.wysiwygProps"
+            :addButtonContentToWysiwyg="buttonEventToAddItsContent"
+            @editorData="axiosRequest.request.editorData = $event"
+          ></app-editor-component>
 
-        <app-button-component
-          :buttonProps="content.buttonGroupForAddTemplate"
-          @goBackPage="$store.dispatch('changePage', null)"
-          @save="save"
-          @goNextPage="$store.dispatch('changePage', 'createMeeting')"
-          @saveAndnextPage="saveAndnextPage"
-        ></app-button-component>
-      </div>
+          <app-button-component
+            :buttonProps="content.buttonGroupForAddTemplate"
+            @goBackPage="$store.dispatch('changePage', null)"
+            @save="saveStatus = 0"
+            @goNextPage="$store.dispatch('changePage', 'createMeeting')"
+            @saveAndnextPage="saveStatus = 1"
+          ></app-button-component>
+        </div>
+      </form>
     </div>
   </section>
 </template>
@@ -51,6 +54,13 @@ export default defineComponent({
   },
   data() {
     return {
+      axiosRequest: {
+        request: {
+          template_name : "",
+          editorData: "",
+        },
+      },
+      saveStatus: null,
       buttonEventToAddItsContent: new PointerEvent(""),
       content: {
         header: {
@@ -97,16 +107,19 @@ export default defineComponent({
           buttons: [
             {
               class: "btn btn-block btn-secondary my-2 mr-3",
+              type: "button",
               clickEvent: "goBackPage",
               innerHtml: "Geri Dön",
             },
             {
               class: "btn btn-block btn-info my-2 mr-3",
+              type: "submit",
               clickEvent: "save",
               innerHtml: "Kaydet",
             },
             {
               class: "btn btn-block btn-primary my-2 mr-3",
+              type: "button",
               clickEvent: "goNextPage",
               innerHtml: "Devam Et",
             },
@@ -146,23 +159,53 @@ export default defineComponent({
           },
         },
       },
-      userInput: {},
-      editor: {
-        data: "",
-      },
     };
   },
   methods: {
     save() {
-      this.$store.dispatch("fireToast", {
-        message: "Şablon Başarıyla Eklendi.",
-        type: "success",
-        duration: 2000,
-      });
+      if (this.axiosRequest.request.editorData !== "") {
+        const axiosRequestParams = {
+          name: this.$options.__file,
+          data: JSON.stringify(this.axiosRequest.request),
+          url: "https://reqres.in/api/users",
+          config: {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+          toastMessages: {
+            success: "Şablon Başarıyla Kaydedildi.",
+            warning: null,
+            error: "Şablon Kaydedilemedi.",
+          },
+        };
+
+        console.log(JSON.stringify(this.axiosRequest.request));
+
+        this.$store.dispatch("makePostRequest", {
+          axiosRequestParams,
+        });
+
+        if (this.saveStatus === 1) {
+          this.$store.dispatch("changePage", "createMeeting");
+        }
+      } else {
+        this.$store.dispatch("fireToast", {
+          message: "Şablon Boş Olamaz.",
+          type: "warning",
+          duration: 2000,
+        });
+      }
     },
-    saveAndnextPage() {
-      this.save();
-      this.$store.dispatch("changePage", "createMeeting");
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      console.log(val.responseData.data);
     },
   },
 });

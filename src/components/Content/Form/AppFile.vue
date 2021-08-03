@@ -23,6 +23,7 @@
             <div class="btn-group w-100 overflow-auto">
               <button
                 class="btn btn-secondary col"
+                type="button"
                 @click="$emit(fileGroupProps.file.clickEvent.selectFile, this)"
               >
                 <i class="far fa-file mr-2"></i>
@@ -30,6 +31,7 @@
               </button>
               <button
                 class="btn btn-danger col"
+                type="button"
                 @click="$emit(fileGroupProps.file.clickEvent.resetForm, this)"
               >
                 <i class="fas fa-trash mr-2"></i>
@@ -75,7 +77,7 @@
               <div class="btn-group">
                 <button
                   class="btn btn-primary start"
-                  type="submit"
+                  type="button"
                   @click="uploadFile(index)"
                   :ref="`uploadBtn_${index + 1}`"
                 >
@@ -84,6 +86,7 @@
                 </button>
                 <button
                   class="btn btn-warning cancel"
+                  type="button"
                   @click="cancelUploadFile(index)"
                   :ref="`cancelBtn_${index + 1}`"
                   disabled="true"
@@ -126,58 +129,77 @@ export default defineComponent({
   },
   methods: {
     uploadFile(fileIndex) {
-      this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
-      this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
-      this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
-      this.uploadFileInfo.index = fileIndex;
+      if (this.fileGroupProps.axiosRequest.selectedGroup !== "") {
+        this.$refs[`uploadBtn_${fileIndex + 1}`].disabled = true;
+        this.$refs[`cancelBtn_${fileIndex + 1}`].disabled = false;
+        this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
+        this.uploadFileInfo.index = fileIndex;
 
-      const formData = new FormData();
-      formData.append("bytes", this.files[fileIndex]);
+        const formData = new FormData();
+        formData.append(
+          "group_name",
+          this.fileGroupProps.axiosRequest.selectedGroup
+        );
+        formData.append("fileAsBytes", this.files[fileIndex]);
 
-      console.log(formData);
-      
-      const axiosRequestParams = {
-        name: this.$options.__file,
-        data: formData,
-        url: this.fileGroupProps.axiosRequest.url,
-        config: {
-          cancelToken: this.axiosRequest.cancelTokenArr[fileIndex].token,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress: (progressEvent) => {
-            const fileProgressElem =
-              this.$refs[`fileProgress_${fileIndex + 1}`];
+        // for (var key of formData.keys()) {
+        //   console.log(key);
+        // }
 
-            if (this.uploadFileInfo.isUploadCanceledArr[fileIndex]) {
-              cancelProcess(this);
-            } else {
-              if (fileProgressElem === null) {
+        // for (var value of formData.values()) {
+        //   console.log(value);
+        // }
+
+        const axiosRequestParams = {
+          name: this.$options.__file,
+          data: formData,
+          url: this.fileGroupProps.axiosRequest.url,
+          config: {
+            cancelToken: this.axiosRequest.cancelTokenArr[fileIndex].token,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: (progressEvent) => {
+              const fileProgressElem =
+                this.$refs[`fileProgress_${fileIndex + 1}`];
+
+              if (this.uploadFileInfo.isUploadCanceledArr[fileIndex]) {
                 cancelProcess(this);
               } else {
-                fileProgressElem.style.width =
-                  (progressEvent.loaded / progressEvent.total) * 100 + "%";
+                if (fileProgressElem === null) {
+                  cancelProcess(this);
+                } else {
+                  fileProgressElem.style.width =
+                    (progressEvent.loaded / progressEvent.total) * 100 + "%";
+                }
               }
-            }
 
-            function cancelProcess(curThis) {
-              curThis.axiosRequest.cancelTokenArr[fileIndex].cancel();
-              curThis.axiosRequest.cancelTokenArr[fileIndex] =
-                curThis.axios.CancelToken.source();
-              curThis.uploadFileInfo.isUploadContinuedArr[fileIndex] = false;
-              curThis.uploadFileInfo.isUploadCanceledArr[fileIndex] = false;
-            }
+              function cancelProcess(curThis) {
+                curThis.axiosRequest.cancelTokenArr[fileIndex].cancel();
+                curThis.axiosRequest.cancelTokenArr[fileIndex] =
+                  curThis.axios.CancelToken.source();
+                curThis.uploadFileInfo.isUploadContinuedArr[fileIndex] = false;
+                curThis.uploadFileInfo.isUploadCanceledArr[fileIndex] = false;
+              }
+            },
           },
-        },
-        toastMessages: {
-          success: "Dosya Başarıyla Yüklendi",
-          warning: "Dosya Yükleme İşlemi İptal Edildi.",
-          error: "Dosya Yükleme Başarısız",
-        },
-      };
+          toastMessages: {
+            success: "Dosya Başarıyla Yüklendi",
+            warning: "Dosya Yükleme İşlemi İptal Edildi.",
+            error: "Dosya Yükleme Başarısız",
+          },
+        };
 
-      this.$emit("axiosRequestParamsForFile",axiosRequestParams);
-      
+        this.$store.dispatch("makePostRequest", {
+          axiosRequestParams,
+        });
+      } else {
+        this.$store.dispatch("fireToast", {
+          message: "Lütfen Bir Grup Seçiniz.",
+          type: "warning",
+          duration: 2000,
+        });
+      }
     },
     cancelUploadFile(fileIndex) {
       this.uploadFileInfo.isUploadCanceledArr[fileIndex] = true;
@@ -189,6 +211,7 @@ export default defineComponent({
       this.uploadFileInfo.isUploadContinuedArr.push(false);
       this.axiosRequest.cancelTokenArr.push(this.axios.CancelToken.source());
       this.files.push(this.$refs.file.files[0]);
+      this.$refs.file.disabled = true;
       this.$refs.file.value = "";
     },
   },
@@ -205,8 +228,8 @@ export default defineComponent({
       ] = false;
       this.$refs[`uploadBtn_${this.uploadFileInfo.index + 1}`].disabled =
         this.axiosRequest.response.situation === "success" ? true : false;
-      this.$refs[`cancelBtn_${this.uploadFileInfo.index + 1}`].disabled =
-        this.axiosRequest.response.situation === "success" ? true : false;
+      this.$refs[`cancelBtn_${this.uploadFileInfo.index + 1}`].disabled = true;
+      //this.axiosRequest.response.situation === "success" ? true : false;
     },
   },
 });

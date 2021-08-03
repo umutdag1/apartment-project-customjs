@@ -169,7 +169,7 @@ export default defineComponent({
     sendMeeting(buttonEvent) {
       const targetElemContentArray = buttonEvent.target.innerHTML.split(" ");
       targetElemContentArray.splice(targetElemContentArray.length - 1, 1);
-      this.emitter.emit("fireToast", [
+      this.$store.dispatch("fireToast", [
         `${targetElemContentArray.join(" ")} Başarıyla Gönderildi.`,
         "success",
         2000,

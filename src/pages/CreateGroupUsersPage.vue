@@ -95,12 +95,14 @@ export default defineComponent({
   data() {
     return {
       axiosRequest : {
+        request : null,
         response : null
       },
       addUserProps: {
         content: {
           formGroupForSelectGroup: {
             labelName: "Grup Seç",
+            required: true,
             options: [
               {
                 name: "Group1",

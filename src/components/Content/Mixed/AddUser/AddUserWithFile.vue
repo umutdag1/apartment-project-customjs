@@ -2,10 +2,9 @@
   <div class="col-12 mb-3">
     <p class="h3">Gruba Liste Oluştur</p>
   </div>
-  <form @submit.prevent="save" ref="form">
     <app-form-component
       :formGroupProps="addUserWithFileProps.formGroupForSelectGroup"
-      @selectedOption="selectedGroup = $event"
+      @selectedOption="content.fileGroupForAddFile.axiosRequest.selectedGroup = $event"
     >
     </app-form-component>
 
@@ -13,9 +12,8 @@
       :fileGroupProps="content.fileGroupForAddFile"
       @onSelectFile="onSelectFile($event)"
       @onResetForm="onResetForm($event)"
-      @axiosRequestParamsForFile="sendFileToDB($event)"
     ></app-file-component>
-  </form>
+
 </template>
 
 <script>
@@ -36,11 +34,11 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedGroup: "",
       content: {
         fileGroupForAddFile: {
           axiosRequest: {
             url: "https://v2.convertapi.com/upload",
+            selectedGroup: "",
           },
           file: {
             type: "Excel",
@@ -58,21 +56,6 @@ export default defineComponent({
     };
   },
   methods: {
-    sendFileToDB(axiosRequestParams) {
-      const formData = axiosRequestParams.data;
-      const updatedData = JSON.stringify({
-        selectedGroup: this.selectedGroup,
-        file: formData,
-      });
-
-      axiosRequestParams.data = updatedData;
-
-      console.log(updatedData);
-
-      this.$store.dispatch("makePostRequest", {
-        axiosRequestParams,
-      });
-    },
     onSelectFile(childThis) {
       if (childThis.$refs.file.disabled) {
         this.$store.dispatch("fireToast", {
@@ -82,7 +65,7 @@ export default defineComponent({
         });
       } else {
         childThis.$refs.file.click();
-        childThis.$refs.file.disabled = true;
+        console.log(childThis.$refs.file.value);
       }
     },
     onResetForm(childThis) {

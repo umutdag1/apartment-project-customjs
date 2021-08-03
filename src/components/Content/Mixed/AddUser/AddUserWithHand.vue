@@ -3,17 +3,17 @@
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
 
-  <form @submit.prevent="addUserToDB" ref="form">
+  <form class="col-12" @submit.prevent="addUserToDB" ref="form">
     <div class="row">
       <app-form-component
         :formGroupProps="addUserWithHandProps.formGroupForSelectGroup"
-        @selectedOption="selectedGroup = $event"
+        @selectedOption="axiosRequest.request.selectedGroup = $event"
       >
       </app-form-component>
 
       <app-input-component
         :inputProps="content.inputGroupForAddNewUser"
-        @userInput="user = $event"
+        @userInput="axiosRequest.request.user = $event"
         ref="inputRef"
       ></app-input-component>
 
@@ -47,12 +47,14 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedGroup: "",
       saveStatus: 0,
-      user: {
-        input: {},
-      },
       axiosRequest: {
+        request: {
+          selectedGroup: "",
+          user: {
+            input: {},
+          },
+        },
         response: null,
       },
       content: {
@@ -182,23 +184,6 @@ export default defineComponent({
             class: "btn-group",
           },
         },
-        formGroupForSelectGroup: {
-          labelName: "Grup Seç",
-          required: true,
-          options: [
-            {
-              name: "Group1",
-              class: "",
-            },
-            {
-              name: "Group2",
-              class: "",
-            },
-          ],
-          encapsulationElem: {
-            class: "col-12",
-          },
-        },
       },
     };
   },
@@ -207,8 +192,8 @@ export default defineComponent({
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify({
-          ...this.user.input,
-          selectedGroup: this.selectedGroup,
+          ...this.axiosRequest.request.user.input,
+          selectedGroup: this.axiosRequest.request.selectedGroup,
         }),
         url: "https://reqres.in/api/users",
         config: {

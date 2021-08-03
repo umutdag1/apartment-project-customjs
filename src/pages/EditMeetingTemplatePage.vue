@@ -25,9 +25,9 @@
 
         <app-button-component
           :buttonProps="content.buttonGroupForAddTemplate"
-          @goBackPage="$store.dispatch('changePage',null)"
+          @goBackPage="$store.dispatch('changePage', null)"
           @save="save"
-          @goNextPage="$store.dispatch('changePage','createMeeting')"
+          @goNextPage="$store.dispatch('changePage', 'createMeeting')"
           @saveAndnextPage="saveAndnextPage"
         ></app-button-component>
       </div>
@@ -123,6 +123,9 @@ export default defineComponent({
         },
         formGroupForSelectTemplate: {
           labelName: "Şablon Seç",
+          outerClass: "form-group",
+          innerClass: "form-control",
+          required: true,
           options: [
             {
               name: "Şablon1",
@@ -159,7 +162,7 @@ export default defineComponent({
     },
     saveAndnextPage() {
       this.save();
-      this.$store.dispatch('changePage','createMeeting');
+      this.$store.dispatch("changePage", "createMeeting");
     },
   },
 });

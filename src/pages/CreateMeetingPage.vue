@@ -68,14 +68,15 @@ export default defineComponent({
         },
         formGroupForSelectGroup: {
           labelName: "Grup Seç",
+          outerClass: "form-group",
+          innerClass: "form-control",
+          required: true,
           options: [
             {
               name: "Group1",
-              class: "",
             },
             {
               name: "Group2",
-              class: "",
             },
           ],
           encapsulationElem: {
@@ -107,14 +108,15 @@ export default defineComponent({
         },
         formGroupForSelectTemplate: {
           labelName: "Şablon Seç",
+          outerClass: "form-group",
+          innerClass: "form-control",
+          required: true,
           options: [
             {
               name: "Şablon1",
-              class: "",
             },
             {
               name: "Şablon2",
-              class: "",
             },
           ],
           encapsulationElem: {

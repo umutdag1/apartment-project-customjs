@@ -16,8 +16,8 @@
 
       <app-button-component
         :buttonProps="content.buttonGroupForAddNewGroup"
-        @goBackPage="$store.dispatch('changePage',null)"
-        @goNextPage="$store.dispatch('changePage','createMeetingTemplate')"
+        @goBackPage="$store.dispatch('changePage', null)"
+        @goNextPage="$store.dispatch('changePage', 'createMeetingTemplate')"
       ></app-button-component>
     </div>
   </section>
@@ -45,6 +45,9 @@ export default defineComponent({
         },
         formGroupForSelectGroup: {
           labelName: "Grup Seç",
+          outerClass: "form-group",
+          innerClass: "form-control",
+          required: true,
           options: [
             {
               name: "Group1",
@@ -86,7 +89,7 @@ export default defineComponent({
         },
       },
     };
-  }
+  },
 });
 </script>
 

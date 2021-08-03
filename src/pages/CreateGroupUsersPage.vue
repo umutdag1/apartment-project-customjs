@@ -94,14 +94,16 @@ export default defineComponent({
   },
   data() {
     return {
-      axiosRequest : {
-        request : null,
-        response : null
+      axiosRequest: {
+        request: null,
+        response: null,
       },
       addUserProps: {
         content: {
           formGroupForSelectGroup: {
             labelName: "Grup Seç",
+            outerClass: "form-group",
+            innerClass: "form-control",
             required: true,
             options: [
               {
@@ -153,7 +155,7 @@ export default defineComponent({
           "Content-Type": "application/json",
         },
       },
-      toastMessages: null
+      toastMessages: null,
     };
 
     this.$store.dispatch("makeGetRequest", {
@@ -168,9 +170,8 @@ export default defineComponent({
   watch: {
     response(val) {
       this.axiosRequest.response = val;
-
     },
-  }
+  },
 });
 </script>
       

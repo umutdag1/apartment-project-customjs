@@ -7,7 +7,7 @@
     <div class="row">
       <app-form-component
         :formGroupProps="addUserWithHandProps.formGroupForSelectGroup"
-        @selectedOption="axiosRequest.request.group_name = $event"
+        @selectedOption="axiosRequest.request.group_id = $event"
       >
       </app-form-component>
 
@@ -50,7 +50,7 @@ export default defineComponent({
       saveStatus: 0,
       axiosRequest: {
         request: {
-          group_name: "",
+          group_id: "",
           userInput: {},
         },
         response: null,
@@ -190,7 +190,7 @@ export default defineComponent({
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: "https://reqres.in/api/users",
+        url: "http://d04c-78-181-210-174.ngrok.io/user-api/addusertogroupbyhand",
         config: {
           headers: {
             "Content-Type": "application/json",

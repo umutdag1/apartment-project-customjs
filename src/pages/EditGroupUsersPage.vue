@@ -9,7 +9,7 @@
     <div class="container-fluid">
       <app-form-component
         :formGroupProps="content.formGroupForSelectGroup"
-        @selectedOption="content.dataTableProps.axios.request.group_name = $event"
+        @selectedOption="content.dataTableProps.axios.request.group_id = $event"
       >
       </app-form-component>
 
@@ -42,6 +42,10 @@ export default defineComponent({
   },
   data() {
     return {
+      axiosRequest: {
+        request: null,
+        response: null,
+      },
       content: {
         header: {
           name: "Grup Kişileri Düzenle",
@@ -52,14 +56,6 @@ export default defineComponent({
           innerClass: "form-control",
           required: true,
           options: [
-            {
-              name: "Group1",
-              class: "",
-            },
-            {
-              name: "Group2",
-              class: "",
-            },
           ],
           encapsulationElem: {
             class: "col-12",
@@ -84,9 +80,9 @@ export default defineComponent({
         },
         dataTableProps: {
           axios: {
-            url: "https://jsonplaceholder.typicode.com/posts/",
+            url: "http://da2e-85-104-11-18.ngrok.io/user-api/getgroupusers",
             request: {
-              group_name: "",
+              group_id: "",
             },
             response : null
           },
@@ -104,9 +100,28 @@ export default defineComponent({
   },
   watch: {
     response(val) {
+      this.axiosRequest.response = val;
       console.log(val.responseData.data);
+      this.content.formGroupForSelectGroup.options =
+        this.axiosRequest.response.responseData.data;
     },
   },
+  mounted() {
+    const axiosRequestParams = {
+      name: this.$options.__file,
+      url: "http://da2e-85-104-11-18.ngrok.io/user-api/getgroups",
+      config: {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      toastMessages: null,
+    };
+
+    this.$store.dispatch("makeGetRequest", {
+      axiosRequestParams,
+    });
+  }
 });
 </script>
 

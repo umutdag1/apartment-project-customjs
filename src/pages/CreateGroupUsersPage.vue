@@ -149,7 +149,7 @@ export default defineComponent({
   mounted() {
     const axiosRequestParams = {
       name: this.$options.__file,
-      url: "https://reqres.in/api/users",
+      url: "http://d04c-78-181-210-174.ngrok.io/user-api/getgroups",
       config: {
         headers: {
           "Content-Type": "application/json",
@@ -170,6 +170,9 @@ export default defineComponent({
   watch: {
     response(val) {
       this.axiosRequest.response = val;
+      //console.log(val);
+      this.addUserProps.content.formGroupForSelectGroup.options =
+        this.axiosRequest.response.responseData.data;
     },
   },
 });

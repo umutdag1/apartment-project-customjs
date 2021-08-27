@@ -7,7 +7,7 @@
         <option 
           v-for="(formGroupOption, index) in formGroupProps.options"
           :key="index"
-          :value="formGroupOption.name"
+          :value="formGroupOption.id"
         >
           {{ formGroupOption.name }}
         </option>

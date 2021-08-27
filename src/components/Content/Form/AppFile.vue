@@ -135,20 +135,14 @@ export default defineComponent({
         this.uploadFileInfo.isUploadContinuedArr[fileIndex] = true;
         this.uploadFileInfo.index = fileIndex;
 
+        console.log(this.fileGroupProps.axiosRequest.selectedGroup);
+
         const formData = new FormData();
         formData.append(
-          "group_name",
+          "group_id",
           this.fileGroupProps.axiosRequest.selectedGroup
         );
         formData.append("fileAsBytes", this.files[fileIndex]);
-
-        // for (var key of formData.keys()) {
-        //   console.log(key);
-        // }
-
-        // for (var value of formData.values()) {
-        //   console.log(value);
-        // }
 
         const axiosRequestParams = {
           name: this.$options.__file,

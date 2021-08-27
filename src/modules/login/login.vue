@@ -58,7 +58,7 @@ export default defineComponent({
       appElement: null,
       axiosRequest:{
         request : {
-          userInput: {}
+          UserInput: {}
         },
         response : null
       },
@@ -130,7 +130,7 @@ export default defineComponent({
         },
       };
 
-      console.log(JSON.stringify(this.axiosRequest.request));
+      console.log(this.axiosRequest.request.UserInput);
 
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,

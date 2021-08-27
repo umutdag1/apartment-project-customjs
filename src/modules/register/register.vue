@@ -56,7 +56,7 @@ export default defineComponent({
       appElement: null,
       axiosRequest:{
         request : {
-          userInput: {}
+          UserInput: {}
         },
         response : null
       },
@@ -214,7 +214,7 @@ export default defineComponent({
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: "https://reqres.in/api/users",
+        url: "http://d04c-78-181-210-174.ngrok.io/user-api/user",
         config: {
           headers: {
             "Content-Type": "application/json",
@@ -231,7 +231,7 @@ export default defineComponent({
         axiosRequestParams,
       });
       
-      console.log(JSON.stringify(this.axiosRequest.request));
+      console.log(this.axiosRequest.request);
       console.log(e);
     },
   },

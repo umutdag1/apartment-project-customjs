@@ -174,17 +174,21 @@ export default defineComponent({
   },
   mounted() {
     window.JSZip = jsZip;
+    /*if (this.dataTableProps.axios.request.group_id !== "") {
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        url:
+          this.dataTableProps.axios.url +
+          "/" +
+          this.dataTableProps.axios.request.group_id,
+        config: {},
+        toastMessages: null,
+      };
 
-    const axiosRequestParams = {
-      name: this.$options.__file,
-      url: this.dataTableProps.axios.url,
-      config: {},
-      toastMessages: null,
-    };
-
-    this.$store.dispatch("makeGetRequest", {
-      axiosRequestParams,
-    });
+      this.$store.dispatch("makeGetRequest", {
+        axiosRequestParams,
+      });
+    }*/
   },
   computed: {
     response() {
@@ -192,8 +196,29 @@ export default defineComponent({
     },
   },
   watch: {
+    dataTableProps: {
+      handler(val) {
+        if (val.axios.request.group_id !== "") {
+          const axiosRequestParams = {
+            name: this.$options.__file,
+            url: val.axios.url + "/" + val.axios.request.group_id,
+            config: {},
+            toastMessages: null,
+          };
+
+          this.$store.dispatch("makeGetRequest", {
+            axiosRequestParams,
+          });
+        }
+      },
+      deep: true,
+    },
     response(val) {
       const responseData = val.responseData.data;
+      console.log(responseData);
+      if (this.isDataTableCreated) {
+        this.reloadDataTable();
+      }
       if (responseData.length > 0) {
         let newResponseData = [];
         Array.isArray(responseData)
@@ -203,15 +228,12 @@ export default defineComponent({
         this.addColumnToDataTable(heads, ["", ""], "toBeginning");
         this.tableProps.data.keys = heads;
         this.tableProps.data.values = newResponseData;
+        if (!this.isDataTableCreated) {
+          this.isDataTableCreated = true;
+          this.createDataTable();
+        }
       } else {
         this.tableProps.data.values = [];
-      }
-      if (this.isDataTableCreated) {
-        this.reloadDataTable();
-      }
-      if (!this.isDataTableCreated) {
-        this.isDataTableCreated = true;
-        this.createDataTable();
       }
     },
   },

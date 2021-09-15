@@ -190,7 +190,7 @@ export default defineComponent({
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: "http://d04c-78-181-210-174.ngrok.io/user-api/addusertogroupbyhand",
+        url: this.$store.getters.getRequestEndPoint + "addusertogroupbyhand",
         config: {
           headers: {
             "Content-Type": "application/json",

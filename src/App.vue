@@ -46,7 +46,9 @@ export default defineComponent({
     });
   },
   mounted() {
+    const url = "https://umutrobin.loca.lt/user-api/";
     this.$store.dispatch("setVueThisObj",this);
+    this.$store.dispatch("setEndPoint",url);
 
     setTimeout(() => {
       this.loader.hide();

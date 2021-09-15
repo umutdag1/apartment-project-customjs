@@ -80,7 +80,7 @@ export default defineComponent({
         },
         dataTableProps: {
           axios: {
-            url: "http://da2e-85-104-11-18.ngrok.io/user-api/getgroupusers",
+            url: null,
             request: {
               group_id: "",
             },
@@ -107,9 +107,10 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.content.dataTableProps.axios.url = this.$store.getters.getRequestEndPoint + "getgroupusers";
     const axiosRequestParams = {
       name: this.$options.__file,
-      url: "http://da2e-85-104-11-18.ngrok.io/user-api/getgroups",
+      url: this.$store.getters.getRequestEndPoint + "getgroups",
       config: {
         headers: {
           "Content-Type": "application/json",

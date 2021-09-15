@@ -55,12 +55,13 @@ export default defineComponent({
   },
   data() {
     return {
+      requestEndPoint: null,
       appElement: null,
-      axiosRequest:{
-        request : {
-          UserInput: {}
+      axiosRequest: {
+        request: {
+          userInput: {},
         },
-        response : null
+        response: null,
       },
       content: {
         inputGroupForLoginUser: {
@@ -112,12 +113,13 @@ export default defineComponent({
   },
   methods: {
     submitForm(e) {
+      this.getEndPoint();
       e.preventDefault();
 
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: "https://reqres.in/api/users",
+        url: this.requestEndPoint + "login",
         config: {
           headers: {
             "Content-Type": "application/json",
@@ -130,13 +132,31 @@ export default defineComponent({
         },
       };
 
-      console.log(this.axiosRequest.request.UserInput);
+      console.log(this.axiosRequest.request);
 
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,
       });
 
       //this.$router.push("/");
+    },
+    getEndPoint() {
+      this.requestEndPoint = this.$store.getters.getRequestEndPoint;
+      console.log(this.requestEndPoint);
+    },
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      console.log(val);
+      const response = val.responseData;
+      if(response.status === 200){
+        this.$store.dispatch("changePage","/");
+      }
     },
   },
 });

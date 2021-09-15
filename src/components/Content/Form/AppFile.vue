@@ -139,7 +139,7 @@ export default defineComponent({
 
         const formData = new FormData();
         formData.append(
-          "group_id",
+          "idgroup",
           this.fileGroupProps.axiosRequest.selectedGroup
         );
         formData.append("fileAsBytes", this.files[fileIndex]);

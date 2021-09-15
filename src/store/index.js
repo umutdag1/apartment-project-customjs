@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 export default createStore({
     state: {
         vueThisObj: null,
+        endPoint : null,
         axiosRequest: {
             response: {}
         }
@@ -19,6 +20,9 @@ export default createStore({
         setVueThisObj(state, data) {
             state.vueThisObj = data;
         },
+        setEndPoint(state, data){
+            state.endPoint = data;
+        },
         changePage(state, data) {
             if (!data) {
                 state.vueThisObj.$router.back();
@@ -29,6 +33,7 @@ export default createStore({
         makePostRequest(state, configParams) {
             const vm = this;
             const axiosRequestParams = configParams.axiosRequestParams;
+ 
             state.vueThisObj.axios
                 .post(
                     axiosRequestParams.url,
@@ -137,6 +142,9 @@ export default createStore({
         setVueThisObj({ commit }, data) {
             commit("setVueThisObj", data);
         },
+        setEndPoint({commit}, data){
+            commit("setEndPoint",data);
+        },
         makePostRequest({ commit }, data) {
             commit("makePostRequest", data);
         },
@@ -147,6 +155,9 @@ export default createStore({
     getters: {
         axiosRequestResponse(state) {
             return state.axiosRequest.response;
+        },
+        getRequestEndPoint(state) {
+            return state.endPoint;
         }
     },
     modules: {}

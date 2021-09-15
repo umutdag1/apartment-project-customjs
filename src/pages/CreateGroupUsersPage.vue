@@ -149,7 +149,7 @@ export default defineComponent({
   mounted() {
     const axiosRequestParams = {
       name: this.$options.__file,
-      url: "http://d04c-78-181-210-174.ngrok.io/user-api/getgroups",
+      url: this.$store.getters.getRequestEndPoint + "getgroups",
       config: {
         headers: {
           "Content-Type": "application/json",

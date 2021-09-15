@@ -37,7 +37,7 @@ export default defineComponent({
       content: {
         fileGroupForAddFile: {
           axiosRequest: {
-            url: "http://d04c-78-181-210-174.ngrok.io/user-api/excel",
+            url: null,
             selectedGroup: "",
           },
           file: {
@@ -88,6 +88,9 @@ export default defineComponent({
       }
     },
   },
+  mounted(){
+    this.content.fileGroupForAddFile.axiosRequest.url = this.$store.getters.getRequestEndPoint + "excel"; 
+  }
 });
 </script>
 

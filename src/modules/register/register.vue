@@ -54,11 +54,12 @@ export default defineComponent({
   data() {
     return {
       appElement: null,
-      axiosRequest:{
-        request : {
-          UserInput: {}
+      requestEndPoint: null,
+      axiosRequest: {
+        request: {
+          UserInput: {},
         },
-        response : null
+        response: null,
       },
       content: {
         inputGroupForRegisterNewUser: {
@@ -210,11 +211,12 @@ export default defineComponent({
   methods: {
     submitForm(e) {
       e.preventDefault();
+      this.getEndPoint();
       //Request
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: "http://d04c-78-181-210-174.ngrok.io/user-api/user",
+        url: this.requestEndPoint + "user",
         config: {
           headers: {
             "Content-Type": "application/json",
@@ -230,9 +232,27 @@ export default defineComponent({
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,
       });
-      
+
       console.log(this.axiosRequest.request);
       console.log(e);
+    },
+    getEndPoint() {
+      this.requestEndPoint = this.$store.getters.getRequestEndPoint;
+      console.log(this.requestEndPoint);
+    },
+  },
+  computed: {
+    response() {
+      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    },
+  },
+  watch: {
+    response(val) {
+      console.log(val);
+      const response = val.responseData;
+      if (response.status === 200) {
+        this.$store.dispatch("changePage", "/login");
+      }
     },
   },
 });

@@ -55,7 +55,6 @@ export default defineComponent({
   },
   data() {
     return {
-      requestEndPoint: null,
       appElement: null,
       axiosRequest: {
         request: {
@@ -113,13 +112,12 @@ export default defineComponent({
   },
   methods: {
     submitForm(e) {
-      this.getEndPoint();
       e.preventDefault();
 
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: this.requestEndPoint + "login",
+        url: this.$store.getters.getRequestEndPoint + "login",
         config: {
           headers: {
             "Content-Type": "application/json",
@@ -139,11 +137,7 @@ export default defineComponent({
       });
 
       //this.$router.push("/");
-    },
-    getEndPoint() {
-      this.requestEndPoint = this.$store.getters.getRequestEndPoint;
-      console.log(this.requestEndPoint);
-    },
+    }
   },
   computed: {
     response() {

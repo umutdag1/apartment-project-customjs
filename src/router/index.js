@@ -8,6 +8,7 @@ import CreateGroupPage from "@/pages/CreateGroupPage.vue"
 import CreateGroupUsersPage from '@/pages/CreateGroupUsersPage.vue';
 import CreateMeetingPage from "@/pages/CreateMeetingPage.vue";
 import CreateMeetingTemplatePage from '@/pages/CreateMeetingTemplatePage.vue';
+import ShowGroupUsersPage from "@/pages/ShowGroupUsersPage.vue";
 import EditMeetingTemplatePage from "@/pages/EditMeetingTemplatePage.vue";
 import EditGroupUsersPage from "@/pages/EditGroupUsersPage.vue";
 import Profile from '@/pages/profile/profile.vue';
@@ -41,8 +42,13 @@ const routes = [
                 component: CreateMeetingTemplatePage
             },
             {
-                path: 'editGroupUsers',
-                name: 'EditGroupUsersPage',
+                path: 'showGroupUsers',
+                name: 'ShowGroupUsersPage',
+                component: ShowGroupUsersPage
+            },
+            {
+                path: 'editGroupUser/:id',
+                name: 'EditGroupUserPage',
                 component: EditGroupUsersPage
             },
             {

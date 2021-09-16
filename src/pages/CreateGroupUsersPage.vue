@@ -105,14 +105,7 @@ export default defineComponent({
             outerClass: "form-group",
             innerClass: "form-control",
             required: true,
-            options: [
-              {
-                name: "Group1",
-              },
-              {
-                name: "Group2",
-              },
-            ],
+            options: [],
             encapsulationElem: {
               class: "col-12",
             },

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 mb-3">
+  <div class="col-12 mb-3" v-if="!addUserWithHandProps.userForUpdating">
     <p class="h3">Gruba Kişi Oluştur</p>
   </div>
 
@@ -190,18 +190,30 @@ export default defineComponent({
       const axiosRequestParams = {
         name: this.$options.__file,
         data: JSON.stringify(this.axiosRequest.request),
-        url: this.$store.getters.getRequestEndPoint + "addusertogroupbyhand",
         config: {
           headers: {
             "Content-Type": "application/json",
           },
         },
-        toastMessages: {
+      };
+
+      if (this.addUserWithHandProps.userForUpdating) {
+        axiosRequestParams.url =
+          this.$store.getters.getRequestEndPoint + "updateusertogroupbyhand";
+        axiosRequestParams.toastMessages = {
+          success: "Kişi Başarıyla Güncellendi",
+          warning: null,
+          error: "Kişi Güncelleme Başarısız",
+        };
+      } else {
+        axiosRequestParams.url =
+          this.$store.getters.getRequestEndPoint + "addusertogroupbyhand";
+        axiosRequestParams.toastMessages = {
           success: "Kişi Başarıyla Eklendi",
           warning: null,
           error: "Kişi Ekleme Başarısız",
-        },
-      };
+        };
+      }
 
       console.log(axiosRequestParams.data);
 
@@ -221,7 +233,28 @@ export default defineComponent({
   watch: {
     response(val) {
       this.axiosRequest.response = val;
+      console.log(this.axiosRequest.response);
     },
+  },
+  mounted() {
+    if (this.addUserWithHandProps.userForUpdating) {
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        url: this.addUserWithHandProps.userForUpdating.url,
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: null,
+      };
+
+      console.log(axiosRequestParams.data);
+
+      this.$store.dispatch("makeGetRequest", {
+        axiosRequestParams,
+      });
+    }
   },
 });
 </script>

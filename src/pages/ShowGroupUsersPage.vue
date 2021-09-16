@@ -7,12 +7,20 @@
 
   <section class="content">
     <div class="container-fluid">
-      <add-user-with-hand-component
-        :addUserWithHandProps="content.addUserProps.content"
-      ></add-user-with-hand-component>
+      <app-form-component
+        :formGroupProps="content.formGroupForSelectGroup"
+        @selectedOption="content.dataTableProps.axios.request.group_id = $event"
+      >
+      </app-form-component>
+
+      <app-data-table-component
+        :dataTableProps="content.dataTableProps"
+      ></app-data-table-component>
+
       <app-button-component
-        :buttonProps="content.buttonGroupForChangingPage"
+        :buttonProps="content.buttonGroupForAddNewGroup"
         @goBackPage="$store.dispatch('changePage', null)"
+        @goNextPage="$store.dispatch('changePage', 'createMeetingTemplate')"
       ></app-button-component>
     </div>
   </section>
@@ -21,14 +29,16 @@
 <script>
 import { defineComponent } from "vue";
 import AppHeaderComponent from "@/components/Header/AppHeader.vue";
-import AddUserWithHandComponent from "@/components/Content/Mixed/AddUser/AddUserWithHand.vue";
+import AppFormComponent from "@/components/Content/Form/AppForm.vue";
+import AppDataTableComponent from "@/components/Content/Table/AppDataTable.vue";
 import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 
 export default defineComponent({
   components: {
     AppHeaderComponent,
-    AddUserWithHandComponent,
-    AppButtonComponent
+    AppFormComponent,
+    AppDataTableComponent,
+    AppButtonComponent,
   },
   data() {
     return {
@@ -38,37 +48,45 @@ export default defineComponent({
       },
       content: {
         header: {
-          name: "Grup Kişi Güncelle",
+          name: "Grup Kişileri Düzenle",
         },
-        addUserProps: {
-          content: {
-            formGroupForSelectGroup: {
-              labelName: "Grup Seç",
-              outerClass: "form-group",
-              innerClass: "form-control",
-              required: true,
-              options: [],
-              encapsulationElem: {
-                class: "col-12",
-              },
-            },
-            userForUpdating : {
-              axios : {
-                url : ""
-              }
-            },
+        formGroupForSelectGroup: {
+          labelName: "Grup Seç",
+          outerClass: "form-group",
+          innerClass: "form-control",
+          required: true,
+          options: [],
+          encapsulationElem: {
+            class: "col-12",
           },
         },
-        buttonGroupForChangingPage: {
+        buttonGroupForAddNewGroup: {
           buttons: [
             {
-              class: "btn btn-block btn-secondary my-2",
+              class: "btn btn-block btn-secondary my-2 mr-3",
               clickEvent: "goBackPage",
               innerHtml: "Geri Dön",
+            },
+            {
+              class: "btn btn-block btn-primary my-2",
+              clickEvent: "goNextPage",
+              innerHtml: "Devam Et",
             },
           ],
           encapsulationElem: {
             class: "col-12 d-flex align-items-center justify-content-center",
+          },
+        },
+        dataTableProps: {
+          axios: {
+            url: null,
+            request: {
+              group_id: "",
+            },
+            response : null
+          },
+          encapsulationElem: {
+            class: "col-12",
           },
         },
       },
@@ -88,10 +106,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.userForUpdating.axios.url = this.$store.getters.getRequestEndPoint + "getuser/" + this.$route.params.id;
-
-    console.log(this.userForUpdating.axios);
-
+    this.content.dataTableProps.axios.url = this.$store.getters.getRequestEndPoint + "getgroupusers";
+    
     const axiosRequestParams = {
       name: this.$options.__file,
       url: this.$store.getters.getRequestEndPoint + "getgroups",
@@ -106,7 +122,7 @@ export default defineComponent({
     this.$store.dispatch("makeGetRequest", {
       axiosRequestParams,
     });
-  },
+  }
 });
 </script>
 

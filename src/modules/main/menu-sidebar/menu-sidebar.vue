@@ -77,7 +77,18 @@
 
               <li class="nav-item">
                 <router-link
-                  to="/editGroupUsers"
+                  to="/showGroupUsers"
+                  class="nav-link"
+                  active-class="active"
+                >
+                  <i class="nav-icon far fa-circle nav-icon"></i>
+                  <p>Grup Kişileri Görüntüle</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link
+                  to="/editGroupUser/1"
                   class="nav-link"
                   active-class="active"
                 >

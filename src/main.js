@@ -11,6 +11,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import './index.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import 'bootstrap';
 
 const app = createApp(App);
 

@@ -2,19 +2,11 @@
   <div :class="dataTableProps.encapsulationElem.class">
     <table class="table table-hover table-bordered w-100" id="dataTable">
       <app-data-table-head-component :tableHeads="tableProps.data.keys">
-        <template v-slot:editDeleteUserColumn>
-          <th></th>
-        </template>
       </app-data-table-head-component>
-      <app-data-table-body-component :tableDataProps="tableProps.data">
-        <template v-slot:editDeleteUserButton>
-          <td>
-            <app-button-component
-              :buttonProps="content.buttonGroupForEditDeleteUser"
-            >
-            </app-button-component>
-          </td>
-        </template>
+      <app-data-table-body-component
+        :tableDataProps="tableProps.data"
+        @callEditUserFunc="editUser($event)"
+      >
       </app-data-table-body-component>
     </table>
   </div>
@@ -37,12 +29,11 @@ import $ from "jquery";
 
 import AppDataTableHeadComponent from "@/components/Content/Table/AppDataTableHead.vue";
 import AppDataTableBodyComponent from "@/components/Content/Table/AppDataTableBody.vue";
-import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
+
 export default defineComponent({
   components: {
     AppDataTableHeadComponent,
     AppDataTableBodyComponent,
-    AppButtonComponent,
   },
   props: {
     dataTableProps: {
@@ -63,31 +54,14 @@ export default defineComponent({
   },
   data() {
     return {
-      content: {
-        buttonGroupForEditDeleteUser: {
-          buttons: [
-            {
-              class: "btn btn-block btn-primary my-2",
-              clickEvent: "editUser",
-              innerHtml: "Düzenle",
-            },
-            {
-              class: "btn btn-block btn-danger my-2",
-              clickEvent: "deleteUser",
-              innerHtml: "Sil",
-            },
-          ],
-          encapsulationElem: {
-            class:
-              "col-12 d-flex align-items-center justify-content-center flex-column",
-          },
-        },
-      },
       search: {},
       isDataTableCreated: false,
     };
   },
   methods: {
+    editUser(tableData) {
+      this.$emit("sendToModal",tableData);
+    },
     createDataTable() {
       const vm = this;
       this.$nextTick(() => {
@@ -228,6 +202,7 @@ export default defineComponent({
         this.addColumnToDataTable(heads, ["", ""], "toBeginning");
         this.tableProps.data.keys = heads;
         this.tableProps.data.values = newResponseData;
+        
         if (!this.isDataTableCreated) {
           this.isDataTableCreated = true;
           this.createDataTable();

@@ -47,8 +47,7 @@ export default defineComponent({
   data() {
     return {
       elem: "",
-      userInput: {
-      },
+      userInput: {},
     };
   },
   methods: {
@@ -61,7 +60,11 @@ export default defineComponent({
           ) {
             if (e.target.type === userInputKey) {
               const targetElemNameArr = e.target.name.split(" ");
-              e.target.setCustomValidity(`${targetElemNameArr[0]} ile ${targetElemNameArr.join(" ")} eşleşmiyor.`);
+              e.target.setCustomValidity(
+                `${targetElemNameArr[0]} ile ${targetElemNameArr.join(
+                  " "
+                )} eşleşmiyor.`
+              );
             }
           }
         }
@@ -72,6 +75,16 @@ export default defineComponent({
     userInput: {
       handler(val) {
         this.$emit("userInput", val);
+      },
+      deep: true,
+    },
+    inputProps: {
+      handler(val) {
+        console.log(val);
+        val.content.forEach((data) => {
+          this.userInput[data.column] = data.name;
+        })
+        console.log(this.userInput);
       },
       deep: true,
     },

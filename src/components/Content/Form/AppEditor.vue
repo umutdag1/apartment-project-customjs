@@ -90,11 +90,12 @@ export default defineComponent({
     addButtonContentToWysiwyg(buttonEvent) {
       this.addContentToEditor(buttonEvent);
     },
-    wysiwygProps : {
-      handler(val){
+    wysiwygProps: {
+      handler(val) {
         this.editorData = val.editorData;
-      }
-    }
+      },
+      deep: true,
+    },
   },
 });
 </script>

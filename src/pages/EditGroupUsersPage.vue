@@ -28,7 +28,7 @@ export default defineComponent({
   components: {
     AppHeaderComponent,
     AddUserWithHandComponent,
-    AppButtonComponent
+    AppButtonComponent,
   },
   data() {
     return {
@@ -52,10 +52,10 @@ export default defineComponent({
                 class: "col-12",
               },
             },
-            userForUpdating : {
-              axios : {
-                url : ""
-              }
+            userForUpdating: {
+              axios: {
+                url: "",
+              },
             },
           },
         },
@@ -88,7 +88,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.userForUpdating.axios.url = this.$store.getters.getRequestEndPoint + "getuser/" + this.$route.params.id;
+    this.userForUpdating.axios.url =
+      this.$store.getters.getRequestEndPoint +
+      "getuser/" +
+      this.$route.params.id;
 
     console.log(this.userForUpdating.axios);
 

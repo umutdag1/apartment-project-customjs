@@ -10,7 +10,9 @@
         <div class="row">
           <app-input-component
             :inputProps="content.inputGroupForAddTemplate"
-            @userInput="axiosRequest.request.template_name= $event.template_name"
+            @userInput="
+              axiosRequest.request.UserInput.template_name = $event.template_name
+            "
           ></app-input-component>
 
           <app-button-component
@@ -21,7 +23,7 @@
           <app-editor-component
             :wysiwygProps="content.wysiwygProps"
             :addButtonContentToWysiwyg="buttonEventToAddItsContent"
-            @editorData="axiosRequest.request.template_file = $event"
+            @editorData="axiosRequest.request.UserInput.template_file = $event"
           ></app-editor-component>
 
           <app-button-component
@@ -55,9 +57,11 @@ export default defineComponent({
     return {
       axiosRequest: {
         request: {
-          template_name: "",
-          template_file: "",
-          idgroup_owner: "1"
+          UserInput: {
+            template_name: "",
+            template_file: "",
+            idgroup_owner: "1",
+          },
         },
       },
       saveStatus: null,
@@ -173,11 +177,12 @@ export default defineComponent({
   },
   methods: {
     save() {
-      if (this.axiosRequest.request.editorData !== "") {
+      if (this.axiosRequest.request.UserInput.template_file !== "") {
+        console.log(this.axiosRequest.request);
         const axiosRequestParams = {
           name: this.$options.__file,
           data: JSON.stringify(this.axiosRequest.request),
-          url: "http://d04c-78-181-210-174.ngrok.io/user-api/createtemplate",
+          url: this.$store.getters.getRequestEndPoint + "/createtemplate",
           config: {
             headers: {
               "Content-Type": "application/json",

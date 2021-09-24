@@ -10,7 +10,7 @@
         <div class="row">
           <app-form-component
             :formGroupProps="content.formGroupForSelectTemplate"
-            @selectedOption="axiosRequest.request.template_name = $event"
+            @selectedOption="getOneTemplate($event)"
           >
           </app-form-component>
 
@@ -22,7 +22,7 @@
           <app-editor-component
             :wysiwygProps="content.wysiwygProps"
             :addButtonContentToWysiwyg="buttonEventToAddItsContent"
-            @editorData="axiosRequest.request.editorData = $event"
+            @editorData="axiosRequest.request.file = $event"
           ></app-editor-component>
 
           <app-button-component
@@ -54,10 +54,13 @@ export default defineComponent({
   },
   data() {
     return {
+      currentRequestSubject: "",
       axiosRequest: {
         request: {
-          template_name : "",
-          editorData: "",
+          id: null,
+          idgroup_owner: null,
+          name: null,
+          file: null,
         },
       },
       saveStatus: null,
@@ -139,21 +142,13 @@ export default defineComponent({
           outerClass: "form-group",
           innerClass: "form-control",
           required: true,
-          options: [
-            {
-              name: "Şablon1",
-              class: "",
-            },
-            {
-              name: "Şablon2",
-              class: "",
-            },
-          ],
+          options: [],
           encapsulationElem: {
             class: "col-12",
           },
         },
         wysiwygProps: {
+          editorData: "",
           encapsulationElem: {
             class: "col-12 my-2",
           },
@@ -162,12 +157,48 @@ export default defineComponent({
     };
   },
   methods: {
+    getAllTemplates() {
+      const axiosRequestParams = {
+        name: this.$options.__file,
+        url: this.$store.getters.getRequestEndPoint + "getusertemplates/1",
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: null,
+      };
+
+      this.$store.dispatch("makeGetRequest", {
+        axiosRequestParams,
+      });
+    },
+    getOneTemplate(id) {
+      if (!id) {
+        this.content.wysiwygProps.editorData = "";
+        return;
+      }
+      let templateInfo = this.content.formGroupForSelectTemplate.options.filter(
+        (template) => template.id === id
+      );
+
+      this.axiosRequest.request.id = id;
+      this.axiosRequest.request.idgroup_owner = templateInfo[0].idgroup_owner;
+      this.axiosRequest.request.name = templateInfo[0].name;
+      this.axiosRequest.request.file = templateInfo[0].file;
+
+      this.content.wysiwygProps.editorData = templateInfo[0].file;
+    },
     save() {
       if (this.axiosRequest.request.editorData !== "") {
+        console.log(this.axiosRequest.request);
         const axiosRequestParams = {
           name: this.$options.__file,
           data: JSON.stringify(this.axiosRequest.request),
-          url: "https://reqres.in/api/users",
+          url:
+            this.$store.getters.getRequestEndPoint +
+            "updatetemplate/" +
+            this.axiosRequest.request.id,
           config: {
             headers: {
               "Content-Type": "application/json",
@@ -180,15 +211,9 @@ export default defineComponent({
           },
         };
 
-        console.log(JSON.stringify(this.axiosRequest.request));
-
-        this.$store.dispatch("makePostRequest", {
+        this.$store.dispatch("makePutRequest", {
           axiosRequestParams,
         });
-
-        if (this.saveStatus === 1) {
-          this.$store.dispatch("changePage", "createMeeting");
-        }
       } else {
         this.$store.dispatch("fireToast", {
           message: "Şablon Boş Olamaz.",
@@ -205,8 +230,22 @@ export default defineComponent({
   },
   watch: {
     response(val) {
-      console.log(val.responseData.data);
+      console.log(val.responseData);
+      const endPoint = val.responseData.config.url;
+      const splittedEndPoint = endPoint.split("/");
+      const foundSubject = splittedEndPoint.filter(
+        (subject) => subject === this.currentRequestSubject
+      );
+      if(foundSubject.length > 0){
+        this.content.formGroupForSelectTemplate.options = val.responseData.data;
+      } else {
+        this.getAllTemplates();
+      }
     },
+  },
+  mounted() {
+    this.currentRequestSubject = "getusertemplates";
+    this.getAllTemplates();
   },
 });
 </script>

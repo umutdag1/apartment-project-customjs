@@ -13,8 +13,11 @@
       >
       </app-form-component>
 
+      <app-modal-component :modalProps="modalProps"> </app-modal-component>
+
       <app-data-table-component
         :dataTableProps="content.dataTableProps"
+        @sendToModal="triggerModal($event)"
       ></app-data-table-component>
 
       <app-button-component
@@ -32,6 +35,7 @@ import AppHeaderComponent from "@/components/Header/AppHeader.vue";
 import AppFormComponent from "@/components/Content/Form/AppForm.vue";
 import AppDataTableComponent from "@/components/Content/Table/AppDataTable.vue";
 import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
+import AppModalComponent from "@/components/Content/UI/AppModal.vue";
 
 export default defineComponent({
   components: {
@@ -39,6 +43,7 @@ export default defineComponent({
     AppFormComponent,
     AppDataTableComponent,
     AppButtonComponent,
+    AppModalComponent,
   },
   data() {
     return {
@@ -83,14 +88,22 @@ export default defineComponent({
             request: {
               group_id: "",
             },
-            response : null
+            response: null,
           },
           encapsulationElem: {
             class: "col-12",
           },
         },
       },
+      modalProps: {
+        data: {},
+      },
     };
+  },
+  methods: {
+    triggerModal(data) {
+      this.modalProps.data = data;
+    },
   },
   computed: {
     response() {
@@ -106,8 +119,9 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.content.dataTableProps.axios.url = this.$store.getters.getRequestEndPoint + "getgroupusers";
-    
+    this.content.dataTableProps.axios.url =
+      this.$store.getters.getRequestEndPoint + "getgroupusers";
+
     const axiosRequestParams = {
       name: this.$options.__file,
       url: this.$store.getters.getRequestEndPoint + "getgroups",
@@ -122,7 +136,7 @@ export default defineComponent({
     this.$store.dispatch("makeGetRequest", {
       axiosRequestParams,
     });
-  }
+  },
 });
 </script>
 

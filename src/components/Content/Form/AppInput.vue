@@ -16,7 +16,7 @@
         "
         :onkeyup="inputConf"
         oninput="setCustomValidity('')"
-        :placeholder="inputContent.name"
+        :placeholder="inputContent.column"
         :pattern="inputContent.attribute.pattern"
         :aria-label="inputContent.name"
         :required="inputContent.attribute.required"

@@ -13,11 +13,16 @@
       >
       </app-form-component>
 
-      <app-modal-component :modalProps="modalProps"> </app-modal-component>
+      <app-modal-component
+        :modalProps="modalProps"
+        @resetModalProp="modalProps.data = {}"
+        @reloadData="content.dataTableProps.axios.request.group_id = ''"
+      ></app-modal-component>
 
       <app-data-table-component
         :dataTableProps="content.dataTableProps"
         @sendToModal="triggerModal($event)"
+        ref="dataComp"
       ></app-data-table-component>
 
       <app-button-component

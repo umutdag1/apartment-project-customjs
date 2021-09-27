@@ -16,6 +16,7 @@
             class="close"
             data-dismiss="modal"
             aria-label="Close"
+            @click="$emit('resetModalProp')"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -24,14 +25,17 @@
           <app-input-component
             :inputProps="inputGroupForUpdateUser"
             @userInput="axiosRequest.request.userInput = $event"
-            ref="inputRef"
           ></app-input-component>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="$emit('resetModalProp')">
             Close
           </button>
-          <button type="button" class="btn btn-primary">Send message</button>
+          <app-button-component
+            :buttonProps="buttonGroup"
+            @sendToUpdate="sendToUpdate"
+          >
+          </app-button-component>
         </div>
       </div>
     </div>
@@ -42,8 +46,19 @@
 import { defineComponent } from "vue";
 import $ from "jquery";
 import AppInputComponent from "@/components/Content/Form/AppInput.vue";
+import AppButtonComponent from "@/components/Content/UI/AppButton.vue";
 
 export default defineComponent({
+  components: {
+    AppInputComponent,
+    AppButtonComponent,
+  },
+  props: {
+    modalProps: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       axiosRequest: {
@@ -57,23 +72,64 @@ export default defineComponent({
           class: "col-md-6",
         },
       },
+      buttonGroup: {
+        buttons: [
+          {
+            class: "btn btn-secondary",
+            clickEvent: "sendToUpdate",
+            innerHtml: "Kaydet",
+          },
+        ],
+        encapsulationElem: {
+          class: "",
+        },
+      },
     };
   },
-  components: {
-    AppInputComponent,
-  },
-  props: {
-    modalProps: {
-      type: Object,
-      required: true,
+  methods: {
+    sendToUpdate() {
+      const axiosRequestParams = {
+        name: "isUserUpdated",
+        data: JSON.stringify(this.axiosRequest.request.userInput),
+        url: this.$store.getters.getRequestEndPoint + "edituser/" + this.modalProps.data["id"],
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        toastMessages: {
+          success: "Kayıt Başarıyla Kaydedildi.",
+          warning: null,
+          error: "Kayıt Kaydedilemedi.",
+        },
+      };
+
+      //console.log(axiosRequestParams);
+
+      this.$store.dispatch("makePutRequest", {
+        axiosRequestParams,
+      });
     },
   },
+  computed : {
+    getResponse(){
+      return this.$store.getters.axiosRequestResponse["isUserUpdated"];
+    }
+  },
   watch: {
+    getResponse(val){
+      if(val.success === 1){
+        this.$emit("relaodData");
+      }
+    },
     modalProps: {
       handler(val) {
         //this.data = val;
         console.log(val);
-        const inputs = Object.keys(val.data).map((dataKey) => {
+        const filteredKeys = Object.keys(val.data).filter(
+          (key) => key !== "id"
+        );
+        const inputs = filteredKeys.map((dataKey) => {
           return {
             attribute: {
               type: "text",
@@ -81,7 +137,7 @@ export default defineComponent({
               outerClass: "input-group mb-3",
               innerClass: "form-control",
               required: true,
-              pattern: "^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
+              pattern: null,//"^([a-zA-ZğüşöçıIİĞÜŞÖÇ]|\\s)*$",
               invalidMessage: "Yanlızca Harf Kullanınız",
             },
             name: `${val.data[dataKey]}`,

@@ -60,7 +60,8 @@ export default defineComponent({
   },
   methods: {
     editUser(tableData) {
-      this.$emit("sendToModal",tableData);
+      console.log("Tıklandı");
+      this.$emit("sendToModal", tableData);
     },
     createDataTable() {
       const vm = this;
@@ -200,9 +201,9 @@ export default defineComponent({
           : newResponseData.push(responseData);
         const heads = Object.keys(newResponseData[0]);
         this.addColumnToDataTable(heads, ["", ""], "toBeginning");
-        this.tableProps.data.keys = heads;
+        this.tableProps.data.keys = heads.filter((head) => head !== "id");
         this.tableProps.data.values = newResponseData;
-        
+
         if (!this.isDataTableCreated) {
           this.isDataTableCreated = true;
           this.createDataTable();

@@ -60,7 +60,7 @@ export default defineComponent({
   },
   methods: {
     editUser(tableData) {
-      console.log("Tıklandı");
+      tableData.group_id = this.dataTableProps.axios.request.group_id;
       this.$emit("sendToModal", tableData);
     },
     createDataTable() {

@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Kullanıcı Bilgileri</h5>
           <button
             type="button"
             class="close"
@@ -29,7 +29,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="$emit('resetModalProp')">
-            Close
+            Kapat
           </button>
           <app-button-component
             :buttonProps="buttonGroup"
@@ -118,8 +118,12 @@ export default defineComponent({
   },
   watch: {
     getResponse(val){
-      if(val.success === 1){
-        this.$emit("relaodData");
+      console.log(val);
+      const responseData = val.responseData.data
+      if(responseData.success === 1){
+        this.$emit("reloadData", this.modalProps.data.group_id);
+        console.log(val);
+        $("#myModal").modal("toggle");
       }
     },
     modalProps: {
@@ -127,7 +131,7 @@ export default defineComponent({
         //this.data = val;
         console.log(val);
         const filteredKeys = Object.keys(val.data).filter(
-          (key) => key !== "id"
+          (key) => key !== "id" && key !== "group_id"
         );
         const inputs = filteredKeys.map((dataKey) => {
           return {

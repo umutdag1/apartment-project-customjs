@@ -159,7 +159,7 @@ export default defineComponent({
   methods: {
     getAllTemplates() {
       const axiosRequestParams = {
-        name: this.$options.__file,
+        name: "getTemplates",
         url: this.$store.getters.getRequestEndPoint + "getusertemplates/1",
         config: {
           headers: {
@@ -174,6 +174,7 @@ export default defineComponent({
       });
     },
     getOneTemplate(id) {
+      console.log(id);
       if (!id) {
         this.content.wysiwygProps.editorData = "";
         return;
@@ -193,7 +194,7 @@ export default defineComponent({
       if (this.axiosRequest.request.editorData !== "") {
         console.log(this.axiosRequest.request);
         const axiosRequestParams = {
-          name: this.$options.__file,
+          name: "saveTemplate",
           data: JSON.stringify(this.axiosRequest.request),
           url:
             this.$store.getters.getRequestEndPoint +
@@ -224,13 +225,16 @@ export default defineComponent({
     },
   },
   computed: {
-    response() {
-      return this.$store.getters.axiosRequestResponse[this.$options.__file];
+    getResponseOfTemplateIsSaved() {
+      return this.$store.getters.axiosRequestResponse["saveTemplate"];
     },
+    getResponseOfTemplates(){
+      return this.$store.getters.axiosRequestResponse["getTemplates"];
+    }
   },
   watch: {
-    response(val) {
-      console.log(val.responseData);
+    getResponseOfTemplateIsSaved(val) {
+      /*console.log(val.responseData);
       const endPoint = val.responseData.config.url;
       const splittedEndPoint = endPoint.split("/");
       const foundSubject = splittedEndPoint.filter(
@@ -240,8 +244,16 @@ export default defineComponent({
         this.content.formGroupForSelectTemplate.options = val.responseData.data;
       } else {
         this.getAllTemplates();
+      }*/
+
+      const responseData = val.responseData.data;
+      if(responseData.success === 1) {
+        this.getAllTemplates();
       }
     },
+    getResponseOfTemplates(val){
+      this.content.formGroupForSelectTemplate.options = val.responseData.data;
+    }
   },
   mounted() {
     this.currentRequestSubject = "getusertemplates";

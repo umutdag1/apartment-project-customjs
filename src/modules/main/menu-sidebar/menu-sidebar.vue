@@ -86,7 +86,7 @@
                 </router-link>
               </li>
 
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <router-link
                   to="/editGroupUser/1"
                   class="nav-link"
@@ -95,7 +95,7 @@
                   <i class="nav-icon far fa-circle nav-icon"></i>
                   <p>Grup Kişileri Düzenle</p>
                 </router-link>
-              </li>
+              </li>-->
             </ul>
           </li>
 

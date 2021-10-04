@@ -16,7 +16,7 @@
       <app-modal-component
         :modalProps="modalProps"
         @resetModalProp="modalProps.data = {}"
-        @reloadData="content.dataTableProps.axios.request.group_id = ''"
+        @reloadData="reloadData($event)"
       ></app-modal-component>
 
       <app-data-table-component
@@ -108,6 +108,10 @@ export default defineComponent({
   methods: {
     triggerModal(data) {
       this.modalProps.data = data;
+    },
+    reloadData(groupID) {
+      this.content.dataTableProps.axios.request.group_id = "";
+      this.content.dataTableProps.axios.request.group_id = groupID;
     },
   },
   computed: {

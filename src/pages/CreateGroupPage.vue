@@ -62,7 +62,7 @@ export default defineComponent({
               },
               type: "text",
               name: "Grup Adı",
-              column: "group_name",
+              column: "name",
               icon: null,
             },
           ],
@@ -101,10 +101,11 @@ export default defineComponent({
   },
   methods: {
     save() {
+      this.axiosRequest.request.userInput.idgroup_owner = "1";
       const axiosRequestParams = {
         name: this.$options.__file,
-        data: JSON.stringify(this.axiosRequest.request),
-        url: "https://reqres.in/api/users",
+        data: JSON.stringify(this.axiosRequest.request.userInput),
+        url: this.$store.getters.getRequestEndPoint  + "creategroup",
         config: {
           headers: {
             "Content-Type": "application/json",
@@ -117,7 +118,7 @@ export default defineComponent({
         },
       };
 
-      console.log(JSON.stringify(this.axiosRequest.request));
+      console.log(JSON.stringify(this.axiosRequest.request.userInput));
 
       this.$store.dispatch("makePostRequest", {
         axiosRequestParams,
